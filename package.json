@@ -1,0 +1,12 @@
+{
+  "name": "arscreatio-landing",
+  "version": "1.0.0",
+  "description": "ArsCreatio Landing Page",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}

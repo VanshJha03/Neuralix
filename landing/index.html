@@ -1709,23 +1709,42 @@
         });
 
         /* ── REGISTER ── */
-        function handleReg(e) {
+        async function handleReg(e) {
             e.preventDefault();
             const name = document.getElementById('rname').value.trim();
             const email = document.getElementById('remail').value.trim();
-            if (!name || !email) return;
-            const list = JSON.parse(localStorage.getItem('ars_list') || '[]');
-            list.push({ name, email, ts: new Date().toISOString() });
-            localStorage.setItem('ars_list', JSON.stringify(list));
             const btn = document.getElementById('rbtn');
-            btn.textContent = "✓ You're on the list!";
-            btn.classList.add('done');
+
+            if (!name || !email) return;
+
             btn.disabled = true;
-            document.getElementById('rname').value = '';
-            document.getElementById('remail').value = '';
-            const t = document.getElementById('toast');
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 4200);
+            btn.textContent = "Connecting...";
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email })
+                });
+
+                if (response.ok) {
+                    btn.textContent = "✓ You're on the list!";
+                    btn.classList.add('done');
+                    document.getElementById('rname').value = '';
+                    document.getElementById('remail').value = '';
+                    const t = document.getElementById('toast');
+                    t.classList.add('show');
+                    setTimeout(() => t.classList.remove('show'), 4200);
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Failed to register');
+                }
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                btn.textContent = "Pre-Register for Early Access →";
+                alert("Something went wrong. Please check your connection or try again later.");
+            }
         }
 
         /* ── SMOOTH SCROLL ── */
