@@ -1,0 +1,9 @@
+{
+  "name": "SHIROX NEURAL COMMAND",
+  "description": "An elite v4.1 marketing & research command center featuring contextual trend synthesis and synaptic niche alignment.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
