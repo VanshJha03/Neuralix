@@ -29,7 +29,8 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 // ─── CORS (Strict) ───────────────────────────────────────────────────────────
 const allowedOrigins = [
-    process.env.ALLOWED_ORIGIN || 'http://localhost:5173',
+    process.env.ALLOWED_ORIGIN || 'http://localhost:3000',
+    'http://localhost:3000',
     'http://localhost:5173',
     'http://localhost:4173',
 ];
