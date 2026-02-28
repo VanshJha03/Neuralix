@@ -23,24 +23,27 @@ import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketi
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { X as CloseIcon, Image as ImageIcon } from 'lucide-react';
+import { NicheAnalyticsData } from '../types';
 
 interface NicheAnalyticsProps {
   interests: Interest[];
   onSaveIdea: (idea: Idea) => void;
-  systemInstruction?: string;
+  data: NicheAnalyticsData;
+  onUpdateData: (data: NicheAnalyticsData) => void;
+  userSettings: any;
 }
 
-const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, systemInstruction = '' }) => {
+const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings }) => {
   const [loading, setLoading] = useState(false);
-  const [predictions, setPredictions] = useState<ViralPrediction[]>([]);
-  const [creators, setCreators] = useState<CreatorAnalysis[]>([]);
-  const [gaps, setGaps] = useState<GapAnalysis[]>([]);
+  const predictions = data.predictions;
+  const creators = data.creators;
+  const gaps = data.gaps;
   const [activeTab, setActiveTab] = useState<'VIRAL' | 'CREATORS' | 'GAPS'>('VIRAL');
 
   // Synthesis state
   const [synthesizingContext, setSynthesizingContext] = useState<string | null>(null);
   const [synthesizingTitle, setSynthesizingTitle] = useState<string>('');
-  const [selectedFormat, setSelectedFormat] = useState<string>('IG Reel');
+  const [selectedFormat, setSelectedFormat] = useState<string>('Script');
   const [generatedScript, setGeneratedScript] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -57,9 +60,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
         runCreatorAnalysis(interests),
         runGapAnalysis(interests)
       ]);
-      setPredictions(vData);
-      setCreators(cData);
-      setGaps(gData);
+      onUpdateData({ predictions: vData, creators: cData, gaps: gData });
     } catch (e) {
       console.error("Analysis failed", e);
     } finally {
@@ -68,9 +69,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
   };
 
   useEffect(() => {
-    if (activeInterests.length > 0 && predictions.length === 0) {
-      performFullAnalysis();
-    }
+    // Analytics only run manually now
   }, []);
 
   const saveToIdeaBank = (title: string, content: string) => {
@@ -94,7 +93,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
     setGeneratedImages({});
 
     try {
-      const script = await generateMarketingContent(context, format, systemInstruction);
+      const script = await generateMarketingContent(context, format, systemInstruction, userSettings);
       setGeneratedScript(script);
 
       // Detect and generate images
@@ -123,7 +122,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
     }
   };
 
-  const formats = ['X Post', 'X Thread', 'IG Reel', 'YT Short', 'X Video'];
+  const formats = ['X Post', 'X Thread', 'Script'];
 
   if (activeInterests.length === 0) {
     return (
@@ -356,7 +355,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
                       className="w-full h-80 bg-black/60 border border-zinc-800 rounded-3xl p-6 text-zinc-300 text-sm focus:outline-none focus:border-white/50 transition-all font-mono"
                     />
                   ) : (
-                    generatedScript.split(/(\[IMAGE: [^\]]+\])/g).map((part, i) => {
+                    generatedScript.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g).map((part, i) => {
                       const imgState = generatedImages[part];
                       if (imgState) {
                         return (
@@ -374,6 +373,17 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
                                 </div>
                               )}
                             </div>
+                          </div>
+                        );
+                      }
+                      if (part.startsWith('[URL: ')) {
+                        const url = part.replace('[URL: ', '').replace(']', '').trim();
+                        return (
+                          <div key={i} className="my-6">
+                            <div className="relative aspect-video bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden">
+                              <img src={url} alt="External Content" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                            </div>
+                            <p className="mt-2 text-[8px] font-black uppercase text-zinc-700 tracking-widest text-center italic">Visual Reference</p>
                           </div>
                         );
                       }

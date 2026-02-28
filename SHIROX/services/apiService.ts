@@ -55,10 +55,10 @@ export const extractNeuralMemory = async (messages: any[]): Promise<{ packet: st
 };
 
 // ── Marketing Content ─────────────────────────────────────────────────────────
-export const generateMarketingContent = async (content: string, format: string, systemInstruction: string) => {
+export const generateMarketingContent = async (content: string, format: string, systemInstruction: string, userSettings?: UserSettings) => {
     const data = await apiFetch('/api/content/generate', {
         method: 'POST',
-        body: JSON.stringify({ content, format, systemInstruction }),
+        body: JSON.stringify({ content, format, systemInstruction, userSettings }),
     });
     return data.content;
 };

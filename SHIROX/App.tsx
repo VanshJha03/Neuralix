@@ -14,7 +14,7 @@ import MarketingStudio from './components/MarketingStudio';
 import OmniTerminal from './components/OmniTerminal';
 import SettingsManager from './components/SettingsManager';
 import NicheAnalytics from './components/NicheAnalytics';
-import { Idea, Message, Interest, ViewType, UserSettings } from './types';
+import { Idea, Message, Interest, ViewType, UserSettings, NicheAnalyticsData } from './types';
 import { INITIAL_INTERESTS, DEFAULT_SYSTEM_PROMPT } from './constants';
 
 // ─── Loading Screen ───────────────────────────────────────────────────────────
@@ -50,6 +50,8 @@ const App: React.FC = () => {
     avatarColor: '#ffffff',
     customSystemPrompt: DEFAULT_SYSTEM_PROMPT,
     linkedAccounts: [],
+    xPostImages: true,
+    xThreadImages: true,
   });
 
   const [interests, setInterests] = useState<Interest[]>(INITIAL_INTERESTS);
@@ -60,6 +62,12 @@ const App: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(() => {
     const saved = localStorage.getItem('ArsCreatio_messages');
     return saved ? JSON.parse(saved) : [];
+  });
+
+  const [nicheAnalyticsData, setNicheAnalyticsData] = useState<NicheAnalyticsData>({
+    predictions: [],
+    creators: [],
+    gaps: [],
   });
 
   // ── Auth State Listener ───────────────────────────────────────────────────
@@ -282,17 +290,24 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
             <InterestsManager interests={interests} setInterests={setInterests} />
           )}
           {activeView === 'marketing' && (
-            <MarketingStudio ideas={ideas} interests={interests} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} />
+            <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} />
           )}
           {activeView === 'analytics' && (
-            <NicheAnalytics interests={interests} onSaveIdea={onSaveIdea} systemInstruction={enhancedSystemPrompt} />
+            <NicheAnalytics
+              interests={interests}
+              onSaveIdea={onSaveIdea}
+              userSettings={userSettings}
+              systemInstruction={enhancedSystemPrompt}
+              data={nicheAnalyticsData}
+              onUpdateData={setNicheAnalyticsData}
+            />
           )}
           {activeView === 'settings' && (
             <SettingsManager userSettings={userSettings} setUserSettings={setUserSettings} />
           )}
         </div>
 
-        <TrendsManager interests={interests} onSaveIdea={onSaveIdea} systemInstruction={enhancedSystemPrompt} />
+        <TrendsManager interests={interests} onSaveIdea={onSaveIdea} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} />
         <OmniTerminal isOpen={isTerminalOpen} setIsOpen={setIsTerminalOpen} onCommand={handleTerminalCommand} />
       </main>
     </div>

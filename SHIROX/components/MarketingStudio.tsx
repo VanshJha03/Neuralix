@@ -12,12 +12,13 @@ interface MarketingStudioProps {
   interests: Interest[];
   systemInstruction: string;
   onDeleteIdea: (id: string) => void;
+  userSettings: any;
 }
 
-const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea }) => {
+const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea, userSettings }) => {
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
-  const [format, setFormat] = useState<string>('X Thread');
-  const [output, setOutput] = useState('');
+  const [format, setFormat] = useState<string>('Script');
+  const [generatedContent, setGeneratedContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<Record<string, { data: string | null; loading: boolean }>>({});
@@ -68,8 +69,8 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
         contentToGenerate = selectedIdea?.content || '';
       }
 
-      const res = await generateMarketingContent(contentToGenerate, format, systemInstruction);
-      setOutput(res || '');
+      const res = await generateMarketingContent(contentToGenerate, format, systemInstruction, userSettings);
+      setGeneratedContent(res || '');
       await processImages(res || '');
     } catch (e) {
       console.error(e);
@@ -79,12 +80,12 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
   };
 
   const handleRefine = async () => {
-    if (!output || !refinement || loading) return;
+    if (!generatedContent || !refinement || loading) return;
     setLoading(true);
     setIsRefining(true);
     try {
-      const res = await refineMarketingContent(output, refinement, format, systemInstruction);
-      setOutput(res || '');
+      const res = await refineMarketingContent(generatedContent, refinement, format, systemInstruction, userSettings);
+      setGeneratedContent(res || '');
       setRefinement('');
       await processImages(res || '');
     } catch (e) {
@@ -95,10 +96,10 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
     }
   };
 
-  const formats = ['X Post', 'X Thread', 'IG Reel', 'YT Short', 'X Video', 'Google Docs Report'];
+  const formats = ['X Post', 'X Thread', 'Script', 'Google Docs Report'];
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(output);
+    navigator.clipboard.writeText(generatedContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -204,7 +205,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
       </div>
 
       <div className="flex-1 bg-zinc-900/20 border border-zinc-800 rounded-3xl p-8 overflow-y-auto relative min-h-[500px]">
-        {!output && !loading && (
+        {!generatedContent && !loading && (
           <div className="h-full flex flex-col items-center justify-center text-zinc-700 space-y-4">
             <Megaphone size={48} className="opacity-10" />
             <p className="text-sm italic">Synthesized content will appear here.</p>
@@ -218,7 +219,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
           </div>
         )}
 
-        {output && !loading && (
+        {generatedContent && !loading && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex items-center justify-between mb-8">
               <div className="flex items-center gap-3">
@@ -243,25 +244,38 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                 </button>
               </div>
             </div>
-            <div className="space-y-6">
-              {output.split(/(\[IMAGE: [^\]]+\])/g).map((part, i) => {
+            <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
+              {generatedContent.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g).map((part, i) => {
                 const imgState = generatedImages[part];
                 if (imgState) {
                   return (
-                    <div key={i} className="my-6">
-                      <div className="relative aspect-video bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden">
+                    <div key={i} className="my-8">
+                      <div className="relative aspect-video bg-zinc-950 border border-zinc-900 rounded-[2.5rem] overflow-hidden group/img shadow-2xl">
                         {imgState.loading ? (
-                          <div className="absolute inset-0 flex items-center justify-center bg-zinc-950/20">
-                            <Loader2 size={24} className="animate-spin text-white" />
+                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/80">
+                            <Loader2 size={32} className="animate-spin text-white mb-4" />
+                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">Synthesizing Visual Core</span>
                           </div>
                         ) : imgState.data ? (
-                          <img src={imgState.data} alt="AI Generated" className="w-full h-full object-cover" />
+                          <img src={imgState.data} alt="AI Representation" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-1000" />
                         ) : (
-                          <div className="absolute inset-0 flex items-center justify-center text-zinc-800">
-                            <ImageIcon size={32} />
+                          <div className="absolute inset-0 flex items-center justify-center text-zinc-900">
+                            <Zap size={48} className="opacity-10" />
                           </div>
                         )}
                       </div>
+                      <p className="mt-4 text-[9px] font-black text-zinc-800 uppercase tracking-[0.3em] text-center italic">Visual logic based on neural narrative</p>
+                    </div>
+                  );
+                }
+                if (part.startsWith('[URL: ')) {
+                  const url = part.replace('[URL: ', '').replace(']', '').trim();
+                  return (
+                    <div key={i} className="my-8">
+                      <div className="relative aspect-video bg-zinc-950 border border-zinc-900 rounded-[2.5rem] overflow-hidden group/img shadow-2xl">
+                        <img src={url} alt="Reference Content" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                      </div>
+                      <p className="mt-4 text-[9px] font-black text-zinc-800 uppercase tracking-[0.3em] text-center italic">External Visual Reference</p>
                     </div>
                   );
                 }

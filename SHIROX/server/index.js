@@ -92,7 +92,9 @@ db.exec(`
     name TEXT DEFAULT 'Operator',
     handle TEXT DEFAULT 'neural_link',
     avatarColor TEXT DEFAULT '#dc2626',
-    customSystemPrompt TEXT
+    customSystemPrompt TEXT,
+    xPostImages INTEGER DEFAULT 1,
+    xThreadImages INTEGER DEFAULT 1
   );
 
   CREATE TABLE IF NOT EXISTS archived_messages (
@@ -169,21 +171,23 @@ app.get('/api/settings', requireAuth, (req, res) => {
         db.prepare('INSERT INTO user_settings (user_id, name) VALUES (?, ?)').run(userId, name);
         settings = db.prepare('SELECT * FROM user_settings WHERE user_id = ?').get(userId);
     }
-    res.json(settings);
+    res.json({ ...settings, xPostImages: !!settings.xPostImages, xThreadImages: !!settings.xThreadImages });
 });
 
 app.post('/api/settings', requireAuth, (req, res) => {
-    const { name, handle, avatarColor, customSystemPrompt } = req.body;
+    const { name, handle, avatarColor, customSystemPrompt, xPostImages, xThreadImages } = req.body;
     const userId = req.user.id;
     db.prepare(`
-    INSERT INTO user_settings (user_id, name, handle, avatarColor, customSystemPrompt)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO user_settings (user_id, name, handle, avatarColor, customSystemPrompt, xPostImages, xThreadImages)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(user_id) DO UPDATE SET
       name = excluded.name,
       handle = excluded.handle,
       avatarColor = excluded.avatarColor,
-      customSystemPrompt = excluded.customSystemPrompt
-  `).run(userId, name, handle, avatarColor, customSystemPrompt);
+      customSystemPrompt = excluded.customSystemPrompt,
+      xPostImages = excluded.xPostImages,
+      xThreadImages = excluded.xThreadImages
+  `).run(userId, name, handle, avatarColor, customSystemPrompt, xPostImages ? 1 : 0, xThreadImages ? 1 : 0);
     res.json({ success: true });
 });
 
@@ -319,7 +323,7 @@ app.post('/api/chat', requireAuth, async (req, res) => {
     if (isImageRequest || mode === 'Imagine') {
         try {
             const imgResponse = await ai.models.generateContent({
-                model: 'gemini-2.0-flash-preview-image-generation',
+                model: 'gemini-2.5-flash-image',
                 contents: { parts: [{ text: `Generate a high-quality futuristic marketing visual for: ${prompt}. Style: Dark tech aesthetic, glowing red accents. CRITICAL: Do NOT include any text or words in the image.` }] },
                 config: { responseModalities: ['IMAGE', 'TEXT'] }
             });
@@ -427,9 +431,21 @@ app.post('/api/memory/extract', requireAuth, async (req, res) => {
 
 // ── Marketing Content ─────────────────────────────────────────────────────────
 app.post('/api/content/generate', requireAuth, async (req, res) => {
-    const { content, format, systemInstruction } = req.body;
-    // (Keeping full prompt logic from original service)
-    const prompt = `Transform this topic into a viral ${format}: "${content}". Focus on bold, opinionated, visionary content. Dark tech aesthetic. No AI product names. No #VanshJha.`;
+    const { content, format, systemInstruction, userSettings } = req.body;
+
+    let imageLogic = "Do NOT include any [IMAGE: ...] placeholders.";
+    if (format === 'X Post' && userSettings?.xPostImages) {
+        imageLogic = "Include exactly one relevant image placeholder in the format [IMAGE: descriptive generation prompt].";
+    } else if (format === 'X Thread' && userSettings?.xThreadImages) {
+        imageLogic = "Include 1-4 relevant image placeholders in the format [IMAGE: descriptive generation prompt] at key narrative transitions.";
+    }
+
+    const prompt = `Transform this topic into a viral ${format}: "${content}". 
+    VOICE: Bold, visionary, dark tech aesthetic. 
+    CONSTRAINTS: No AI product names. No #VanshJha. 
+    VISUALS: ${imageLogic} 
+    RESEARCH: Use Google Search to find highly relevant real-world data. If you encounter any useful REAL image URLs from high-authority sources, include them as [URL: source-image-url] where they add value.`;
+
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash-lite',
@@ -457,9 +473,13 @@ app.post('/api/trends/viral', requireAuth, async (req, res) => {
     const { activeLabels } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite',
-            contents: `Analyze current web data for niches: ${activeLabels}. Find 4 specific trending topics with viral trajectory (Early/Rising/Peak/Saturation) and score (0-100). Return as JSON array.`,
+            model: 'gemini-2.5-pro',
+            contents: `RESEARCH the web for current viral trends in niches: ${activeLabels}. 
+            TIME CONSTRAINT: Last 4 days preferred, up to 7 days if still high-velocity. 
+            DEPTH: For EACH suggested topic, search at least 3 high-authority websites/sources.
+            Return 4 specific trending topics with (Early/Rising/Peak/Saturation) velocity and score (0-100) as JSON array.`,
             config: {
+                tools: [{ googleSearch: {} }],
                 responseMimeType: 'application/json',
                 responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { topic: { type: Type.STRING }, velocity: { type: Type.STRING, enum: ['Early', 'Rising', 'Peak', 'Saturation'] }, score: { type: Type.NUMBER }, why: { type: Type.STRING } }, required: ['topic', 'velocity', 'score', 'why'] } }
             }
@@ -488,8 +508,11 @@ app.post('/api/trends/gaps', requireAuth, async (req, res) => {
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-pro',
-            contents: `For niches: ${activeLabels}, identify 3 major current trends. Perform a Gap Analysis: what is the crowd narrative, what is missing, and what is the unique Viral Hook. Return JSON array.`,
+            contents: `For niches: ${activeLabels}, identify 3 major current trends from the LAST 4-7 DAYS. 
+            DEPTH: Search at least 3 websites per trend to identify the common narrative vs the missing piece.
+            Perform a Gap Analysis: what is the crowd narrative, what is missing, and what is the unique Viral Hook. Return JSON array.`,
             config: {
+                tools: [{ googleSearch: {} }],
                 responseMimeType: 'application/json',
                 responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { trend: { type: Type.STRING }, crowdIsSaying: { type: Type.STRING }, missingPiece: { type: Type.STRING }, hookUSP: { type: Type.STRING } }, required: ['trend', 'crowdIsSaying', 'missingPiece', 'hookUSP'] } }
             }
@@ -503,7 +526,9 @@ app.post('/api/trends/latest', requireAuth, async (req, res) => {
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash-lite',
-            contents: `SEARCH the web for real current viral trends on X, Instagram, and YouTube today. Focus on: ${activeLabels}. Return EXACTLY 5 trends, one per line: PLATFORM | TOPIC | VIRAL_HOOK`,
+            contents: `SEARCH the web for real current viral trends from the LAST 4-7 DAYS ONLY. Focus on niches: ${activeLabels}. 
+            Find at least ONE specific article for the top trend. 
+            Return EXACTLY 5 trends: PLATFORM | TOPIC | VIRAL_HOOK`,
             config: { tools: [{ googleSearch: {} }] }
         });
         const groundingSources = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
@@ -516,7 +541,7 @@ app.post('/api/trends/niche', requireAuth, async (req, res) => {
     try {
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash-lite',
-            contents: `Find REAL content from YouTube, Instagram, and X for: ${activeLabels} from the last 7 days. Return JSON array of 9 items.`,
+            contents: `Find REAL content from YouTube, Instagram, and X for: ${activeLabels} from the LAST 4-7 DAYS ONLY. Return JSON array of 9 items.`,
             config: {
                 responseMimeType: 'application/json',
                 responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, platform: { type: Type.STRING }, title: { type: Type.STRING }, channel: { type: Type.STRING }, views: { type: Type.STRING }, date: { type: Type.STRING }, url: { type: Type.STRING }, thumbnail: { type: Type.STRING } }, required: ['id', 'platform', 'title', 'channel', 'views', 'date', 'url', 'thumbnail'] } }
@@ -531,7 +556,7 @@ app.post('/api/image/generate', requireAuth, async (req, res) => {
     const { prompt } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.0-flash-preview-image-generation',
+            model: 'gemini-2.5-flash-image',
             contents: { parts: [{ text: `Generate a high-quality futuristic marketing visual: ${prompt}. Dark tech aesthetic, glowing red accents. No text in the image.` }] },
             config: { responseModalities: ['IMAGE', 'TEXT'] }
         });

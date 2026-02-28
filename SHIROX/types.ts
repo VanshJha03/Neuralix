@@ -16,6 +16,8 @@ export interface UserSettings {
     handle: string;
     niche: string;
   }[];
+  xPostImages?: boolean;
+  xThreadImages?: boolean;
 }
 
 export interface SocialAccount {
@@ -110,4 +112,9 @@ export interface GapAnalysis {
   crowdIsSaying: string;
   missingPiece: string;
   hookUSP: string;
+}
+export interface NicheAnalyticsData {
+  predictions: ViralPrediction[];
+  creators: CreatorAnalysis[];
+  gaps: GapAnalysis[];
 }

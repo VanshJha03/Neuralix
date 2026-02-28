@@ -12,7 +12,7 @@ interface TrendItem {
   hook: string;
 }
 
-type ScriptFormat = 'X Post' | 'X Thread' | 'IG Reel' | 'YT Video' | 'X Video';
+type ScriptFormat = 'X Post' | 'X Thread' | 'Script';
 
 interface GeneratedImage {
   placeholder: string;
@@ -24,9 +24,10 @@ interface TrendsManagerProps {
   interests: Interest[];
   onSaveIdea: (idea: Idea) => void;
   systemInstruction: string;
+  userSettings: any;
 }
 
-const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, systemInstruction }) => {
+const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, systemInstruction, userSettings }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [trends, setTrends] = useState<TrendItem[]>([]);
   const [sources, setSources] = useState<any[]>([]);
@@ -34,13 +35,14 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
 
   // Synthesis state
   const [synthesizingTrend, setSynthesizingTrend] = useState<TrendItem | null>(null);
-  const [selectedFormat, setSelectedFormat] = useState<ScriptFormat>('IG Reel');
+  const [selectedFormat, setSelectedFormat] = useState<ScriptFormat>('X Post');
   const [generatedScript, setGeneratedScript] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<Record<string, GeneratedImage>>({});
   const [refinement, setRefinement] = useState('');
   const [isRefining, setIsRefining] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [trendForFormatSelection, setTrendForFormatSelection] = useState<TrendItem | null>(null);
 
   const loadTrends = async () => {
     if (interests.filter(i => i.active).length === 0) return;
@@ -80,7 +82,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
     try {
       // We pass the full topic + hook for maximum context focus
       const context = `${trend.topic}: ${trend.hook}`;
-      const script = await generateMarketingContent(context, format, systemInstruction);
+      const script = await generateMarketingContent(context, format, systemInstruction, userSettings);
       setGeneratedScript(script);
 
       // Detect and generate images
@@ -161,7 +163,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
     if (isOpen && trends.length === 0) loadTrends();
   }, [isOpen]);
 
-  const formats: ScriptFormat[] = ['X Post', 'X Thread', 'IG Reel', 'YT Video', 'X Video'];
+  const formats: ScriptFormat[] = ['X Post', 'X Thread', 'Script'];
 
   // Helper to render script with embedded images
   const renderScriptContent = () => {
@@ -178,7 +180,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
       );
     }
 
-    const parts = generatedScript.split(/(\[IMAGE: [^\]]+\])/g);
+    const parts = generatedScript.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g);
     return (
       <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
         {parts.map((part, i) => {
@@ -204,6 +206,17 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               </div>
             );
           }
+          if (part.startsWith('[URL: ')) {
+            const url = part.replace('[URL: ', '').replace(']', '').trim();
+            return (
+              <div key={i} className="my-6">
+                <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden group/img">
+                  <img src={url} alt="External Content" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-700" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                </div>
+                <p className="mt-2 text-[8px] font-bold text-zinc-700 uppercase tracking-widest text-center italic opacity-60">Detected Visual Reference</p>
+              </div>
+            );
+          }
           return (
             <div key={i} className="markdown-content">
               <ReactMarkdown
@@ -223,6 +236,35 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
 
   return (
     <>
+      {/* Format Selector Modal */}
+      {trendForFormatSelection && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="w-full max-w-sm bg-zinc-950 border border-zinc-800 rounded-3xl p-8 shadow-[0_0_50px_rgba(255,255,255,0.05)]">
+            <div className="flex items-center justify-between mb-8 text-center w-full">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500 text-center w-full">Select Output Frequency</h4>
+              <button onClick={() => setTrendForFormatSelection(null)} className="p-2 text-zinc-700 hover:text-white transition-all">
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              {formats.map(f => (
+                <button
+                  key={f}
+                  onClick={() => {
+                    handleSynthesize(trendForFormatSelection, f);
+                    setTrendForFormatSelection(null);
+                  }}
+                  className="w-full py-4 bg-zinc-900 hover:bg-white hover:text-black border border-zinc-800 transition-all rounded-2xl text-[10px] font-black uppercase tracking-widest text-zinc-400"
+                >
+                  Create {f}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Synthesis Result Modal */}
       {synthesizingTrend && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-black/95 backdrop-blur-xl animate-in fade-in duration-300">
@@ -421,9 +463,9 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                           </a>
                         )}
                         <button
-                          onClick={() => handleSynthesize(trend)}
+                          onClick={() => setTrendForFormatSelection(trend)}
                           className="p-2 bg-white/10 rounded-xl text-white hover:bg-white hover:text-black transition-all shadow-md border border-white/5"
-                          title="Synthesize Script"
+                          title="Generate content"
                         >
                           <Zap size={14} className="fill-current" />
                         </button>

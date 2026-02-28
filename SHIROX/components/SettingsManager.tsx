@@ -201,6 +201,41 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
           </div>
         </section>
 
+        {/* Image Generation Preferences Section */}
+        <section className="p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl">
+          <div className="flex items-center gap-3 mb-8">
+            <Palette size={18} className="text-white" />
+            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Neural Visual Synthesis (X Only)</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div
+              onClick={() => setLocalSettings({ ...localSettings, xPostImages: !localSettings.xPostImages })}
+              className={`flex items-center justify-between p-6 rounded-3xl border cursor-pointer transition-all ${localSettings.xPostImages ? 'bg-white/10 border-white text-white shadow-lg shadow-white/5' : 'bg-black/40 border-zinc-800 text-zinc-500'}`}
+            >
+              <div className="text-left">
+                <p className="text-xs font-black uppercase tracking-widest">X Post Images</p>
+                <p className="text-[9px] font-bold text-zinc-600 mt-1 uppercase">Automated visual injection</p>
+              </div>
+              <div className={`w-12 h-6 rounded-full relative transition-all ${localSettings.xPostImages ? 'bg-white' : 'bg-zinc-800'}`}>
+                <div className={`absolute top-0.5 w-5 h-5 rounded-full transition-all ${localSettings.xPostImages ? 'right-0.5 bg-black' : 'left-0.5 bg-zinc-600'}`} />
+              </div>
+            </div>
+
+            <div
+              onClick={() => setLocalSettings({ ...localSettings, xThreadImages: !localSettings.xThreadImages })}
+              className={`flex items-center justify-between p-6 rounded-3xl border cursor-pointer transition-all ${localSettings.xThreadImages ? 'bg-white/10 border-white text-white shadow-lg shadow-white/5' : 'bg-black/40 border-zinc-800 text-zinc-500'}`}
+            >
+              <div className="text-left">
+                <p className="text-xs font-black uppercase tracking-widest">X Thread Images</p>
+                <p className="text-[9px] font-bold text-zinc-600 mt-1 uppercase">Max 4 contextual frames</p>
+              </div>
+              <div className={`w-12 h-6 rounded-full relative transition-all ${localSettings.xThreadImages ? 'bg-white' : 'bg-zinc-800'}`}>
+                <div className={`absolute top-0.5 w-5 h-5 rounded-full transition-all ${localSettings.xThreadImages ? 'right-0.5 bg-black' : 'left-0.5 bg-zinc-600'}`} />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Security / Clear */}
         <section className="p-10 border border-zinc-900 rounded-[3rem] bg-zinc-950/20">
           <div className="flex items-center gap-3 mb-6">
