@@ -123,6 +123,30 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
     }
   };
 
+  const copyImageAndShare = async () => {
+    // 1. Find the first generated image
+    const firstImgKey = Object.keys(generatedImages).find(k => generatedImages[k].data);
+    const imgData = firstImgKey ? generatedImages[firstImgKey].data : null;
+
+    if (imgData) {
+      try {
+        const response = await fetch(imgData);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ [blob.type]: blob })
+        ]);
+        alert("Neural Visual Copied to Clipboard. Paste (Ctrl+V) on X.");
+      } catch (err) {
+        console.error("Clipboard failed:", err);
+      }
+    }
+
+    // 2. Prepare text
+    const leanContent = (generatedScript || '').replace(/\[IMAGE: [^\]]+\]/g, '').replace(/\[URL: [^\]]+\]/g, '').trim();
+    const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(leanContent)}`;
+    window.open(xUrl, '_blank');
+  };
+
   const formats = ['X Post', 'X Thread', 'Script'];
 
   if (activeInterests.length === 0) {
@@ -418,9 +442,17 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
                 >
                   Copy to Buffer
                 </button>
+                {selectedFormat.includes('X') && (
+                  <button
+                    onClick={copyImageAndShare}
+                    className="px-6 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200"
+                  >
+                    Sync to X
+                  </button>
+                )}
                 <button
                   onClick={() => saveToIdeaBank(`${selectedFormat}: ${synthesizingTitle}`, generatedScript || '')}
-                  className="px-8 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200"
+                  className="px-8 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-800"
                 >
                   Save to Idea Bank
                 </button>

@@ -104,6 +104,31 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const copyImageAndShare = async () => {
+    // 1. Find the first generated image
+    const firstImgKey = Object.keys(generatedImages).find(k => generatedImages[k].data);
+    const imgData = firstImgKey ? generatedImages[firstImgKey].data : null;
+
+    if (imgData) {
+      try {
+        // Fetch the blob and copy to clipboard
+        const response = await fetch(imgData);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ [blob.type]: blob })
+        ]);
+        alert("Neural Visual Copied to Clipboard. Paste (Ctrl+V) on X.");
+      } catch (err) {
+        console.error("Clipboard failed:", err);
+      }
+    }
+
+    // 2. Prepare text (strip [IMAGE: ...] tags)
+    const leanContent = generatedContent.replace(/\[IMAGE: [^\]]+\]/g, '').replace(/\[URL: [^\]]+\]/g, '').trim();
+    const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(leanContent)}`;
+    window.open(xUrl, '_blank');
+  };
+
   return (
     <div className="p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide">
       <div className="w-full lg:w-1/3 space-y-6 lg:space-y-8 flex flex-col h-auto lg:h-full shrink-0">
@@ -231,6 +256,16 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                 <h3 className="font-black text-xl tracking-tighter uppercase italic">Neural {format} Output</h3>
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto">
+                {format.includes('X') && (
+                  <button
+                    onClick={copyImageAndShare}
+                    title="Share to X"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-[10px] font-black uppercase tracking-widest transition-all hover:bg-zinc-200"
+                  >
+                    <Twitter size={14} />
+                    Sync to X
+                  </button>
+                )}
                 <button
                   onClick={() => setShowEditModal(true)}
                   title="Edit script"

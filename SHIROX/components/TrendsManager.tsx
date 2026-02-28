@@ -146,6 +146,30 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
     }
   };
 
+  const copyImageAndShare = async () => {
+    // 1. Find first image
+    const firstImgKey = Object.keys(generatedImages).find(k => generatedImages[k].data);
+    const imgData = firstImgKey ? generatedImages[firstImgKey].data : null;
+
+    if (imgData) {
+      try {
+        const response = await fetch(imgData);
+        const blob = await response.blob();
+        await navigator.clipboard.write([
+          new ClipboardItem({ [blob.type]: blob })
+        ]);
+        alert("Neural Visual Copied to Clipboard. Paste (Ctrl+V) on X.");
+      } catch (err) {
+        console.error("Clipboard failed:", err);
+      }
+    }
+
+    // 2. Prepare text
+    const leanContent = (generatedScript || '').replace(/\[IMAGE: [^\]]+\]/g, '').replace(/\[URL: [^\]]+\]/g, '').trim();
+    const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(leanContent)}`;
+    window.open(xUrl, '_blank');
+  };
+
   const handleSaveToBank = () => {
     if (!generatedScript || !synthesizingTrend) return;
     const newIdea: Idea = {
@@ -346,10 +370,18 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 >
                   Copy to Buffer
                 </button>
+                {selectedFormat.includes('X') && (
+                  <button
+                    onClick={copyImageAndShare}
+                    className="px-6 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all shadow-xl"
+                  >
+                    Sync to X
+                  </button>
+                )}
                 <button
                   onClick={handleSaveToBank}
                   disabled={!generatedScript}
-                  className="flex items-center gap-3 px-8 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all shadow-xl disabled:opacity-20 shadow-white/5"
+                  className="flex items-center gap-3 px-8 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all disabled:opacity-20"
                 >
                   <BookmarkPlus size={16} /> Save to Idea Bank
                 </button>
