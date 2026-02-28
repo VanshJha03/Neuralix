@@ -1,0 +1,13 @@
+{
+    "cleanUrls": true,
+    "rewrites": [
+        {
+            "source": "/app/(.*)",
+            "destination": "/SHIROX/dist/$1"
+        },
+        {
+            "source": "/app",
+            "destination": "/SHIROX/dist/index.html"
+        }
+    ]
+}
