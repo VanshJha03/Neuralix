@@ -101,7 +101,7 @@ function checkLimit(type) {
 
         const limits = {
             free: { analytics: 1, content: 3, image: 0, gap: 1 },
-            beta: { analytics: 3, content: 10, image: 6, gap: 999 } // Unlocked for Beta
+            beta: { analytics: 5, content: 15, image: 10, gap: 999 }
         };
 
         const currentLimits = limits[tier];
@@ -233,7 +233,19 @@ app.get('/api/settings', requireAuth, (req, res) => {
         db.prepare('INSERT INTO user_settings (user_id, name) VALUES (?, ?)').run(userId, name);
         settings = db.prepare('SELECT * FROM user_settings WHERE user_id = ?').get(userId);
     }
-    res.json({ ...settings, xPostImages: !!settings.xPostImages, xThreadImages: !!settings.xThreadImages });
+    res.json({
+        ...settings,
+        xPostImages: !!settings.xPostImages,
+        xThreadImages: !!settings.xThreadImages,
+        tier: req.user.tier,
+        email: req.user.email,
+        usage: {
+            analytics: settings.daily_analytics_count,
+            content: settings.daily_content_count,
+            image: settings.daily_image_count,
+            gap: settings.monthly_gap_count
+        }
+    });
 });
 
 app.post('/api/settings', requireAuth, (req, res) => {
@@ -509,18 +521,22 @@ app.post('/api/content/generate', requireAuth, checkLimit('content'), async (req
     try {
         incrementUsage(req.user.id, 'content');
 
-        let imageLogic = "Do NOT include any [IMAGE: ...] placeholders.";
+        let imageLogic = "";
         let charLimit = "";
 
         if (format === 'X Post') {
             charLimit = "STRICT RULE: The entire post MUST be UNDER 280 characters total (including hashtags).";
             if (userSettings?.xPostImages) {
-                imageLogic = "Include exactly one relevant image placeholder at the very end in the format [IMAGE: descriptive generation prompt].";
+                imageLogic = "Include exactly one relevant AI image placeholder at the very end in the format [IMAGE: descriptive generation prompt].";
+            } else {
+                imageLogic = "Do NOT include [IMAGE: ...] tags, but prioritize finding REAL image URLs [URL: ...].";
             }
         } else if (format === 'X Thread') {
             charLimit = "STRICT RULE: Each individual post in the thread MUST be UNDER 280 characters (including hashtags).";
             if (userSettings?.xThreadImages) {
-                imageLogic = "Include 1-4 relevant image placeholders in the format [IMAGE: descriptive generation prompt] at key narrative transitions.";
+                imageLogic = "Include 1-4 relevant AI image placeholders in the format [IMAGE: descriptive generation prompt] at key narrative transitions.";
+            } else {
+                imageLogic = "Do NOT include [IMAGE: ...] tags, but prioritize finding REAL image URLs [URL: ...] for segments.";
             }
         }
 
@@ -528,7 +544,7 @@ app.post('/api/content/generate', requireAuth, checkLimit('content'), async (req
     VOICE: Bold, visionary, dark tech aesthetic. 
     CONSTRAINTS: No AI product names. No #VanshJha. ${charLimit}
     VISUALS: ${imageLogic} 
-    RESEARCH: Use Google Search to find highly relevant real-world data. If you encounter any useful REAL image URLs from high-authority sources, include them as [URL: source-image-url] where they add value.`;
+    RESEARCH: Use Google Search to find highly relevant real-world data and visuals. ALWAYS try to find useful REAL image URLs from high-authority sources and include them as [URL: source-image-url] regardless of AI image settings.`;
 
         const styles = req.user.tier === 'free'
             ? (userSettings?.styles || []).filter(s => ['Classic', 'Casual'].includes(s))

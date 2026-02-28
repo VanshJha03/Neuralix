@@ -58,9 +58,9 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
           <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em]">Calibrate ArsCreatio Consciousness</p>
 
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-lg">
-            <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-blue-500' : 'bg-zinc-700'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-blue-500 animate-pulse' : 'bg-zinc-700'}`} />
             <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
-              Tier: {userSettings.email ? 'Beta Pioneer' : 'Transient Guest'}
+              Access: {userSettings.email ? `Beta Pioneer Verified (${userSettings.email})` : 'Transient Guest'}
             </span>
           </div>
         </div>
@@ -95,14 +95,22 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
                 {[
-                  { label: 'Neural Scans', count: '3/Day' },
-                  { label: 'Content Gen', count: '10/Day' },
-                  { label: 'Visual Synthesis', count: '6/Day' },
-                  { label: 'Gap Analysis', count: 'Unlocked' }
+                  { label: 'Neural Scans', count: userSettings.usage?.analytics ?? 0, limit: 5 },
+                  { label: 'Content Gen', count: userSettings.usage?.content ?? 0, limit: 15 },
+                  { label: 'Visual Synthesis', count: userSettings.usage?.image ?? 0, limit: 10 },
+                  { label: 'Gap Analysis', count: userSettings.usage?.gap ?? 0, limit: '∞' }
                 ].map((stat, i) => (
-                  <div key={i} className="p-6 bg-black/40 border border-zinc-800/50 rounded-3xl">
+                  <div key={i} className="p-6 bg-black/40 border border-zinc-800/50 rounded-3xl relative overflow-hidden group/card">
+                    <div className="absolute top-0 right-0 p-2 opacity-10 group-hover/card:opacity-20 transition-opacity">
+                      <Terminal size={40} />
+                    </div>
                     <p className="text-[8px] font-black text-zinc-600 uppercase tracking-widest mb-1">{stat.label}</p>
-                    <p className="text-xl font-black text-white italic tracking-tighter">{stat.count}</p>
+                    <div className="flex items-baseline gap-1">
+                      <p className="text-xl font-black text-white italic tracking-tighter">
+                        {stat.limit === '∞' ? 'UNLOCKED' : `${(stat.limit as number) - stat.count}`}
+                      </p>
+                      {stat.limit !== '∞' && <p className="text-[8px] font-bold text-zinc-500">remaining</p>}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -272,10 +280,15 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </section>
 
         {/* Image Generation Preferences Section */}
-        <section className="p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl">
-          <div className="flex items-center gap-3 mb-8">
-            <Palette size={18} className="text-white" />
-            <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Neural Visual Synthesis (X Only)</h2>
+        <section className={`p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl transition-all ${!userSettings.email ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <Palette size={18} className="text-white" />
+              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Neural Visual Synthesis (X Only)</h2>
+            </div>
+            {!userSettings.email && (
+              <span className="text-[8px] font-black bg-blue-500 text-black px-2 py-0.5 rounded-full uppercase tracking-tighter">BETA REQUIRED</span>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div
@@ -284,7 +297,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
             >
               <div className="text-left">
                 <p className="text-xs font-black uppercase tracking-widest">X Post Images</p>
-                <p className="text-[9px] font-bold text-zinc-600 mt-1 uppercase">Automated visual injection</p>
+                <p className="text-[9px] font-bold text-zinc-600 mt-1 uppercase">Automated AI visual generation</p>
               </div>
               <div className={`w-12 h-6 rounded-full relative transition-all ${localSettings.xPostImages ? 'bg-white' : 'bg-zinc-800'}`}>
                 <div className={`absolute top-0.5 w-5 h-5 rounded-full transition-all ${localSettings.xPostImages ? 'right-0.5 bg-black' : 'left-0.5 bg-zinc-600'}`} />
@@ -304,6 +317,9 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
               </div>
             </div>
           </div>
+          <p className="mt-6 text-[9px] font-bold text-zinc-600 uppercase tracking-widest leading-relaxed italic">
+            * Note: Even with AI generation disabled, Research Visuals found from curated sources will still be suggested in your Neural Scripts.
+          </p>
         </section>
 
         {/* Security / Clear */}

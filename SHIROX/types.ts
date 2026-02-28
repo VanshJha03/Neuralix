@@ -18,6 +18,13 @@ export interface UserSettings {
   }[];
   xPostImages?: boolean;
   xThreadImages?: boolean;
+  tier?: 'free' | 'beta';
+  usage?: {
+    analytics: number;
+    content: number;
+    image: number;
+    gap: number;
+  };
 }
 
 export interface SocialAccount {
