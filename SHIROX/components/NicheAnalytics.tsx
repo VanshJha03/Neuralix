@@ -31,6 +31,7 @@ interface NicheAnalyticsProps {
   data: NicheAnalyticsData;
   onUpdateData: (data: NicheAnalyticsData) => void;
   userSettings: any;
+  systemInstruction: string;
 }
 
 const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings }) => {
@@ -137,16 +138,16 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
   }
 
   return (
-    <div className="p-12 max-w-7xl mx-auto h-full overflow-y-auto pb-32">
-      <div className="flex items-center justify-between mb-16">
+    <div className="p-6 lg:p-12 max-w-7xl mx-auto h-full overflow-y-auto pb-32 scrollbar-hide">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 mb-12 lg:mb-16 text-center lg:text-left">
         <div>
-          <h1 className="text-5xl font-black tracking-tighter italic mb-2" style={{ fontFamily: "'Orbitron', sans-serif" }}>NICHE ANALYTICS</h1>
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Advanced Synaptic Competitive Mapping</p>
+          <h1 className="text-3xl lg:text-5xl font-black tracking-tighter italic mb-2" style={{ fontFamily: "'Orbitron', sans-serif" }}>NICHE ANALYTICS</h1>
+          <p className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Advanced Synaptic Competitive Mapping</p>
         </div>
         <button
           onClick={performFullAnalysis}
           disabled={loading}
-          className="flex items-center gap-4 px-8 py-4 bg-white text-black rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 transition-all shadow-[0_20px_60px_rgba(255,255,255,0.05)]"
+          className="w-full lg:w-auto flex items-center justify-center gap-4 px-8 py-4 bg-white text-black rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 transition-all shadow-[0_20px_60px_rgba(255,255,255,0.05)]"
         >
           {loading ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} fill="black" />}
           Refresh Neural Scan
@@ -154,7 +155,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
       </div>
 
       {/* View Switcher */}
-      <div className="flex gap-4 mb-12 border-b border-zinc-900 pb-4">
+      <div className="flex flex-nowrap lg:flex-wrap overflow-x-auto lg:overflow-visible gap-3 mb-12 border-b border-zinc-900 pb-4 no-scrollbar">
         {[
           { id: 'VIRAL', label: 'Viral Predictor', icon: TrendingUp },
           { id: 'CREATORS', label: 'Similar Creators', icon: Users },
@@ -180,9 +181,9 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
       ) : (
         <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
           {activeTab === 'VIRAL' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {predictions.map((p, i) => (
-                <div key={i} className="p-10 bg-zinc-900/40 border border-zinc-800 rounded-[3rem] group hover:border-red-900/30 transition-all">
+                <div key={i} className="p-8 lg:p-10 bg-zinc-900/40 border border-zinc-800 rounded-[2rem] lg:rounded-[3rem] group hover:border-red-900/30 transition-all">
                   <div className="flex justify-between items-start mb-8">
                     <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${p.velocity === 'Early' ? 'bg-blue-600/10 text-blue-500 border border-blue-900/30' :
                       p.velocity === 'Rising' ? 'bg-green-600/10 text-green-500 border border-green-900/30' :
@@ -215,9 +216,9 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
           )}
 
           {activeTab === 'CREATORS' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {creators.map((c, i) => (
-                <div key={i} className="p-10 bg-zinc-900/40 border border-zinc-800 rounded-[3rem] hover:border-red-900/30 transition-all">
+                <div key={i} className="p-8 lg:p-10 bg-zinc-900/40 border border-zinc-800 rounded-[2rem] lg:rounded-[3rem] hover:border-red-900/30 transition-all">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="p-3 bg-zinc-950 rounded-2xl border border-zinc-800">
                       {c.platform === 'YT' && <Youtube className="text-red-500" size={24} />}
@@ -246,9 +247,9 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
           )}
 
           {activeTab === 'GAPS' && (
-            <div className="space-y-12">
+            <div className="space-y-8 lg:space-y-12">
               {gaps.map((g, i) => (
-                <div key={i} className="bg-zinc-900/20 border border-zinc-800 rounded-[4rem] p-12 flex flex-col md:flex-row gap-12 relative overflow-hidden group">
+                <div key={i} className="bg-zinc-900/20 border border-zinc-800 rounded-[2.5rem] lg:rounded-[4rem] p-8 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-12 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 blur-[120px] pointer-events-none group-hover:bg-white/10 transition-all"></div>
 
                   <div className="flex-1 space-y-8">
@@ -273,7 +274,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
                     </div>
                   </div>
 
-                  <div className="md:w-1/3 bg-black/60 border border-zinc-800 p-8 rounded-[3rem] flex flex-col justify-center items-center text-center">
+                  <div className="w-full lg:w-1/3 bg-black/60 border border-zinc-800 p-8 rounded-[2.5rem] lg:rounded-[3rem] flex flex-col justify-center items-center text-center">
                     <Lightbulb className="text-yellow-500 mb-6" size={48} />
                     <h4 className="text-[11px] font-black uppercase tracking-widest text-zinc-400 mb-4">Neural Hook Strategy</h4>
                     <p className="text-sm font-black italic text-white leading-tight mb-8">"{g.hookUSP}"</p>
@@ -339,7 +340,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({ interests, onSaveIdea, 
             </div>
 
             {/* Content Body */}
-            <div className="flex-1 overflow-y-auto p-10 bg-black/40">
+            <div className="flex-1 overflow-y-auto p-6 lg:p-10 bg-black/40">
               {isGenerating ? (
                 <div className="h-80 flex flex-col items-center justify-center space-y-8">
                   <Loader2 className="animate-spin text-white" size={56} />

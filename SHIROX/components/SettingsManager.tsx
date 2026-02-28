@@ -39,8 +39,8 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
   };
 
   return (
-    <div className="p-12 max-w-4xl mx-auto h-full overflow-y-auto pb-32 scrollbar-hide">
-      <div className="flex items-center gap-6 mb-16">
+    <div className="p-6 lg:p-12 max-w-4xl mx-auto h-full overflow-y-auto pb-32 scrollbar-hide">
+      <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-6 mb-12 lg:mb-16 text-center lg:text-left">
         <div className="relative">
           <div
             className="absolute inset-0 blur-2xl rounded-full animate-pulse"
@@ -83,8 +83,8 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         )}
 
         {userSettings.email && (
-          <section className="p-10 bg-zinc-900/60 border border-zinc-800 rounded-[3rem] relative overflow-hidden group">
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+          <section className="p-6 lg:p-10 bg-zinc-900/60 border border-zinc-800 rounded-[2rem] lg:rounded-[3rem] relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity hidden lg:block">
               <Shield size={120} />
             </div>
             <div className="relative z-10">
@@ -93,7 +93,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Beta Pioneer Status</h2>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
                 {[
                   { label: 'Neural Scans', count: userSettings.usage?.analytics ?? 0, limit: 5 },
                   { label: 'Content Gen', count: userSettings.usage?.content ?? 0, limit: 15 },
@@ -134,7 +134,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
           </section>
         )}
         {/* User Identity Section */}
-        <section className="p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl">
+        <section className="p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[2rem] lg:rounded-[3rem] backdrop-blur-3xl">
           <div className="flex items-center gap-3 mb-8">
             <User size={18} className="text-white" />
             <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">User Identity</h2>
@@ -171,12 +171,12 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </section>
 
         {/* Style Selection Section */}
-        <section className="p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl">
+        <section className="p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[2rem] lg:rounded-[3rem] backdrop-blur-3xl">
           <div className="flex items-center gap-3 mb-8">
             <Palette size={18} className="text-white" />
             <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Cognitive Persona Styles (Max 2)</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {['Classic', 'Casual', 'Gen Z', 'Professional', 'Enthusiast', 'Wit', 'Humour', 'Slang', 'Robot', 'Thinker'].map((style) => {
               const isLocked = !userSettings.email && !['Classic', 'Casual'].includes(style);
               const isActive = localSettings.styles?.includes(style);
@@ -211,11 +211,11 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </section>
 
         {/* Linked Accounts Section */}
-        <section className="p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl">
-          <div className="flex items-center justify-between mb-8">
+        <section className="p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[2rem] lg:rounded-[3rem] backdrop-blur-3xl">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-3">
               <RefreshCcw size={18} className="text-white" />
-              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Linked Neural Nodes (Accounts)</h2>
+              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Linked Neural Nodes</h2>
             </div>
             <button
               onClick={() => {
@@ -228,9 +228,9 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
             </button>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 lg:space-y-6">
             {(localSettings.linkedAccounts || []).map((acc, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 p-6 bg-black/40 rounded-3xl border border-zinc-800/50">
+              <div key={index} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 lg:p-6 bg-black/40 rounded-2xl lg:rounded-3xl border border-zinc-800/50">
                 <select
                   value={acc.platform}
                   onChange={e => {
@@ -280,11 +280,11 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </section>
 
         {/* Image Generation Preferences Section */}
-        <section className={`p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl transition-all ${!userSettings.email ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
+        <section className={`p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[2rem] lg:rounded-[3rem] backdrop-blur-3xl transition-all ${!userSettings.email ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <Palette size={18} className="text-white" />
-              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Neural Visual Synthesis (X Only)</h2>
+              <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Neural Visual Synthesis</h2>
             </div>
             {!userSettings.email && (
               <span className="text-[8px] font-black bg-blue-500 text-black px-2 py-0.5 rounded-full uppercase tracking-tighter">BETA REQUIRED</span>
@@ -323,7 +323,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </section>
 
         {/* Security / Clear */}
-        <section className="p-10 border border-zinc-900 rounded-[3rem] bg-zinc-950/20">
+        <section className="p-6 lg:p-10 border border-zinc-900 rounded-[2rem] lg:rounded-[3rem] bg-zinc-950/20">
           <div className="flex items-center gap-3 mb-6">
             <Shield size={18} className="text-zinc-600" />
             <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600">Neural Data Integrity</h2>
@@ -342,10 +342,10 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
           </button>
         </section>
 
-        <div className="flex justify-end pt-8">
+        <div className="flex justify-center lg:justify-end pt-8">
           <button
             onClick={handleSave}
-            className={`flex items-center gap-3 px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all shadow-2xl ${saved ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20 scale-105 active:scale-95'
+            className={`flex items-center justify-center gap-3 w-full lg:w-auto px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all shadow-2xl ${saved ? 'bg-white text-black' : 'bg-white/10 text-white hover:bg-white/20 scale-105 active:scale-95'
               }`}
           >
             {saved ? <Check size={18} /> : <Save size={18} />}

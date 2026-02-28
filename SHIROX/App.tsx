@@ -41,6 +41,7 @@ const App: React.FC = () => {
   const [authLoading, setAuthLoading] = useState(true);
   const [activeView, setActiveView] = useState<ViewType>('chat');
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [neuralMemories, setNeuralMemories] = useState<string[]>([]);
 
   const [userSettings, setUserSettings] = useState<UserSettings>({
@@ -246,17 +247,33 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
   if (!session) return <AuthScreen />;
 
   return (
-    <div className="flex h-screen w-full bg-black text-white overflow-hidden selection:bg-white/10">
+    <div className="flex h-screen w-full bg-black text-white overflow-hidden selection:bg-white/10 relative">
       <Sidebar
         activeView={activeView}
-        setActiveView={setActiveView}
+        setActiveView={(v) => { setActiveView(v); setIsMobileMenuOpen(false); }}
         onClearMemory={handleClearMemory}
         userSettings={userSettings}
         onSignOut={handleSignOut}
+        isMobileOpen={isMobileMenuOpen}
+        setIsMobileOpen={setIsMobileMenuOpen}
       />
 
-      <main className="flex-1 relative flex flex-col bg-zinc-950/50">
-        <div className="absolute top-6 right-8 z-10 flex items-center gap-6">
+      <main className="flex-1 relative flex flex-col bg-zinc-950/50 min-w-0">
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-zinc-900 bg-black/50 backdrop-blur-xl z-20">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="p-2 -ml-2 text-zinc-400 hover:text-white"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <span className="text-sm font-black tracking-tighter uppercase italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio</span>
+          </div>
+          <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
+        </div>
+
+        <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-6">
           <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-black tracking-[0.3em] text-zinc-400 uppercase">
             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             Neural Link: Active

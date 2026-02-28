@@ -317,11 +317,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <NeuralBackground isTyping={isTyping || isLoading} />
 
       {!hasMessages ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-12 max-w-2xl mx-auto w-full z-10">
-          <div className="relative mb-8 flex flex-col items-center">
+        <div className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 max-w-2xl mx-auto w-full z-10">
+          <div className="relative mb-8 flex flex-col items-center text-center">
             <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
-            <h1 className="text-6xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-900 bg-clip-text text-transparent italic leading-none select-none" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio</h1>
-            <p className="text-zinc-800 font-black mt-2 uppercase tracking-[0.6em] text-[8px]">Neural Intelligence Matrix v5.0</p>
+            <h1 className="text-4xl lg:text-6xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-900 bg-clip-text text-transparent italic leading-none select-none" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio</h1>
+            <p className="text-zinc-800 font-black mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Neural Intelligence Matrix v5.0</p>
           </div>
 
           <div className="w-full relative group">
@@ -330,7 +330,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                placeholder={`Initiate synaptic link, ${userSettings.name.split(' ')[0]}...`}
+                placeholder={`Initiate synaptic link...`}
                 rows={1}
                 className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-medium tracking-tight"
               />
@@ -338,9 +338,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 {isLoading ? <Square size={18} fill="currentColor" /> : <Send size={18} />}
               </button>
             </div>
-            <div className="mt-8 flex justify-center gap-4">
+            <div className="mt-8 flex flex-wrap justify-center gap-2 lg:gap-4">
               {['Deep Research', 'Fast', 'Imagine'].map((m) => (
-                <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-6 py-2 rounded-full text-[8px] font-black uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'}`}>
+                <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-4 lg:px-6 py-2 rounded-full text-[7px] lg:text-[8px] font-black uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'}`}>
                   {m}
                 </button>
               ))}
@@ -349,54 +349,50 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         </div>
       ) : (
         <>
-          <div className="flex-1 overflow-y-auto px-8 py-32 z-10 scrollbar-hide">
-            <div className="max-w-4xl mx-auto space-y-24 pb-20">
+          <div className="flex-1 overflow-y-auto px-4 lg:px-8 py-20 lg:py-32 z-10 scrollbar-hide">
+            <div className="max-w-4xl mx-auto space-y-16 lg:space-y-24 pb-20">
               {messages.map((msg, idx) => (
                 <div key={msg.id} className="animate-in fade-in slide-in-from-bottom-8 duration-700 group">
                   <div className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
-                    <div className={`max-w-[95%] relative ${msg.role === 'user' ? 'bg-zinc-900/30 border border-zinc-800/40 px-8 py-5 rounded-3xl text-zinc-100' : 'text-zinc-300 w-full'}`}>
+                    <div className={`max-w-[95%] lg:max-w-[85%] relative ${msg.role === 'user' ? 'bg-zinc-900/30 border border-zinc-800/40 px-6 lg:px-8 py-4 lg:py-5 rounded-3xl text-zinc-100' : 'text-zinc-300 w-full'}`}>
                       {editingId === msg.id ? (
                         <div className="flex flex-col gap-3 w-full">
                           <textarea
                             value={editContent}
                             onChange={(e) => setEditContent(e.target.value)}
-                            placeholder="Edit message content..."
-                            title="Edit message content"
+                            placeholder="Edit message..."
                             className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-sm text-white focus:border-red-600 outline-none min-h-[100px]"
                           />
                           <div className="flex justify-end gap-2">
-                            <button type="button" onClick={() => setEditingId(null)} className="p-2 text-zinc-600 hover:text-white transition-colors" title="Cancel Edit"><X size={16} /></button>
-                            <button type="button" onClick={() => saveEdit(msg.id)} className="p-2 text-green-600 hover:text-green-500 transition-colors" title="Save Edit"><Check size={16} /></button>
+                            <button type="button" onClick={() => setEditingId(null)} className="p-2 text-zinc-600 hover:text-white transition-colors"><X size={16} /></button>
+                            <button type="button" onClick={() => saveEdit(msg.id)} className="p-2 text-green-600 hover:text-green-500 transition-colors"><Check size={16} /></button>
                           </div>
                         </div>
                       ) : (
                         <>
-                          <div className={`absolute top-0 ${msg.role === 'user' ? '-left-12' : '-right-12'} opacity-0 group-hover:opacity-100 transition-all flex flex-col gap-2`}>
-                            <button onClick={() => handleEdit(msg)} className="p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Edit2 size={12} /></button>
-                            <button onClick={() => handleCopy(msg.content)} className="p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all" title="Copy Text"><Copy size={12} /></button>
+                          <div className={`absolute lg:top-0 -bottom-8 lg:bottom-auto flex-row lg:flex-col ${msg.role === 'user' ? 'lg:-left-12 right-0 flex-row-reverse lg:flex-row' : 'lg:-right-12 left-0'} opacity-0 group-hover:opacity-100 transition-all flex gap-2 z-20`}>
+                            <button onClick={() => handleEdit(msg)} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Edit2 size={12} /></button>
+                            <button onClick={() => handleCopy(msg.content)} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Copy size={12} /></button>
                             {msg.role === 'assistant' && (
-                              <button onClick={() => { onCommitMemory(msg.content); alert("Neural Packet Committed to Long-Term Memory."); }} className="p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all" title="Commit to Memory"><Brain size={12} /></button>
-                            )}
-                            {msg.role === 'assistant' && idx === messages.length - 1 && (
-                              <button onClick={handleRegenerate} className="p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><RefreshCw size={12} /></button>
+                              <button onClick={() => { onCommitMemory(msg.content); alert("Neural Packet Committed."); }} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Brain size={12} /></button>
                             )}
                           </div>
 
                           {msg.role === 'assistant' ? (
-                            <div className="markdown-content">
+                            <div className="markdown-content text-sm lg:text-base">
                               <TypewriterText
                                 text={msg.content}
                                 isTyping={isLoading && idx === messages.length - 1}
                               />
                               {msg.sources && msg.sources.length > 0 && (
                                 <div className="mt-6 pt-6 border-t border-zinc-900/50">
-                                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700 mb-4">Neural Data Nodes:</p>
-                                  <div className="flex flex-wrap gap-3">
+                                  <p className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700 mb-4">Neural Data Nodes:</p>
+                                  <div className="flex flex-wrap gap-2 lg:gap-3">
                                     {msg.sources.map((source, sIdx) => (
                                       source.web && (
-                                        <a key={sIdx} href={source.web.uri} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 bg-zinc-950 border border-zinc-900 rounded-xl text-[10px] font-bold text-zinc-500 hover:text-white hover:border-zinc-700 transition-all group/link">
+                                        <a key={sIdx} href={source.web.uri} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 bg-zinc-950 border border-zinc-900 rounded-xl text-[9px] lg:text-[10px] font-bold text-zinc-500 hover:text-white hover:border-zinc-700 transition-all group/link">
                                           <ExternalLink size={12} />
-                                          <span className="max-w-[150px] truncate">{source.web.title || source.web.uri}</span>
+                                          <span className="max-w-[100px] lg:max-w-[150px] truncate">{source.web.title || source.web.uri}</span>
                                         </a>
                                       )
                                     ))}
@@ -405,7 +401,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                               )}
                             </div>
                           ) : (
-                            <p className="text-xl font-medium leading-relaxed tracking-tight">{msg.content}</p>
+                            <p className="text-lg lg:text-xl font-medium leading-relaxed tracking-tight">{msg.content}</p>
                           )}
                         </>
                       )}
@@ -415,36 +411,36 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               ))}
               {isLoading && (
                 <div className="flex items-center gap-4 py-8">
-                  <div className="w-2 h-2 rounded-full bg-white animate-ping"></div>
-                  <span className="text-[10px] font-black tracking-[0.5em] uppercase text-zinc-700">{status || 'Synaptic Transmission...'}</span>
+                  <div className="w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full bg-white animate-ping"></div>
+                  <span className="text-[8px] lg:text-[10px] font-black tracking-[0.5em] uppercase text-zinc-700">{status || 'Synaptic Transmission...'}</span>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
           </div>
 
-          <div className="px-10 pb-12 bg-gradient-to-t from-black via-black/95 to-transparent z-20 sticky bottom-0">
+          <div className="px-4 lg:px-10 pb-6 lg:pb-12 bg-gradient-to-t from-black via-black/95 to-transparent z-20 sticky bottom-0">
             <div className="max-w-4xl mx-auto space-y-4">
-              <div className="flex justify-center gap-2">
+              <div className="flex justify-center gap-1.5 lg:gap-2">
                 {['Deep Research', 'Fast', 'Imagine'].map((m) => (
-                  <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-4 py-1.5 rounded-full text-[7px] font-black uppercase tracking-[0.2em] border transition-all ${mode === m ? 'bg-white text-black border-white' : 'bg-black/40 text-zinc-700 border-zinc-900 hover:text-zinc-500'}`}>
+                  <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-3 lg:px-4 py-1 lg:py-1.5 rounded-full text-[6px] lg:text-[7px] font-black uppercase tracking-[0.2em] border transition-all ${mode === m ? 'bg-white text-black border-white' : 'bg-black/40 text-zinc-700 border-zinc-900 hover:text-zinc-500'}`}>
                     {m}
                   </button>
                 ))}
               </div>
-              <div className="relative flex items-center bg-zinc-950/80 backdrop-blur-3xl border border-zinc-900 rounded-xl p-2 shadow-2xl transition-all focus-within:border-white/20">
-                <button onClick={handleClear} className="p-3 text-zinc-700 hover:text-white transition-colors" title="Wipe History">
+              <div className="relative flex items-center bg-zinc-950/80 backdrop-blur-3xl border border-zinc-900 rounded-xl p-1.5 lg:p-2 shadow-2xl transition-all focus-within:border-white/20">
+                <button onClick={handleClear} className="p-2 lg:p-3 text-zinc-700 hover:text-white transition-colors" title="Wipe History">
                   <Trash2 size={18} />
                 </button>
                 <textarea
                   value={input}
                   onChange={handleInputChange}
                   onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                  placeholder={isLoading ? "AI responding... Click Square to Stop." : `Evolving context in ${mode} mode...`}
+                  placeholder={isLoading ? "AI responding..." : "Evolving context..."}
                   rows={1}
-                  className="flex-1 bg-transparent border-none focus:ring-0 py-2 px-3 text-sm text-white placeholder:text-zinc-800 resize-none outline-none font-medium"
+                  className="flex-1 bg-transparent border-none focus:ring-0 py-1 lg:py-2 px-2 lg:px-3 text-sm text-white placeholder:text-zinc-800 resize-none outline-none font-medium"
                 />
-                <button onClick={handleSend} className={`p-2 ml-2 rounded-lg transition-all shadow-lg ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95'}`}>
+                <button onClick={handleSend} className={`p-1.5 lg:p-2 ml-1 lg:ml-2 rounded-lg transition-all shadow-lg ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95'}`}>
                   {isLoading ? <Square size={16} fill="currentColor" /> : <Send size={16} />}
                 </button>
               </div>

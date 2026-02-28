@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Idea, Interest } from '../types';
-import { Megaphone, MessageSquare, Twitter, Instagram, ArrowRight, Loader2, Sparkles, Copy, Check, Film, Trash2, Youtube, Image as ImageIcon, Edit3, X } from 'lucide-react';
+import { Megaphone, MessageSquare, Twitter, Instagram, ArrowRight, Loader2, Sparkles, Copy, Check, Film, Trash2, Youtube, Image as ImageIcon, Edit3, X, Zap } from 'lucide-react';
 import { generateMarketingContent, generateNeuralImage, refineMarketingContent } from '../services/apiService';
 import { CONTENT_GENERATION_SYSTEM_PROMPT } from '../constants';
 import ReactMarkdown from 'react-markdown';
@@ -55,7 +55,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
     if (format === 'Google Docs Report' && (!topic || !image1Prompt || !image2Prompt)) return;
 
     setLoading(true);
-    setOutput('');
+    setGeneratedContent('');
     setGeneratedImages({});
     try {
       let contentToGenerate = '';
@@ -84,7 +84,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
     setLoading(true);
     setIsRefining(true);
     try {
-      const res = await refineMarketingContent(generatedContent, refinement, format, systemInstruction, userSettings);
+      const res = await refineMarketingContent(generatedContent, refinement, format, systemInstruction);
       setGeneratedContent(res || '');
       setRefinement('');
       await processImages(res || '');
@@ -105,14 +105,14 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
   };
 
   return (
-    <div className="p-12 max-w-6xl mx-auto h-full flex gap-12">
-      <div className="w-1/3 space-y-8 flex flex-col h-full overflow-hidden">
-        <div>
+    <div className="p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide">
+      <div className="w-full lg:w-1/3 space-y-6 lg:space-y-8 flex flex-col h-auto lg:h-full shrink-0">
+        <div className="text-center lg:text-left">
           <h1 className="text-3xl font-black tracking-tighter mb-1 uppercase italic">Content Studio</h1>
           <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.3em]">Neural Asset Production</p>
         </div>
 
-        <div className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-hide">
+        <div className="flex-1 lg:overflow-y-auto space-y-3 lg:pr-2 scrollbar-hide">
           {format === 'Google Docs Report' ? (
             <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
               <h3 className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.2em] mb-2">Report Parameters</h3>
@@ -181,7 +181,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
           )}
         </div>
 
-        <div className="space-y-4 pt-4 border-t border-zinc-900">
+        <div className="space-y-4 pt-4 border-t border-zinc-900 mt-auto">
           <div className="flex flex-wrap gap-2">
             {formats.map(f => (
               <button
@@ -204,7 +204,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
         </div>
       </div>
 
-      <div className="flex-1 bg-zinc-900/20 border border-zinc-800 rounded-3xl p-8 overflow-y-auto relative min-h-[500px]">
+      <div className="flex-1 bg-zinc-900/20 border border-zinc-800 rounded-[2rem] lg:rounded-3xl p-6 lg:p-8 lg:overflow-y-auto relative min-h-[400px] lg:min-h-[500px]">
         {!generatedContent && !loading && (
           <div className="h-full flex flex-col items-center justify-center text-zinc-700 space-y-4">
             <Megaphone size={48} className="opacity-10" />
@@ -221,20 +221,20 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
 
         {generatedContent && !loading && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-white/10 rounded-lg text-white">
                   {format.includes('X') ? <Twitter size={18} /> :
                     format.includes('IG') ? <Instagram size={18} /> :
                       format.includes('YT') ? <Youtube size={18} /> : <Megaphone size={18} />}
                 </div>
-                <h3 className="font-black text-xl tracking-tighter uppercase italic">Neutral {format} Output</h3>
+                <h3 className="font-black text-xl tracking-tighter uppercase italic">Neural {format} Output</h3>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   onClick={() => setShowEditModal(true)}
                   title="Edit script"
-                  className="flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 hover:border-white rounded-lg text-zinc-400 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 hover:border-white rounded-lg text-zinc-400 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"
                 >
                   <Edit3 size={14} />
                   Edit Script

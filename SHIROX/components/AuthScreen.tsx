@@ -54,18 +54,18 @@ const AuthScreen: React.FC = () => {
                 {/* Logo */}
                 <div className="text-center mb-10">
                     <h1
-                        className="text-5xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent italic"
+                        className="text-4xl lg:text-5xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent italic"
                         style={{ fontFamily: "'Orbitron', sans-serif" }}
                     >
                         ArsCreatio
                     </h1>
-                    <p className="text-zinc-700 uppercase tracking-[0.5em] text-[9px] font-black mt-2">
+                    <p className="text-zinc-700 uppercase tracking-[0.5em] text-[8px] lg:text-[9px] font-black mt-2">
                         Neural Intelligence Matrix
                     </p>
                 </div>
 
                 {/* Card */}
-                <div className="bg-zinc-950/70 backdrop-blur-2xl border border-zinc-900 rounded-2xl p-8 shadow-2xl">
+                <div className="bg-zinc-950/70 backdrop-blur-2xl border border-zinc-900 rounded-2xl p-6 lg:p-8 shadow-2xl">
                     <h2 className="text-white font-bold text-xl mb-1">
                         {mode === 'login' ? 'Welcome back.' : 'Create account.'}
                     </h2>
