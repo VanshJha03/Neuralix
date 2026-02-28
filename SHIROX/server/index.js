@@ -337,7 +337,7 @@ app.post('/api/chat', requireAuth, async (req, res) => {
         }
     }
 
-    let modelName = 'gemini-2.5-flash-lite-preview-06-17';
+    let modelName = 'gemini-2.5-flash-lite';
     let config = {
         systemInstruction,
         temperature: 0.8,
@@ -414,7 +414,7 @@ app.post('/api/memory/extract', requireAuth, async (req, res) => {
     const conversationText = messages.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n');
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: `Analyze this conversation. Extract exactly 2-3 "Neural Memory Packets" - high-density facts about the Operator's goals, preferences, or project updates.\nConversation:\n${conversationText}\nReturn as a JSON array.`,
             config: {
                 responseMimeType: 'application/json',
@@ -432,7 +432,7 @@ app.post('/api/content/generate', requireAuth, async (req, res) => {
     const prompt = `Transform this topic into a viral ${format}: "${content}". Focus on bold, opinionated, visionary content. Dark tech aesthetic. No AI product names. No #VanshJha.`;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: prompt,
             config: { systemInstruction, temperature: 0.8, tools: [{ googleSearch: {} }] }
         });
@@ -444,7 +444,7 @@ app.post('/api/content/refine', requireAuth, async (req, res) => {
     const { currentContent, refinement, format, systemInstruction } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: `Current content:\n"${currentContent}"\n\nRefinement:\n"${refinement}"\n\nFormat: ${format}\n\nRefine while keeping the same voice and philosophy.`,
             config: { systemInstruction, temperature: 0.7 }
         });
@@ -457,7 +457,7 @@ app.post('/api/trends/viral', requireAuth, async (req, res) => {
     const { activeLabels } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: `Analyze current web data for niches: ${activeLabels}. Find 4 specific trending topics with viral trajectory (Early/Rising/Peak/Saturation) and score (0-100). Return as JSON array.`,
             config: {
                 responseMimeType: 'application/json',
@@ -472,7 +472,7 @@ app.post('/api/trends/creators', requireAuth, async (req, res) => {
     const { activeLabels } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: `Find top performing creators in niches: ${activeLabels} on YT, X, IG. Analyze their content style and list 3 viral hooks. Return JSON array of 4 creators.`,
             config: {
                 responseMimeType: 'application/json',
@@ -502,7 +502,7 @@ app.post('/api/trends/latest', requireAuth, async (req, res) => {
     const { activeLabels } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: `SEARCH the web for real current viral trends on X, Instagram, and YouTube today. Focus on: ${activeLabels}. Return EXACTLY 5 trends, one per line: PLATFORM | TOPIC | VIRAL_HOOK`,
             config: { tools: [{ googleSearch: {} }] }
         });
@@ -515,7 +515,7 @@ app.post('/api/trends/niche', requireAuth, async (req, res) => {
     const { activeLabels } = req.body;
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-lite-preview-06-17',
+            model: 'gemini-2.5-flash-lite',
             contents: `Find REAL content from YouTube, Instagram, and X for: ${activeLabels} from the last 7 days. Return JSON array of 9 items.`,
             config: {
                 responseMimeType: 'application/json',
