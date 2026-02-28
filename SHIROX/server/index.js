@@ -57,22 +57,78 @@ app.use((req, res, next) => {
 
 // ─── Auth Middleware ──────────────────────────────────────────────────────────
 // Validates Supabase JWT token on every protected route
-const requireAuth = async (req, res, next) => {
+async function requireAuth(req, res, next) {
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'Unauthorized: No token provided.' });
-    }
+    if (!authHeader) return res.status(401).json({ error: 'No authorization header' });
 
     const token = authHeader.split(' ')[1];
     const { data: { user }, error } = await supabase.auth.getUser(token);
 
-    if (error || !user) {
-        return res.status(401).json({ error: 'Unauthorized: Invalid or expired token.' });
+    if (error || !user) return res.status(401).json({ error: 'Invalid or expired token' });
+
+    req.user = user;
+
+    // Determine Tier
+    // Gmail accounts = Beta, Anonymous/Others = Free
+    const isGmail = user.email && user.email.endsWith('@gmail.com');
+    const isAnonymous = user.identities && user.identities.length === 0;
+    req.user.tier = (isGmail || !isAnonymous) ? 'beta' : 'free';
+
+    // Ensure user exists in user_settings and reset usage if needed
+    const today = new Date().toISOString().split('T')[0];
+    const thisMonth = today.substring(0, 7);
+
+    let settings = db.prepare('SELECT * FROM user_settings WHERE user_id = ?').get(user.id);
+    if (!settings) {
+        db.prepare('INSERT INTO user_settings (user_id, last_usage_reset, last_monthly_reset) VALUES (?, ?, ?)').run(user.id, today, thisMonth);
+        settings = db.prepare('SELECT * FROM user_settings WHERE user_id = ?').get(user.id);
     }
 
-    req.user = user; // Attach user to request
+    if (settings.last_usage_reset !== today) {
+        db.prepare('UPDATE user_settings SET daily_analytics_count = 0, daily_content_count = 0, daily_image_count = 0, last_usage_reset = ? WHERE user_id = ?').run(today, user.id);
+    }
+    if (settings.last_monthly_reset !== thisMonth) {
+        db.prepare('UPDATE user_settings SET monthly_gap_count = 0, last_monthly_reset = ? WHERE user_id = ?').run(thisMonth, user.id);
+    }
+
     next();
-};
+}
+
+function checkLimit(type) {
+    return (req, res, next) => {
+        const settings = db.prepare('SELECT * FROM user_settings WHERE user_id = ?').get(req.user.id);
+        const tier = req.user.tier;
+
+        const limits = {
+            free: { analytics: 1, content: 3, image: 0, gap: 1 },
+            beta: { analytics: 3, content: 10, image: 6, gap: 999 } // Unlocked for Beta
+        };
+
+        const currentLimits = limits[tier];
+
+        if (type === 'analytics' && settings.daily_analytics_count >= currentLimits.analytics) {
+            return res.status(429).json({ error: `Neural SIGNAL LIMIT Reached: ${tier === 'free' ? 'Guests' : 'Beta'} restricted to ${currentLimits.analytics} analysis/day. Upgrade or support on X for more.` });
+        }
+        if (type === 'content' && settings.daily_content_count >= currentLimits.content) {
+            return res.status(429).json({ error: `Neural CONTENT LIMIT Reached: ${tier === 'free' ? 'Guests' : 'Beta'} restricted to ${currentLimits.content} posts/day.` });
+        }
+        if (type === 'image' && settings.daily_image_count >= currentLimits.image) {
+            return res.status(429).json({ error: `Neural VISUAL LIMIT Reached: ${tier === 'free' ? 'Guests' : 'Beta'} restricted to ${currentLimits.image} images/day.` });
+        }
+        if (type === 'gap' && settings.monthly_gap_count >= currentLimits.gap) {
+            return res.status(429).json({ error: `Neural STRATEGIC LIMIT Reached: Free tier restricted to 1 Gap Analysis per month. Log in with Gmail for Beta access.` });
+        }
+
+        next();
+    };
+}
+
+function incrementUsage(userId, type) {
+    if (type === 'analytics') db.prepare('UPDATE user_settings SET daily_analytics_count = daily_analytics_count + 1 WHERE user_id = ?').run(userId);
+    if (type === 'content') db.prepare('UPDATE user_settings SET daily_content_count = daily_content_count + 1 WHERE user_id = ?').run(userId);
+    if (type === 'image') db.prepare('UPDATE user_settings SET daily_image_count = daily_image_count + 1 WHERE user_id = ?').run(userId);
+    if (type === 'gap') db.prepare('UPDATE user_settings SET monthly_gap_count = monthly_gap_count + 1 WHERE user_id = ?').run(userId);
+}
 
 // ─── Audio Multer ─────────────────────────────────────────────────────────────
 await fs.mkdir(AUDIO_TEMP_DIR, { recursive: true });
@@ -94,7 +150,13 @@ db.exec(`
     avatarColor TEXT DEFAULT '#dc2626',
     customSystemPrompt TEXT,
     xPostImages INTEGER DEFAULT 1,
-    xThreadImages INTEGER DEFAULT 1
+    xThreadImages INTEGER DEFAULT 1,
+    daily_analytics_count INTEGER DEFAULT 0,
+    daily_content_count INTEGER DEFAULT 0,
+    daily_image_count INTEGER DEFAULT 0,
+    monthly_gap_count INTEGER DEFAULT 0,
+    last_usage_reset TEXT,
+    last_monthly_reset TEXT
   );
 
   CREATE TABLE IF NOT EXISTS archived_messages (
@@ -316,7 +378,7 @@ app.post('/api/files/delete', requireAuth, async (req, res) => {
 
 // ── Main Chat ─────────────────────────────────────────────────────────────────
 app.post('/api/chat', requireAuth, async (req, res) => {
-    const { prompt, mode, chatHistory, systemInstruction, userSettings } = req.body;
+    const { prompt, mode, chatHistory, systemInstruction: originalSystemInstruction, userSettings } = req.body;
 
     const isImageRequest = /generate image|draw|show me|create a picture|imagine a visual|visual concept/i.test(prompt);
 
@@ -340,6 +402,18 @@ app.post('/api/chat', requireAuth, async (req, res) => {
             console.error('Image generation failed, falling through to text:', error.message);
         }
     }
+
+    const styles = req.user.tier === 'free'
+        ? (userSettings?.styles || []).filter(s => ['Classic', 'Casual'].includes(s))
+        : (userSettings?.styles || []);
+
+    const styleOverride = styles.length > 0
+        ? `\nCOGNITIVE STYLE OVERRIDE:\nApply a blend of ${styles.join(' and ')} style to your responses.`
+        : '';
+
+    const systemInstruction = `
+${userSettings?.customSystemPrompt || originalSystemInstruction}
+${styleOverride}`;
 
     let modelName = 'gemini-2.5-flash-lite';
     let config = {
@@ -430,30 +504,50 @@ app.post('/api/memory/extract', requireAuth, async (req, res) => {
 });
 
 // ── Marketing Content ─────────────────────────────────────────────────────────
-app.post('/api/content/generate', requireAuth, async (req, res) => {
+app.post('/api/content/generate', requireAuth, checkLimit('content'), async (req, res) => {
     const { content, format, systemInstruction, userSettings } = req.body;
+    try {
+        incrementUsage(req.user.id, 'content');
 
-    let imageLogic = "Do NOT include any [IMAGE: ...] placeholders.";
-    if (format === 'X Post' && userSettings?.xPostImages) {
-        imageLogic = "Include exactly one relevant image placeholder in the format [IMAGE: descriptive generation prompt].";
-    } else if (format === 'X Thread' && userSettings?.xThreadImages) {
-        imageLogic = "Include 1-4 relevant image placeholders in the format [IMAGE: descriptive generation prompt] at key narrative transitions.";
-    }
+        let imageLogic = "Do NOT include any [IMAGE: ...] placeholders.";
+        let charLimit = "";
 
-    const prompt = `Transform this topic into a viral ${format}: "${content}". 
+        if (format === 'X Post') {
+            charLimit = "STRICT RULE: The entire post MUST be UNDER 280 characters total (including hashtags).";
+            if (userSettings?.xPostImages) {
+                imageLogic = "Include exactly one relevant image placeholder at the very end in the format [IMAGE: descriptive generation prompt].";
+            }
+        } else if (format === 'X Thread') {
+            charLimit = "STRICT RULE: Each individual post in the thread MUST be UNDER 280 characters (including hashtags).";
+            if (userSettings?.xThreadImages) {
+                imageLogic = "Include 1-4 relevant image placeholders in the format [IMAGE: descriptive generation prompt] at key narrative transitions.";
+            }
+        }
+
+        const prompt = `Transform this topic into a viral ${format}: "${content}". 
     VOICE: Bold, visionary, dark tech aesthetic. 
-    CONSTRAINTS: No AI product names. No #VanshJha. 
+    CONSTRAINTS: No AI product names. No #VanshJha. ${charLimit}
     VISUALS: ${imageLogic} 
     RESEARCH: Use Google Search to find highly relevant real-world data. If you encounter any useful REAL image URLs from high-authority sources, include them as [URL: source-image-url] where they add value.`;
 
-    try {
+        const styles = req.user.tier === 'free'
+            ? (userSettings?.styles || []).filter(s => ['Classic', 'Casual'].includes(s))
+            : (userSettings?.styles || []);
+
+        const finalSystemPrompt = styles.length > 0
+            ? `${systemInstruction}\n\nSTYLE OVERRIDE: ${styles.join(' and ')}`
+            : systemInstruction;
+
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash-lite',
             contents: prompt,
-            config: { systemInstruction, temperature: 0.8, tools: [{ googleSearch: {} }] }
+            config: { systemInstruction: finalSystemPrompt, temperature: 0.8, tools: [{ googleSearch: {} }] }
         });
         res.json({ content: response.text || 'Synthesis failed.' });
-    } catch (error) { res.status(500).json({ error: error.message }); }
+    } catch (error) {
+        console.error('Content API Error:', error);
+        res.status(500).json({ error: error.message });
+    }
 });
 
 app.post('/api/content/refine', requireAuth, async (req, res) => {
@@ -469,23 +563,36 @@ app.post('/api/content/refine', requireAuth, async (req, res) => {
 });
 
 // ── Trends ────────────────────────────────────────────────────────────────────
-app.post('/api/trends/viral', requireAuth, async (req, res) => {
+app.post('/api/trends/viral', requireAuth, checkLimit('analytics'), async (req, res) => {
     const { activeLabels } = req.body;
     try {
-        const response = await ai.models.generateContent({
+        incrementUsage(req.user.id, 'analytics');
+
+        // Step 1: Research using tools (Gemini 2.5 Pro)
+        const research = await ai.models.generateContent({
             model: 'gemini-2.5-pro',
             contents: `RESEARCH the web for current viral trends in niches: ${activeLabels}. 
             TIME CONSTRAINT: Last 4 days preferred, up to 7 days if still high-velocity. 
             DEPTH: For EACH suggested topic, search at least 3 high-authority websites/sources.
-            Return 4 specific trending topics with (Early/Rising/Peak/Saturation) velocity and score (0-100) as JSON array.`,
+            Provide a detailed summary of 4 trending topics and their velocity (Early/Rising/Peak/Saturation).`,
+            config: { tools: [{ googleSearch: {} }] }
+        });
+
+        // Step 2: Extract JSON from research (Gemini 2.5 Flash Lite)
+        const extraction = await ai.models.generateContent({
+            model: 'gemini-2.5-flash-lite',
+            contents: `Extract the following trending topics from this research into the requested JSON format:\n\n${research.text}`,
             config: {
-                tools: [{ googleSearch: {} }],
                 responseMimeType: 'application/json',
                 responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { topic: { type: Type.STRING }, velocity: { type: Type.STRING, enum: ['Early', 'Rising', 'Peak', 'Saturation'] }, score: { type: Type.NUMBER }, why: { type: Type.STRING } }, required: ['topic', 'velocity', 'score', 'why'] } }
             }
         });
-        res.json(JSON.parse(response.text || '[]'));
-    } catch (err) { res.status(500).json({ error: err.message }); }
+
+        res.json(JSON.parse(extraction.text || '[]'));
+    } catch (err) {
+        console.error('Viral Trends Error:', err);
+        res.status(500).json({ error: err.message });
+    }
 });
 
 app.post('/api/trends/creators', requireAuth, async (req, res) => {
@@ -503,22 +610,35 @@ app.post('/api/trends/creators', requireAuth, async (req, res) => {
     } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-app.post('/api/trends/gaps', requireAuth, async (req, res) => {
+app.post('/api/trends/gaps', requireAuth, checkLimit('gap'), async (req, res) => {
     const { activeLabels } = req.body;
     try {
-        const response = await ai.models.generateContent({
+        incrementUsage(req.user.id, 'gap');
+
+        // Step 1: Research using tools (Gemini 2.5 Pro)
+        const research = await ai.models.generateContent({
             model: 'gemini-2.5-pro',
             contents: `For niches: ${activeLabels}, identify 3 major current trends from the LAST 4-7 DAYS. 
             DEPTH: Search at least 3 websites per trend to identify the common narrative vs the missing piece.
-            Perform a Gap Analysis: what is the crowd narrative, what is missing, and what is the unique Viral Hook. Return JSON array.`,
+            Identify what the crowd is saying, what piece of information or perspective is missing, and a unique Viral Hook.`,
+            config: { tools: [{ googleSearch: {} }] }
+        });
+
+        // Step 2: Extract JSON from research (Gemini 2.5 Flash Lite)
+        const extraction = await ai.models.generateContent({
+            model: 'gemini-2.5-flash-lite',
+            contents: `Extract the Gap Analysis from this research into the requested JSON format:\n\n${research.text}`,
             config: {
-                tools: [{ googleSearch: {} }],
                 responseMimeType: 'application/json',
                 responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { trend: { type: Type.STRING }, crowdIsSaying: { type: Type.STRING }, missingPiece: { type: Type.STRING }, hookUSP: { type: Type.STRING } }, required: ['trend', 'crowdIsSaying', 'missingPiece', 'hookUSP'] } }
             }
         });
-        res.json(JSON.parse(response.text || '[]'));
-    } catch (err) { res.status(500).json({ error: err.message }); }
+
+        res.json(JSON.parse(extraction.text || '[]'));
+    } catch (err) {
+        console.error('Gap Analysis Error:', err);
+        res.status(500).json({ error: err.message });
+    }
 });
 
 app.post('/api/trends/latest', requireAuth, async (req, res) => {
@@ -552,9 +672,10 @@ app.post('/api/trends/niche', requireAuth, async (req, res) => {
 });
 
 // ── Neural Image ──────────────────────────────────────────────────────────────
-app.post('/api/image/generate', requireAuth, async (req, res) => {
+app.post('/api/image/generate', requireAuth, checkLimit('image'), async (req, res) => {
     const { prompt } = req.body;
     try {
+        incrementUsage(req.user.id, 'image');
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash-image',
             contents: { parts: [{ text: `Generate a high-quality futuristic marketing visual: ${prompt}. Dark tech aesthetic, glowing red accents. No text in the image.` }] },

@@ -56,10 +56,75 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         <div>
           <h1 className="text-4xl font-black tracking-tighter uppercase italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Config</h1>
           <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em]">Calibrate ArsCreatio Consciousness</p>
+
+          <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-lg">
+            <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-blue-500' : 'bg-zinc-700'}`} />
+            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
+              Tier: {userSettings.email ? 'Beta Pioneer' : 'Transient Guest'}
+            </span>
+          </div>
         </div>
       </div>
 
       <div className="space-y-12">
+        {!userSettings.email && (
+          <div className="p-8 bg-blue-900/10 border border-blue-900/30 rounded-[2.5rem] flex items-center justify-between group">
+            <div>
+              <h3 className="text-white font-black text-xs uppercase tracking-widest mb-1 italic">Matrix Signal Weak</h3>
+              <p className="text-zinc-500 text-[10px] font-bold uppercase transition-all">Sign in with Google to unlock BETA access and enhanced limits.</p>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-3 bg-white text-black font-black text-[9px] uppercase tracking-widest rounded-xl hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/5"
+            >
+              Login to Matrix
+            </button>
+          </div>
+        )}
+
+        {userSettings.email && (
+          <section className="p-10 bg-zinc-900/60 border border-zinc-800 rounded-[3rem] relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Shield size={120} />
+            </div>
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-8">
+                <Shield size={18} className="text-blue-500" />
+                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Beta Pioneer Status</h2>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+                {[
+                  { label: 'Neural Scans', count: '3/Day' },
+                  { label: 'Content Gen', count: '10/Day' },
+                  { label: 'Visual Synthesis', count: '6/Day' },
+                  { label: 'Gap Analysis', count: 'Unlocked' }
+                ].map((stat, i) => (
+                  <div key={i} className="p-6 bg-black/40 border border-zinc-800/50 rounded-3xl">
+                    <p className="text-[8px] font-black text-zinc-600 uppercase tracking-widest mb-1">{stat.label}</p>
+                    <p className="text-xl font-black text-white italic tracking-tighter">{stat.count}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-8 bg-zinc-950/50 border border-zinc-900 rounded-[2rem] space-y-6">
+                <div>
+                  <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-2 italic">Support the Matrix</h4>
+                  <p className="text-zinc-500 text-[10px] font-medium leading-relaxed">
+                    Mention <span className="text-white font-black">@JhaVansh03</span> on X along with <span className="text-white font-black">ArsCreatio</span> to support our evolution.
+                  </p>
+                </div>
+                <div className="h-px bg-zinc-900 w-full" />
+                <div>
+                  <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-2 italic">Creator's Pact</h4>
+                  <p className="text-zinc-500 text-[10px] font-medium leading-relaxed">
+                    Help us Making Creatio better for all. Beta Pioneers will receive a <span className="text-blue-400 font-black italic underline decoration-blue-900 underline-offset-4">60% Founder's Discount</span> at the official launch.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
         {/* User Identity Section */}
         <section className="p-10 bg-zinc-900/40 border border-zinc-800/50 rounded-[3rem] backdrop-blur-3xl">
           <div className="flex items-center gap-3 mb-8">
@@ -105,11 +170,13 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
           </div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {['Classic', 'Casual', 'Gen Z', 'Professional', 'Enthusiast', 'Wit', 'Humour', 'Slang', 'Robot', 'Thinker'].map((style) => {
+              const isLocked = !userSettings.email && !['Classic', 'Casual'].includes(style);
               const isActive = localSettings.styles?.includes(style);
               return (
                 <button
                   key={style}
                   onClick={() => {
+                    if (isLocked) return;
                     const currentStyles = localSettings.styles || [];
                     if (isActive) {
                       setLocalSettings({ ...localSettings, styles: currentStyles.filter(s => s !== style) });
@@ -117,11 +184,14 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
                       setLocalSettings({ ...localSettings, styles: [...currentStyles, style] });
                     }
                   }}
-                  className={`py-3 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border ${isActive
+                  className={`py-3 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border relative overflow-hidden ${isActive
                     ? 'bg-white text-black border-white'
-                    : 'bg-black/40 text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300'
+                    : isLocked
+                      ? 'bg-zinc-950/50 text-zinc-800 border-zinc-900 cursor-not-allowed opacity-50'
+                      : 'bg-black/40 text-zinc-500 border-zinc-800 hover:border-zinc-700 hover:text-zinc-300'
                     }`}
                 >
+                  {isLocked && <div className="absolute top-1 right-1"><Shield size={8} /></div>}
                   {style}
                 </button>
               );
