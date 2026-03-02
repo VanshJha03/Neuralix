@@ -69,10 +69,9 @@ async function requireAuth(req, res, next) {
     req.user = user;
 
     // Determine Tier
-    // Gmail accounts = Beta, Anonymous/Others = Free
-    const isGmail = user.email && user.email.endsWith('@gmail.com');
-    const isAnonymous = user.identities && user.identities.length === 0;
-    req.user.tier = (isGmail || !isAnonymous) ? 'beta' : 'free';
+    // Any user with an email address = Beta; anonymous/guest sessions = Free
+    const isAnonymous = user.is_anonymous === true || !user.email;
+    req.user.tier = isAnonymous ? 'free' : 'beta';
 
     // Ensure user exists in user_settings and reset usage if needed
     const today = new Date().toISOString().split('T')[0];
@@ -107,16 +106,28 @@ function checkLimit(type) {
         const currentLimits = limits[tier];
 
         if (type === 'analytics' && settings.daily_analytics_count >= currentLimits.analytics) {
-            return res.status(429).json({ error: `Neural SIGNAL LIMIT Reached: ${tier === 'free' ? 'Guests' : 'Beta'} restricted to ${currentLimits.analytics} analysis/day. Upgrade or support on X for more.` });
+            const msg = tier === 'free'
+                ? `Neural SIGNAL LIMIT Reached: Guest users get ${currentLimits.analytics} analysis/day. Sign Up — it's free — to unlock 5× more.`
+                : `Neural SIGNAL LIMIT Reached: Beta users get ${currentLimits.analytics} analyses/day. Resets at midnight.`;
+            return res.status(429).json({ error: msg });
         }
         if (type === 'content' && settings.daily_content_count >= currentLimits.content) {
-            return res.status(429).json({ error: `Neural CONTENT LIMIT Reached: ${tier === 'free' ? 'Guests' : 'Beta'} restricted to ${currentLimits.content} posts/day.` });
+            const msg = tier === 'free'
+                ? `Neural CONTENT LIMIT Reached: Guest users get ${currentLimits.content} posts/day. Sign Up — it's free — to unlock 15 posts/day.`
+                : `Neural CONTENT LIMIT Reached: Beta users get ${currentLimits.content} posts/day. Resets at midnight.`;
+            return res.status(429).json({ error: msg });
         }
         if (type === 'image' && settings.daily_image_count >= currentLimits.image) {
-            return res.status(429).json({ error: `Neural VISUAL LIMIT Reached: ${tier === 'free' ? 'Guests' : 'Beta'} restricted to ${currentLimits.image} images/day.` });
+            const msg = tier === 'free'
+                ? `Neural VISUAL LIMIT Reached: Guest users cannot generate AI images. Sign Up — it's free — to unlock 10 images/day.`
+                : `Neural VISUAL LIMIT Reached: Beta users get ${currentLimits.image} images/day. Resets at midnight.`;
+            return res.status(429).json({ error: msg });
         }
         if (type === 'gap' && settings.monthly_gap_count >= currentLimits.gap) {
-            return res.status(429).json({ error: `Neural STRATEGIC LIMIT Reached: Free tier restricted to 1 Gap Analysis per month. Log in with Gmail for Beta access.` });
+            const msg = tier === 'free'
+                ? `Neural STRATEGIC LIMIT Reached: Guest users get 1 Gap Analysis/month. Sign Up — it's free — to unlock unlimited Gap Analyses.`
+                : `Neural STRATEGIC LIMIT Reached: Monthly cap reached.`;
+            return res.status(429).json({ error: msg });
         }
 
         next();

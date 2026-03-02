@@ -14,6 +14,7 @@ import MarketingStudio from './components/MarketingStudio';
 import OmniTerminal from './components/OmniTerminal';
 import SettingsManager from './components/SettingsManager';
 import NicheAnalytics from './components/NicheAnalytics';
+import LimitReachedModal from './components/LimitReachedModal';
 import { Idea, Message, Interest, ViewType, UserSettings, NicheAnalyticsData } from './types';
 import { INITIAL_INTERESTS, DEFAULT_SYSTEM_PROMPT } from './constants';
 
@@ -44,6 +45,9 @@ const App: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [neuralMemories, setNeuralMemories] = useState<string[]>([]);
 
+  // ── Limit Modal State ──────────────────────────────────────────────────────
+  const [limitModal, setLimitModal] = useState<{ message: string } | null>(null);
+
   const [userSettings, setUserSettings] = useState<UserSettings>({
     name: 'Operator',
     email: '',
@@ -71,24 +75,33 @@ const App: React.FC = () => {
     gaps: [],
   });
 
+  // ── Global limit-reached handler ────────────────────────────────────────────
+  // Children call this when they get a 429 / LIMIT error from the backend
+  const onLimitReached = useCallback((message: string) => {
+    setLimitModal({ message });
+  }, []);
+
   // ── Auth State Listener ───────────────────────────────────────────────────
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setAuthLoading(false);
     });
 
-    // Listen for auth changes (login, logout, token refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setAuthLoading(false);
+      // Clear data on sign-out / session change
+      if (!session) {
+        setMessages([]);
+        setNeuralMemories([]);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // ── Sync Neural Data from Backend (runs after auth is confirmed) ──────────
+  // ── Sync Neural Data from Backend ──────────────────────────────────────────
   useEffect(() => {
     if (!session) return;
 
@@ -96,7 +109,6 @@ const App: React.FC = () => {
       try {
         console.log('Initiating Authenticated Neural Sync...');
 
-        // 1. Settings (seeded from Supabase profile if first time)
         const settings = await fetchUserSettings();
         if (settings?.name) {
           setUserSettings(prev => ({
@@ -106,31 +118,25 @@ const App: React.FC = () => {
           }));
         }
 
-        // 2. Interests
         const serverInterests = await fetchInterests();
         if (serverInterests && serverInterests.length > 0) {
           setInterests(serverInterests);
         }
 
-        // 3. Memories
         const memories = await fetchMemories();
         setNeuralMemories(memories);
 
-        // 4. Ideas
         const serverIdeas = await fetchIdeas();
         if (serverIdeas && serverIdeas.length > 0) {
           setIdeas(serverIdeas);
         } else if (ideas.length > 0) {
-          // Push local ideas to new server account
           await saveIdeas(ideas);
         }
 
-        // 5. Chat History
         const serverArchive = await fetchArchive();
         if (serverArchive && serverArchive.length > 0) {
           setMessages(serverArchive);
         } else if (messages.length > 0) {
-          // Push local messages to new server account
           await saveArchive(messages);
         }
 
@@ -149,21 +155,21 @@ const App: React.FC = () => {
     saveUserSettings(userSettings).catch(() => { });
   }, [userSettings, session]);
 
-  // ── Persist Interests to Backend ──────────────────────────────────────────
+  // ── Persist Interests ──────────────────────────────────────────────────────
   useEffect(() => {
     if (!session || interests.length === 0) return;
     localStorage.setItem('ArsCreatio_interests', JSON.stringify(interests));
     saveInterests(interests).catch(() => { });
   }, [interests, session]);
 
-  // ── Persist Ideas to Backend ──────────────────────────────────────────────
+  // ── Persist Ideas ──────────────────────────────────────────────────────────
   useEffect(() => {
     if (!session) return;
     localStorage.setItem('ArsCreatio_ideas', JSON.stringify(ideas));
     saveIdeas(ideas).catch(() => { });
   }, [ideas, session]);
 
-  // ── Persist Messages to Backend ───────────────────────────────────────────
+  // ── Persist Messages ───────────────────────────────────────────────────────
   useEffect(() => {
     if (!session) return;
     localStorage.setItem('ArsCreatio_messages', JSON.stringify(messages));
@@ -226,7 +232,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // ── System Prompt Construction ────────────────────────────────────────────
+  // ── System Prompt ──────────────────────────────────────────────────────────
   const enhancedSystemPrompt = `
 ${DEFAULT_SYSTEM_PROMPT}
 
@@ -242,12 +248,24 @@ ${neuralMemories.length > 0
 CRITICAL: Do not repeat these memories verbatim. Use them to understand user goals, past decisions, and current projects.
   `.trim();
 
+  // ── Detect if user is a guest (anonymous) ─────────────────────────────────
+  const isGuest = !!session && !session.user.email;
+
   // ── Render ────────────────────────────────────────────────────────────────
   if (authLoading) return <NeuralLoader />;
   if (!session) return <AuthScreen />;
 
   return (
     <div className="flex h-screen w-full bg-black text-white overflow-hidden selection:bg-white/10 relative">
+      {/* Global Limit Modal */}
+      {limitModal && (
+        <LimitReachedModal
+          message={limitModal.message}
+          isGuest={isGuest}
+          onClose={() => setLimitModal(null)}
+        />
+      )}
+
       <Sidebar
         activeView={activeView}
         setActiveView={(v) => { setActiveView(v); setIsMobileMenuOpen(false); }}
@@ -273,7 +291,22 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
           <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
         </div>
 
-        <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-6">
+        {/* Guest Banner */}
+        {isGuest && (
+          <div className="lg:hidden hidden" />
+        )}
+
+        <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
+          {/* Guest indicator */}
+          {isGuest && (
+            <button
+              onClick={() => supabase.auth.signOut()}
+              className="flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-full text-[9px] font-black tracking-widest text-amber-400 uppercase hover:bg-amber-500/20 transition-colors"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              Guest Mode · Sign Up Free
+            </button>
+          )}
           <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-black tracking-[0.3em] text-zinc-400 uppercase">
             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             Neural Link: Active
@@ -317,6 +350,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
               systemInstruction={enhancedSystemPrompt}
               data={nicheAnalyticsData}
               onUpdateData={setNicheAnalyticsData}
+              onLimitReached={onLimitReached}
             />
           )}
           {activeView === 'settings' && (
@@ -324,7 +358,13 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
           )}
         </div>
 
-        <TrendsManager interests={interests} onSaveIdea={onSaveIdea} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} />
+        <TrendsManager
+          interests={interests}
+          onSaveIdea={onSaveIdea}
+          userSettings={userSettings}
+          systemInstruction={enhancedSystemPrompt}
+          onLimitReached={onLimitReached}
+        />
         <OmniTerminal isOpen={isTerminalOpen} setIsOpen={setIsTerminalOpen} onCommand={handleTerminalCommand} />
       </main>
     </div>
