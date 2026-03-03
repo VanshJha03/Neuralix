@@ -391,7 +391,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                       className="w-full h-64 lg:h-80 bg-black/60 border border-zinc-800 rounded-2xl p-4 text-zinc-300 text-sm focus:outline-none focus:border-white/50 transition-all font-mono resize-none"
                     />
                   ) : (
-                    generatedScript.split(/(\[IMAGE: [^\]]+\])/g).map((part, i) => {
+                    generatedScript.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g).map((part, i) => {
                       const imgState = generatedImages[part];
                       if (imgState) {
                         return (
@@ -405,6 +405,17 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                                 <div className="absolute inset-0 flex items-center justify-center text-zinc-800"><ImageIcon size={32} /></div>
                               )}
                             </div>
+                          </div>
+                        );
+                      }
+                      if (part.startsWith('[URL: ')) {
+                        const url = part.replace('[URL: ', '').replace(']', '').trim();
+                        return (
+                          <div key={i} className="my-4">
+                            <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
+                              <img src={url} alt="Reference Visual" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                            </div>
+                            <p className="mt-2 text-[8px] font-black text-zinc-800 uppercase tracking-widest text-center italic">External Reference Visual</p>
                           </div>
                         );
                       }

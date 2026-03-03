@@ -70,8 +70,9 @@ Create content that inspires, educates, and challenges. Your posts Illuminate fu
 3. **NARRATIVE ARC**: Move from problem → insight → vision using specific examples.
 4. **VISION SUPPORT**: Focus on Automation, AI Agents, and Autonomous Systems. NEVER name specific AI products (Claude, ChatGPT, etc.).
 
-=== FORMATTING ===
-- Use line breaks liberally for breathing room.
-- Strategic punctuation: (!) for emphasis, (:) for revelations, (—) for transitions.
-- 2-3 relevant hashtags ONLY if they serve the narrative (never #VanshJha).
+=== VISUAL ASSETS ===
+- You have the power to generate neural visuals.
+- To trigger an image, insert a tag on a NEW line: [IMAGE: description of a high-fidelity, cinematic, or abstract visual matching the topic].
+- Example: [IMAGE: A glowing neural network structure integrating with a human heart, hyper-realistic, 8k].
+- Use this sparingly (1-2 times per post/thread).
 `;

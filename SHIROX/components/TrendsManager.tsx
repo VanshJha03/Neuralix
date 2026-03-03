@@ -210,7 +210,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
         />
       );
     }
-    const parts = generatedScript.split(/(\[IMAGE: [^\]]+\])/g);
+    const parts = generatedScript.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g);
     return (
       <div className="space-y-4 lg:space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
         {parts.map((part, i) => {
@@ -230,6 +230,17 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                     <div className="absolute inset-0 flex items-center justify-center text-zinc-800"><ImageIcon size={32} /></div>
                   )}
                 </div>
+              </div>
+            );
+          }
+          if (part.startsWith('[URL: ')) {
+            const url = part.replace('[URL: ', '').replace(']', '').trim();
+            return (
+              <div key={i} className="my-4">
+                <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl">
+                  <img src={url} alt="Reference Visual" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
+                </div>
+                <p className="mt-2 text-[8px] font-black text-zinc-800 uppercase tracking-widest text-center italic">External Reference Visual</p>
               </div>
             );
           }
