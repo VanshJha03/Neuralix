@@ -96,8 +96,16 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
     setGeneratedImages({});
     setCopyDone(false);
 
-    // Determine if we should generate images for this synthesis
-    const useImages = imagesEnabled && imageRemaining > 0 && (format === 'X Post' || format === 'X Thread');
+    // Determine if we should generate images for this synthesis.
+    // NOTE: We compute this directly from `format` (not from `imagesEnabled` state) because
+    // setSelectedFormat(format) is a queued React update — the useEffect that syncs
+    // imagesEnabled hasn't fired yet, so reading `imagesEnabled` here gives a STALE value.
+    const formatWantsImages = format === 'X Post'
+      ? !!userSettings?.xPostImages
+      : format === 'X Thread'
+        ? !!userSettings?.xThreadImages
+        : false;
+    const useImages = formatWantsImages && imageRemaining > 0;
 
     try {
       const context = `${trend.topic}: ${trend.hook}`;
