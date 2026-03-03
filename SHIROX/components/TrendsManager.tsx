@@ -293,7 +293,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                   <Zap size={18} fill="currentColor" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-base sm:text-xl font-black tracking-tighter text-white">Neural Synthesis</h3>
+                  <h3 className="text-base sm:text-xl font-black tracking-tighter text-white">Neural Content Synthesis</h3>
                   <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-black truncate max-w-[180px] sm:max-w-sm">{synthesizingTrend.topic}</p>
                 </div>
               </div>
