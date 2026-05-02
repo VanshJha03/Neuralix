@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
   BarChart3, TrendingUp, Users, Target, Zap, Loader2,
   Youtube, Twitter, Instagram, BrainCircuit, Lightbulb,
-  BookmarkPlus, Eye, Edit3, Image as ImageIcon, ImageOff, Share2, X as CloseIcon, Lock
+  BookmarkPlus, Eye, Edit3, Image as ImageIcon, ImageOff, Share2, X as CloseIcon, Lock, Crown
 } from 'lucide-react';
 import { Interest, ViralPrediction, CreatorAnalysis, GapAnalysis, Idea } from '../types';
 import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketingContent, generateNeuralImage } from '../services/apiService';
