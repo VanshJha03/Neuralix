@@ -233,7 +233,7 @@ const App: React.FC = () => {
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleClearMemory = () => {
-    if (confirm('Permanently wipe Creatio neural session?')) setMessages([]);
+    if (confirm('Permanently wipe Creatio AI session?')) setMessages([]);
   };
 
   const handleSignOut = async () => {
@@ -251,12 +251,12 @@ const App: React.FC = () => {
     if (confirm('Permanently remove this research pillar?')) setIdeas(prev => prev.filter(i => i.id !== id));
   };
 
-  const onCommitMemory = async (packet: string) => {
+  const onSaveData = async (data: string) => {
     try {
-      await saveMemory(packet, 'manual');
-      setNeuralMemories(prev => [packet, ...prev]);
+      await saveMemory(data, 'manual');
+      setSavedHistory(prev => [data, ...prev]);
     } catch (err) {
-      console.error('Memory sync failure', err);
+      console.error('Data sync failure', err);
     }
   };
 

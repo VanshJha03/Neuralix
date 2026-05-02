@@ -202,8 +202,8 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
             </div>
           </div>
           <div>
-            <h1 className="text-3xl lg:text-5xl font-normal tracking-tighter mb-1 uppercase" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Radar</h1>
-            <p className="text-zinc-500 font-normal uppercase text-[9px] lg:text-[10px] tracking-[0.3em]">Synaptic alignment with market competitors</p>
+            <h1 className="text-3xl lg:text-5xl font-normal tracking-tighter mb-1 uppercase" style={{ fontFamily: "'Orbitron', sans-serif" }}>Market Radar</h1>
+            <p className="text-zinc-500 font-normal uppercase text-[9px] lg:text-[10px] tracking-[0.3em]">AI-driven alignment with market trends</p>
           </div>
         </div>
 
@@ -213,7 +213,7 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
           className="w-full lg:w-auto group flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-[2rem] font-normal uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 transition-all shadow-[0_20px_60px_rgba(255,255,255,0.05)] disabled:opacity-10"
         >
           {isLocked ? <Lock size={18} /> : (isSearching ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} className="fill-black" />)}
-          {isLocked ? 'Neural Link Required' : 'Deep Neural Scan'}
+          {isLocked ? 'Pro Upgrade Required' : 'Detailed Analysis Scan'}
         </button>
       </div>
 
@@ -271,8 +271,8 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
       {nicheContent.length > 0 && !isSearching && (
         <section className="animate-in fade-in slide-in-from-bottom-20 duration-1000 mb-32">
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-[9px] lg:text-[10px] font-normal uppercase tracking-[0.8em] text-zinc-500 mb-4">Neural Feedback Loop</h2>
-            <h3 className="text-3xl lg:text-5xl font-normal text-white tracking-tighter">Viral Niche Pulse</h3>
+            <h2 className="text-[9px] lg:text-[10px] font-normal uppercase tracking-[0.8em] text-zinc-500 mb-4">AI Analysis Feed</h2>
+            <h3 className="text-3xl lg:text-5xl font-normal text-white tracking-tighter">Market Activity Feed</h3>
           </div>
 
           <NicheRadarCarousel items={nicheContent} />

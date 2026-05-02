@@ -138,7 +138,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
       <div className="w-full lg:w-1/3 space-y-6 lg:space-y-8 flex flex-col h-auto lg:h-full shrink-0">
         <div className="text-center lg:text-left">
           <h1 className="text-3xl font-normal tracking-tighter mb-1 uppercase font-normal">Content Studio</h1>
-          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.3em]">Neural Asset Production</p>
+          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.3em]">AI Asset Production</p>
         </div>
 
         <div className="flex-1 lg:overflow-y-auto space-y-3 lg:pr-2 scrollbar-hide">
@@ -257,7 +257,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                     format.includes('IG') ? <Instagram size={18} /> :
                       format.includes('YT') ? <Youtube size={18} /> : <Megaphone size={18} />}
                 </div>
-                <h3 className="font-normal text-xl tracking-tighter uppercase font-normal">Neural {format} Output</h3>
+                <h3 className="font-normal text-xl tracking-tighter uppercase font-normal">AI {format} Output</h3>
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 {format.includes('X') && (
@@ -304,7 +304,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                           </div>
                         )}
                       </div>
-                      <p className="mt-4 text-[9px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center font-normal">Visual logic based on neural narrative</p>
+                      <p className="mt-4 text-[9px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center font-normal">Visual representation based on AI content</p>
                     </div>
                   );
                 }
@@ -356,7 +356,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                   {isRefining ? <Loader2 size={14} className="animate-spin" /> : 'Refine'}
                 </button>
               </div>
-              <p className="mt-4 text-[8px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center">Neural Iteration Cycle Active</p>
+              <p className="mt-4 text-[8px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center">AI Optimization Active</p>
             </div>
 
             {/* AI Edit Modal Overlay */}
@@ -367,8 +367,8 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
 
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h4 className="text-sm font-normal uppercase tracking-widest text-white font-normal">Neural Refinement</h4>
-                      <p className="text-[10px] text-zinc-500 uppercase font-normal tracking-tighter">Instruct AI to mutate script</p>
+                      <h4 className="text-sm font-normal uppercase tracking-widest text-white font-normal">AI Refinement</h4>
+                      <p className="text-[10px] text-zinc-500 uppercase font-normal tracking-tighter">Instruct AI to optimize content</p>
                     </div>
                     <button
                       type="button"
@@ -408,30 +408,81 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
       </div>
 
       {isLocked && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-2xl p-6 text-center animate-in fade-in duration-500 overflow-hidden">
-          {/* Immersive Neural Glow Background */}
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-3xl p-6 overflow-y-auto">
+          {/* Background Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-          <div className="relative group overflow-hidden bg-zinc-900/60 border border-white/10 p-8 lg:p-14 rounded-[2.5rem] lg:rounded-[4rem] shadow-[0_0_100px_rgba(0,0,0,0.8)] max-w-xl animate-in zoom-in-95 duration-700">
-            {/* Background Glow */}
-            <div className="absolute -top-24 -left-24 w-64 h-64 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
-            
-            <div className="relative z-10">
-              <div className="w-16 lg:w-24 h-16 lg:h-24 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
-                <Lock size={32} className="text-white/80" />
+          <div className="relative w-full max-w-4xl bg-zinc-950/50 border border-white/5 rounded-[3rem] p-8 lg:p-14 shadow-[0_0_100px_rgba(0,0,0,0.8)] animate-in zoom-in-95 duration-700">
+            <div className="text-center mb-12">
+              <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Crown size={32} className="text-white" />
               </div>
-              <h2 className="text-3xl lg:text-5xl font-normal tracking-tighter text-white mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>Restricted Studio</h2>
-              <p className="text-zinc-500 text-sm lg:text-base font-normal leading-relaxed mb-10 max-w-sm mx-auto">
-                Content synthesis and neural asset production are reserved for Pro link operators.
+              <h2 className="text-3xl lg:text-5xl font-normal tracking-tighter text-white mb-3" style={{ fontFamily: "'Orbitron', sans-serif" }}>Unlock Content Studio</h2>
+              <p className="text-zinc-500 text-sm font-normal max-w-md mx-auto">
+                Automated content synthesis, asset production, and advanced AI refinements are reserved for professional accounts.
               </p>
-              <button 
-                onClick={() => window.location.href = '#pricing'} 
-                className="w-full py-4 lg:py-5 bg-white text-black rounded-2xl text-[10px] lg:text-[11px] font-normal uppercase tracking-[0.3em] hover:bg-zinc-200 transition-all active:scale-95 shadow-xl"
-              >
-                Establish Pro Link
-              </button>
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* PRO Tier */}
+              <div className="p-8 rounded-[2rem] bg-zinc-900/40 border border-zinc-800 flex flex-col group hover:border-zinc-700 transition-all">
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-xl font-normal text-white tracking-tight uppercase" style={{ fontFamily: "'Orbitron', sans-serif" }}>PRO</h3>
+                    <p className="text-[9px] text-zinc-600 uppercase tracking-widest mt-1">Monthly Access</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-normal text-white tracking-tight">$49</p>
+                    <p className="text-[9px] text-zinc-600 uppercase tracking-widest">per month</p>
+                  </div>
+                </div>
+                <ul className="space-y-3 mb-10 flex-1">
+                  {['100 Post Generations', '100 AI Generated Images', 'Unlimited Content Refinement', 'Full Multi-Platform Export'].map(f => (
+                    <li key={f} className="flex items-center gap-3">
+                      <div className="w-1 h-1 rounded-full bg-indigo-500" />
+                      <span className="text-[10px] text-zinc-400 font-normal uppercase tracking-wide">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button 
+                  onClick={() => window.location.hash = 'pricing'} 
+                  className="w-full py-4 rounded-xl bg-white text-black text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all"
+                >
+                  Start Pro — $49/mo
+                </button>
+              </div>
+
+              {/* LTD Tier */}
+              <div className="p-8 rounded-[2rem] bg-white border border-white flex flex-col group relative overflow-hidden shadow-[0_0_50px_rgba(255,255,255,0.1)]">
+                <div className="absolute top-0 right-0 px-4 py-1.5 bg-black text-white text-[8px] font-normal uppercase tracking-[0.2em] rounded-bl-xl">Best Value</div>
+                <div className="flex justify-between items-start mb-6">
+                  <div>
+                    <h3 className="text-xl font-normal text-black tracking-tight uppercase" style={{ fontFamily: "'Orbitron', sans-serif" }}>LTD</h3>
+                    <p className="text-[9px] text-zinc-500 uppercase tracking-widest mt-1">Lifetime License</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-normal text-black tracking-tight">$129</p>
+                    <p className="text-[9px] text-zinc-500 uppercase tracking-widest">one-time</p>
+                  </div>
+                </div>
+                <ul className="space-y-3 mb-10 flex-1">
+                  {['Lifetime Content Production', 'Priority Image Processing', 'Exclusive Marketing Templates', 'No Monthly Limits Forever'].map(f => (
+                    <li key={f} className="flex items-center gap-3">
+                      <div className="w-1 h-1 rounded-full bg-black" />
+                      <span className="text-[10px] text-zinc-700 font-normal uppercase tracking-wide">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button 
+                  onClick={() => window.location.hash = 'pricing'} 
+                  className="w-full py-4 rounded-xl bg-black text-white text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl"
+                >
+                  Get Lifetime — $129
+                </button>
+              </div>
+            </div>
+
+            <p className="mt-8 text-center text-zinc-700 text-[8px] font-normal uppercase tracking-widest">Secure checkout via Dodo Payments • Unlimited Workspace Access</p>
           </div>
         </div>
       )}

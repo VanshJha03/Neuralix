@@ -11,8 +11,8 @@ interface OmniTerminalProps {
 const COMMANDS = [
   { id: 'nav', label: 'Navigate', icon: Navigation, hint: 'nav [chat|search|ideas|marketing|interests]' },
   { id: 'niche', label: 'Inject Niche', icon: Hash, hint: 'niche [topic]' },
-  { id: 'clear', label: 'Wipe Memory', icon: Trash2, hint: 'clear (wipes synaptic data)' },
-  { id: 'research', label: 'Deep Search', icon: Search, hint: 'research [query]' }
+  { id: 'clear', label: 'Wipe Memory', icon: Trash2, hint: 'clear (wipes workspace data)' },
+  { id: 'research', label: 'Advanced Search', icon: Search, hint: 'research [query]' }
 ];
 
 const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpen }) => {
@@ -59,7 +59,7 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search neural link or type '/' for commands..."
+            placeholder="Search workspace or type '/' for commands..."
             className="flex-1 bg-transparent border-none focus:ring-0 text-lg font-normal text-white placeholder:text-zinc-700 outline-none"
           />
           <div className="px-2 py-1 bg-zinc-900 rounded-md text-[10px] font-normal text-zinc-600 uppercase tracking-widest border border-zinc-800">
@@ -96,7 +96,7 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
               <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl">
                 <Search size={18} className="text-white" />
                 <div>
-                  <p className="text-xs text-zinc-400">Deep Neural Search for:</p>
+                  <p className="text-xs text-zinc-400">Advanced Search for:</p>
                   <p className="text-sm font-normal text-white">"{input}"</p>
                 </div>
                 <div className="ml-auto flex items-center gap-2 text-[10px] font-normal text-white">

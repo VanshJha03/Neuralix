@@ -40,12 +40,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navItems = [
-    { id: 'chat' as ViewType, icon: MessageSquare, label: "Neural AI" },
-    { id: 'analytics' as ViewType, icon: BarChart3, label: "Niche Analytics" },
-    { id: 'marketing' as ViewType, icon: Megaphone, label: "Marketing Studio" },
-    { id: 'interests' as ViewType, icon: Fingerprint, label: "Interest Markers" },
-    { id: 'ideas' as ViewType, icon: Lightbulb, label: "Idea Bank" },
-    { id: 'settings' as ViewType, icon: Settings, label: "Neural Config" },
+    { id: 'chat' as ViewType, icon: MessageSquare, label: "AI Assistant" },
+    { id: 'analytics' as ViewType, icon: BarChart3, label: "Analytics" },
+    { id: 'marketing' as ViewType, icon: Megaphone, label: "Marketing" },
+    { id: 'interests' as ViewType, icon: Fingerprint, label: "Interests" },
+    { id: 'ideas' as ViewType, icon: Lightbulb, label: "Ideas" },
+    { id: 'settings' as ViewType, icon: Settings, label: "Settings" },
   ];
 
   const Item = ({ id, icon: Icon, label }: { id: ViewType, icon: any, label: string }) => (
@@ -84,8 +84,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <NeuralLogo size={42} />
           {!isCollapsed && (
             <div>
-              <h1 className="text-2xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
-              <p className="text-[7px] font-normal uppercase tracking-[0.5em] text-zinc-500">Neural Intelligence</p>
+              <h1 className="text-lg font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+              <p className="text-[7px] font-normal uppercase tracking-[0.5em] text-zinc-500">Advanced Intelligence</p>
             </div>
           )}
         </div>

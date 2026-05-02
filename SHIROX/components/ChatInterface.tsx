@@ -322,7 +322,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <div className="relative mb-8 flex flex-col items-center text-center">
             <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
             <h1 className="text-4xl lg:text-5xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
-            <p className="text-zinc-800 font-normal mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Neural Intelligence Matrix v5.0</p>
+            <p className="text-zinc-800 font-normal mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Advanced Intelligence Network v5.0</p>
           </div>
 
           <div className="w-full relative group">
@@ -331,7 +331,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                placeholder={isLocked ? "Upgrade to PRO to interact with Neural AI..." : `Initiate synaptic link...`}
+                placeholder={isLocked ? "Upgrade to PRO to access AI Assistant..." : `How can I help you today?`}
                 rows={1}
                 disabled={isLocked}
                 className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-normal tracking-tight disabled:cursor-not-allowed"

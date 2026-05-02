@@ -30,12 +30,12 @@ const Navbar: React.FC<NavbarProps> = ({
   isLocked = false,
 }) => {
   const navItems = [
-    { id: 'chat' as ViewType, icon: MessageSquare, label: 'Neural AI' },
+    { id: 'chat' as ViewType, icon: MessageSquare, label: 'AI Assistant' },
     { id: 'analytics' as ViewType, icon: BarChart3, label: 'Analytics' },
     { id: 'marketing' as ViewType, icon: Megaphone, label: 'Marketing' },
     { id: 'interests' as ViewType, icon: Fingerprint, label: 'Interests' },
     { id: 'ideas' as ViewType, icon: Lightbulb, label: 'Ideas' },
-    { id: 'settings' as ViewType, icon: Settings, label: 'Config' },
+    { id: 'settings' as ViewType, icon: Settings, label: 'Settings' },
   ];
 
   return (
@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({
           <h1 className="text-xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
           <div className="flex items-center gap-2 mt-0.5">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-            <span className="text-[7px] font-normal uppercase tracking-[0.4em] text-zinc-500">v5.1 Core Active</span>
+            <span className="text-[7px] font-normal uppercase tracking-[0.4em] text-zinc-500">v5.1 System Active</span>
           </div>
         </div>
       </div>
@@ -89,10 +89,10 @@ const Navbar: React.FC<NavbarProps> = ({
       {/* ── Right: Status + User ── */}
       <div className="flex items-center justify-end gap-3">
 
-        {/* Neural link status */}
+        {/* AI status */}
         <div className="flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900/60 border border-zinc-800/50 rounded-full">
           <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[8px] font-normal uppercase tracking-[0.3em] text-zinc-500">Online</span>
+          <span className="text-[8px] font-normal uppercase tracking-[0.3em] text-zinc-500">AI Active</span>
         </div>
 
         {/* Search */}
