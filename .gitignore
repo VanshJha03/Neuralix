@@ -5,4 +5,8 @@ dist/
 build/
 .vscode/
 *.log
+
+# Next.js build output — never commit these
 .next/
+SHIROX/.next/
+out/
