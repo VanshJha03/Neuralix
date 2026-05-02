@@ -105,9 +105,9 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
         const imageMatches = script.match(/\[IMAGE: [^\]]+\]/g);
         if (imageMatches) {
           const initial: Record<string, { data: string | null; loading: boolean }> = {};
-          imageMatches.forEach(match => { initial[match] = { data: null, loading: true }; });
+          imageMatches.forEach((match: string | number) => { initial[match] = { data: null, loading: true }; });
           setGeneratedImages(initial);
-          await Promise.all(imageMatches.map(async (match) => {
+          await Promise.all(imageMatches.map(async (match: string) => {
             try {
               const prompt = match.replace('[IMAGE: ', '').replace(']', '').trim();
               const imgData = await generateNeuralImage(prompt);

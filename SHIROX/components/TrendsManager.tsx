@@ -115,9 +115,9 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
         const imageMatches = script.match(/\[IMAGE: [^\]]+\]/g);
         if (imageMatches) {
           const initial: Record<string, GeneratedImage> = {};
-          imageMatches.forEach(match => { initial[match] = { placeholder: match, data: null, loading: true }; });
+          imageMatches.forEach((match: string | number) => { initial[match] = { placeholder: match, data: null, loading: true }; });
           setGeneratedImages(initial);
-          await Promise.all(imageMatches.map(async (match) => {
+          await Promise.all(imageMatches.map(async (match: string) => {
             try {
               const prompt = match.replace('[IMAGE: ', '').replace(']', '').trim();
               const imgData = await generateNeuralImage(prompt);

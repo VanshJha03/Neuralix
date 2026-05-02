@@ -282,7 +282,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
   // Wait for settings to load before checking tier (avoid flash of paywall)
   // Once email is populated, settings have synced from Supabase
   const settingsLoaded = !!userSettings.email;
-  if (settingsLoaded && (!userSettings.tier || userSettings.tier === 'Free')) {
+  if (settingsLoaded && (!userSettings.tier || (userSettings.tier as string) === 'Free')) {
     return <PricingScreen onSelectTier={handleSelectTier} />;
   }
 
