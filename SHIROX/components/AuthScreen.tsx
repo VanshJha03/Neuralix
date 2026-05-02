@@ -22,13 +22,21 @@ const AuthScreen: React.FC = () => {
         setLoading(true);
         try {
             if (mode === 'signup') {
-                const { error } = await supabase.auth.signUp({
+                const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
                     options: { data: { full_name: name } },
                 });
                 if (error) throw error;
-                setSuccessMsg('Account created. Check your email to confirm, then sign in.');
+                
+                // If Supabase "Confirm Email" is OFF, we can sign in immediately
+                if (data.user) {
+                    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+                    if (signInError) {
+                        setSuccessMsg('Account created! Please sign in with your credentials.');
+                        setMode('login');
+                    }
+                }
             } else {
                 const { error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
@@ -69,7 +77,7 @@ const AuthScreen: React.FC = () => {
                         <div className="w-5 h-5 border border-white rounded-full" />
                         <span className="text-lg font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
                     </div>
-                    <p className="text-zinc-700 text-[10px] uppercase tracking-[0.4em]">Neural Intelligence Matrix v5.0</p>
+                    <p className="text-zinc-700 text-[10px] uppercase tracking-[0.4em]">Advanced Intelligence Network v5.0</p>
                 </div>
 
                 {/* Pricing cards */}
@@ -138,7 +146,7 @@ const AuthScreen: React.FC = () => {
                         {mode === 'login' ? 'Sign In' : 'Create Account'}
                     </h2>
                     <p className="text-zinc-600 text-[11px] uppercase tracking-widest mb-8">
-                        {mode === 'login' ? 'Enter your credentials to continue' : 'Set up your neural profile'}
+                        {mode === 'login' ? 'Enter your credentials to continue' : 'Set up your professional profile'}
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-3">
