@@ -318,7 +318,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <NeuralBackground isTyping={isTyping || isLoading} />
 
       {!hasMessages ? (
-        <div className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 max-w-2xl mx-auto w-full z-10">
+        <div className="flex-1 flex flex-col items-center pt-[12vh] p-6 lg:p-12 max-w-2xl mx-auto w-full z-10">
           <div className="relative mb-8 flex flex-col items-center text-center">
             <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
             <h1 className="text-4xl lg:text-5xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>

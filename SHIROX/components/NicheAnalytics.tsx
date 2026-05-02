@@ -448,21 +448,26 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       </div>
 
       {isLocked && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm p-6 text-center">
-          <div className="bg-zinc-900/90 border border-zinc-800 p-12 rounded-[3rem] shadow-2xl max-w-md animate-in zoom-in-95 duration-500">
-            <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8">
-              <Lock size={40} className="text-white" />
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950/60 backdrop-blur-xl p-6 text-center">
+          <div className="relative group overflow-hidden bg-zinc-900/40 border border-zinc-800 p-8 lg:p-14 rounded-[2.5rem] lg:rounded-[4rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] max-w-xl animate-in zoom-in-95 duration-700">
+            {/* Background Glow */}
+            <div className="absolute -top-24 -left-24 w-64 h-64 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
+            
+            <div className="relative z-10">
+              <div className="w-16 lg:w-24 h-16 lg:h-24 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
+                <Lock size={32} className="text-white/80" />
+              </div>
+              <h2 className="text-3xl lg:text-5xl font-normal tracking-tighter text-white mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>Restricted Synapse</h2>
+              <p className="text-zinc-500 text-sm lg:text-base font-normal leading-relaxed mb-10 max-w-sm mx-auto">
+                Neural analytics and deep market mapping are reserved for Pro link operators.
+              </p>
+              <button 
+                onClick={() => window.location.href = '#pricing'} 
+                className="w-full py-4 lg:py-5 bg-white text-black rounded-2xl text-[10px] lg:text-[11px] font-normal uppercase tracking-[0.3em] hover:bg-zinc-200 transition-all active:scale-95 shadow-xl"
+              >
+                Establish Pro Link
+              </button>
             </div>
-            <h2 className="text-3xl font-normal tracking-tighter text-white mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>Restricted Synapse</h2>
-            <p className="text-zinc-400 text-sm font-normal leading-relaxed mb-10">
-              Niche Analytics and Market Gap detection require a Neural Link upgrade.
-            </p>
-            <button 
-              onClick={() => window.location.href = '#pricing'} 
-              className="w-full py-4 bg-white text-black rounded-2xl text-[10px] font-normal uppercase tracking-widest hover:bg-zinc-200 transition-all active:scale-95"
-            >
-              Upgrade to PRO
-            </button>
           </div>
         </div>
       )}

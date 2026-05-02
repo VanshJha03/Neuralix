@@ -66,9 +66,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
                 title={item.label}
-                className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-normal uppercase tracking-widest transition-all duration-200 ${
+                className={`relative flex items-center gap-2 px-4 py-3 rounded-xl text-[10px] font-normal uppercase tracking-widest transition-all duration-200 ${
                   isActive
-                    ? 'bg-white text-black shadow-md'
+                    ? 'bg-white text-black shadow-lg scale-[1.02]'
                     : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5'
                 }`}
               >
