@@ -5,7 +5,7 @@
  * This module calls the backend so secrets stay out of the browser.
  */
 
-import { auth } from '../lib/firebase';
+import { getAuthToken } from '../lib/supabase';
 import {
     TaskMode,
     Interest,
@@ -21,8 +21,7 @@ import {
 const BACKEND_URL = '';
 
 async function apiFetch(path: string, options: RequestInit = {}) {
-    const user = auth.currentUser;
-    const token = user ? await user.getIdToken() : null;
+    const token = await getAuthToken();
 
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',

@@ -1,42 +1,41 @@
 
 import { NextResponse } from 'next/server';
 import { verifyRequest } from '@/lib/auth';
-import { adminDb } from '@/lib/firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseAdmin = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function GET(req: Request) {
     const auth = await verifyRequest(req);
     if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
-
-    const snap = await adminDb
-        .collection('users').doc(auth.user.id)
-        .collection('memories')
-        .orderBy('timestamp', 'desc')
-        .limit(50)
-        .get();
-
-    const packets = snap.docs.map(d => d.data().packet as string);
-    return NextResponse.json(packets);
+    
+    return NextResponse.json(auth.settings.memories || []);
 }
 
 export async function POST(req: Request) {
     const auth = await verifyRequest(req);
     if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
-    const { packet, category } = await req.json();
+    const { packet } = await req.json();
     if (!packet) return NextResponse.json({ error: 'No packet provided' }, { status: 400 });
 
-    // Use a hash of the packet as doc ID to prevent duplicates (mirrors SQLite UNIQUE constraint)
-    const docId = Buffer.from(packet).toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 40);
-
-    await adminDb
-        .collection('users').doc(auth.user.id)
-        .collection('memories').doc(docId)
-        .set({
-            packet,
-            category: category || 'general',
-            timestamp: FieldValue.serverTimestamp(),
-        }, { merge: true });
+    // Fetch existing memories to append (or use array_append in SQL)
+    const existingMemories = auth.settings.memories || [];
+    
+    // Deduplicate and append
+    if (!existingMemories.includes(packet)) {
+        const { error } = await supabaseAdmin
+            .from('influencers')
+            .update({ 
+                memories: [packet, ...existingMemories].slice(0, 100) 
+            })
+            .eq('user_id', auth.user.id);
+            
+        if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
 }

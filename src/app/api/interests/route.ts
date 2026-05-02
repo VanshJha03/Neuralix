@@ -1,35 +1,32 @@
 
 import { NextResponse } from 'next/server';
 import { verifyRequest } from '@/lib/auth';
-import { adminDb } from '@/lib/firebase-admin';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseAdmin = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export async function GET(req: Request) {
     const auth = await verifyRequest(req);
     if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
-
-    const snap = await adminDb
-        .collection('users').doc(auth.user.id)
-        .collection('interests')
-        .get();
-
-    const interests = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    return NextResponse.json(interests);
+    
+    // Return interests from settings (already fetched in verifyRequest)
+    return NextResponse.json(auth.settings.interests || []);
 }
 
 export async function POST(req: Request) {
     const auth = await verifyRequest(req);
     if ('error' in auth) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
-    const interests: { id: string; label: string; active: boolean }[] = await req.json();
+    const interests = await req.json();
 
-    const collRef = adminDb.collection('users').doc(auth.user.id).collection('interests');
+    const { error } = await supabaseAdmin
+        .from('influencers')
+        .update({ interests })
+        .eq('user_id', auth.user.id);
 
-    // Delete all existing, then re-write (mirrors SQLite DELETE + INSERT pattern)
-    const existing = await collRef.get();
-    const batch = adminDb.batch();
-    existing.docs.forEach(d => batch.delete(d.ref));
-    interests.forEach(i => batch.set(collRef.doc(i.id), { label: i.label, active: i.active }));
-    await batch.commit();
-
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
     return NextResponse.json({ success: true });
 }

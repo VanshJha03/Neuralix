@@ -1,13 +1,17 @@
 
-import { adminAuth, adminDb } from './firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
+import { createClient } from '@supabase/supabase-js';
+
+// Initialize Supabase Admin for server-side operations
+const supabaseAdmin = createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 export const TIER_LIMITS: any = {
-    'Free':       { analytics: 5,   content: 5,   image: 0,   gap: 0,   niche: 1,   chat: 10,  marketingStudio: false, isOneTime: true },
-    'PRO_MONTHLY':{ analytics: 5,   content: 10,  image: 5,   gap: 5,   niche: 5,   chat: 100, marketingStudio: true,  marketingLimit: 10 },
-    'LTD':        { analytics: 2,   content: 5,   image: 2,   gap: 3,   niche: 3,   chat: 50,  marketingStudio: true,  marketingLimit: 5 },
-    'LTD_PRO':    { analytics: 5,   content: 10,  image: 10,  gap: 5,   niche: 5,   chat: 999, marketingStudio: true,  marketingLimit: 10 },
-    'beta':       { analytics: 999, content: 999, image: 999, gap: 999, niche: 999, chat: 999, marketingStudio: true,  marketingLimit: 999 },
+    'Free':        { analytics: 5,   content: 5,   image: 0,   gap: 0,   niche: 1,   chat: 10,  marketingStudio: false, isOneTime: true },
+    'PRO':         { analytics: 30,  content: 100, image: 100, gap: 30,  niche: 30, chat: 500, marketingStudio: true,  marketingLimit: 100 },
+    'LTD':         { analytics: 30,  content: 100, image: 100, gap: 30,  niche: 30, chat: 500, marketingStudio: true,  marketingLimit: 100 },
+    'beta':        { analytics: 999, content: 999, image: 999, gap: 999, niche: 999, chat: 999, marketingStudio: true,  marketingLimit: 999 },
 };
 
 export interface UserAuth {
@@ -24,91 +28,74 @@ export interface AuthResponse {
 }
 
 export async function verifyRequest(req: Request): Promise<AuthResponse | { error: string; status: number }> {
-    let userId = 'local-operator-001';
-    let userEmail = 'operator@local.dev';
-
     const authHeader = req.headers.get('authorization');
-    if (authHeader?.startsWith('Bearer ')) {
-        const idToken = authHeader.split('Bearer ')[1];
-        try {
-            const decodedToken = await adminAuth.verifyIdToken(idToken);
-            userId = decodedToken.uid;
-            userEmail = decodedToken.email || userEmail;
-        } catch (error) {
-            console.error('Neural Auth Failure:', error);
-            return { error: 'Authentication Breach', status: 401 };
-        }
+    if (!authHeader?.startsWith('Bearer ')) {
+        return { error: 'No authorization header', status: 401 };
     }
 
-    const today = new Date().toISOString().split('T')[0];
-    const thisMonth = today.substring(0, 7);
-    const settingsRef = adminDb.collection('users').doc(userId).collection('data').doc('settings');
-    const snap = await settingsRef.get();
+    const token = authHeader.split('Bearer ')[1];
+    
+    // Verify JWT with Supabase
+    const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
+    
+    if (authError || !user) {
+        console.error('Supabase Auth Failure:', authError);
+        return { error: 'Authentication Breach', status: 401 };
+    }
 
-    let settings: any;
+    const userId = user.id;
+    const userEmail = user.email || '';
 
-    if (!snap.exists) {
-        // First time user — create defaults
-        settings = {
-            user_id: userId,
-            name: 'Operator',
-            handle: 'neural_link',
-            avatarColor: '#ffffff',
-            customSystemPrompt: '',
-            styles: '[]',
-            linkedAccounts: '[]',
-            xPostImages: true,
-            xThreadImages: true,
-            tier: 'Free',
-            daily_analytics_count: 0,
-            daily_content_count: 0,
-            daily_image_count: 0,
-            daily_chat_count: 0,
-            total_analytics_count: 0,
-            total_content_count: 0,
-            monthly_gap_count: 0,
-            last_usage_reset: today,
-            last_monthly_reset: thisMonth,
+    // Fetch user settings from influencers table
+    const { data: influencer, error: dbError } = await supabaseAdmin
+        .from('influencers')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+    if (dbError || !influencer) {
+        // Auto-create influencer if missing
+        const { data: newInfluencer, error: createError } = await supabaseAdmin
+            .from('influencers')
+            .upsert({ 
+                user_id: userId, 
+                name: user.user_metadata?.full_name || 'Operator',
+                handle: 'system_link',
+                tier: 'Free'
+            }, { onConflict: 'user_id' })
+            .select()
+            .single();
+
+        if (createError) return { error: 'Database Error', status: 500 };
+        return {
+            user: { id: userId, email: userEmail, tier: 'Free' },
+            settings: newInfluencer
         };
-        await settingsRef.set(settings);
-    } else {
-        settings = snap.data()!;
-
-        // Daily reset
-        if (settings.last_usage_reset !== today) {
-            const resetFields = {
-                daily_analytics_count: 0,
-                daily_content_count: 0,
-                daily_image_count: 0,
-                daily_chat_count: 0,
-                last_usage_reset: today,
-            };
-            await settingsRef.update(resetFields);
-            Object.assign(settings, resetFields);
-        }
-
-        // Monthly reset
-        if (settings.last_monthly_reset !== thisMonth) {
-            const monthlyReset = { monthly_gap_count: 0, last_monthly_reset: thisMonth };
-            await settingsRef.update(monthlyReset);
-            Object.assign(settings, monthlyReset);
-        }
     }
 
-    // ── Monthly subscription expiry check ──────────────────────────────────
-    if (settings.tier === 'PRO_MONTHLY' && settings.subscriptionExpiry) {
-        const expiry = new Date(settings.subscriptionExpiry);
-        if (expiry < new Date()) {
-            const downgradeFields = { tier: 'Free', subscriptionExpiry: null, subscriptionId: null };
-            await settingsRef.update(downgradeFields);
-            Object.assign(settings, downgradeFields);
-            console.log(`⏰ PRO_MONTHLY expired for user ${userId} — downgraded to Free`);
-        }
+    // Handle Month Reset (Logic same as frontend for consistency)
+    const thisMonth = new Date().toISOString().substring(0, 7);
+    if (influencer.last_reset !== thisMonth) {
+        await supabaseAdmin
+            .from('influencers')
+            .update({
+                niche_count: 0, gap_count: 0, chat_count: 0,
+                content_count: 0, image_count: 0, trend_count: 0,
+                last_reset: thisMonth,
+            })
+            .eq('user_id', userId);
+        
+        influencer.niche_count = 0;
+        influencer.gap_count = 0;
+        influencer.chat_count = 0;
+        influencer.content_count = 0;
+        influencer.image_count = 0;
+        influencer.trend_count = 0;
     }
 
     return {
-        user: { id: userId, email: userEmail, tier: settings.tier || 'Free' },
-        settings,
+        user: { id: userId, email: userEmail, tier: influencer.tier || 'Free' },
+        settings: influencer,
     };
 }
 
@@ -116,29 +103,51 @@ export function checkLimit(type: string, user: any, settings: any) {
     const limits = TIER_LIMITS[user.tier] || TIER_LIMITS['Free'];
 
     if (type === 'marketingStudio' && !limits.marketingStudio) {
-        return { error: 'MARKETING STUDIO RESTRICTED: Join PRO/LTD for access.' };
+        return { error: 'PRO UPGRADE REQUIRED: Content Studio is reserved for professional tiers.' };
     }
 
-    const usageField = `daily_${type}_count`;
-    const totalField = `total_${type}_count`;
+    // Mapping type to DB column
+    const columnMap: any = {
+        'analytics': 'niche_count',
+        'content': 'content_count',
+        'image': 'image_count',
+        'gap': 'gap_count',
+        'chat': 'chat_count',
+        'trend': 'trend_count'
+    };
 
-    if (limits.isOneTime) {
-        if ((settings[totalField] ?? 0) >= limits[type]) {
-            return { error: `ONE-TIME LIMIT REACHED: ${limits[type]} ${type} packets. Join PRO/LTD for daily resets.` };
-        }
-    } else {
-        if ((settings[usageField] ?? 0) >= limits[type]) {
-            return { error: `DAILY QUOTA REACHED: ${limits[type]} ${type} packets. Wait for next neural cycle or upgrade.` };
-        }
+    const dbField = columnMap[type] || `${type}_count`;
+    const usage = settings[dbField] ?? 0;
+
+    if (usage >= (limits[type] ?? 0)) {
+        return { error: `QUOTA REACHED: You have utilized your ${limits[type]} allocated ${type} packets. Upgrade for more access.` };
     }
 
     return null;
 }
 
 export async function incrementUsage(type: string, userId: string) {
-    const settingsRef = adminDb.collection('users').doc(userId).collection('data').doc('settings');
-    await settingsRef.update({
-        [`daily_${type}_count`]: FieldValue.increment(1),
-        [`total_${type}_count`]: FieldValue.increment(1),
-    });
+    const columnMap: any = {
+        'analytics': 'niche_count',
+        'content': 'content_count',
+        'image': 'image_count',
+        'gap': 'gap_count',
+        'chat': 'chat_count',
+        'trend': 'trend_count'
+    };
+    const dbField = columnMap[type] || `${type}_count`;
+
+    // Fetch current count
+    const { data } = await supabaseAdmin
+        .from('influencers')
+        .select(dbField)
+        .eq('user_id', userId)
+        .single();
+    
+    if (data) {
+        await supabaseAdmin
+            .from('influencers')
+            .update({ [dbField]: (data[dbField] || 0) + 1 })
+            .eq('user_id', userId);
+    }
 }
