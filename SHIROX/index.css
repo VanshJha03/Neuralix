@@ -1,3 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Viewport fill — critical for Next.js ── */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Next.js 15 App Router renders children directly inside body — no wrapper div */
+
 /* ArsCreatio Design System */
 
 :root {

@@ -1,12 +1,35 @@
 {
-  "name": "arscreatio-landing",
+  "name": "creatio",
   "version": "1.0.0",
-  "description": "ArsCreatio Landing Page",
-  "main": "index.html",
+  "private": true,
   "scripts": {
-    "start": "serve ."
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.4"
+    "@google/generative-ai": "^0.24.1",
+    "@tailwindcss/postcss": "^4.2.4",
+    "clsx": "^2.1.1",
+    "firebase": "latest",
+    "firebase-admin": "^13.8.0",
+    "lucide-react": "^0.563.0",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-markdown": "^9.0.0",
+    "remark-gfm": "^4.0.0",
+    "standardwebhooks": "^1.0.0",
+    "tailwind-merge": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "autoprefixer": "latest",
+    "postcss": "latest",
+    "tailwindcss": "latest",
+    "typescript": "latest"
   }
 }

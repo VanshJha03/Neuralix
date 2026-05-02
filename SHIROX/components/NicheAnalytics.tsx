@@ -40,8 +40,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
   // Image toggle + quota
   const [imagesEnabled, setImagesEnabled] = useState<boolean>(false);
   const imageUsed = userSettings?.usage?.image ?? 0;
-  const imageTier = userSettings?.tier || 'free';
-  const imageLimit = imageTier === 'beta' ? 10 : 0;
+  const imageLimit = 100; // PRO/LTD: 100 images/month
   const imageRemaining = Math.max(0, imageLimit - imageUsed);
 
   useEffect(() => {
@@ -391,8 +390,9 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                       className="w-full h-64 lg:h-80 bg-black/60 border border-zinc-800 rounded-2xl p-4 text-zinc-300 text-sm focus:outline-none focus:border-white/50 transition-all font-mono resize-none"
                     />
                   ) : (
-                    generatedScript.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g).map((part, i) => {
-                      const imgState = generatedImages[part];
+                    generatedScript.split(/(\[IMAGE:\s*[^\]]+\]|\[URL:\s*[^\]]+\])/gi).map((part, i) => {
+                      const lowerPart = part.toLowerCase();
+                      const imgState = Object.keys(generatedImages).find(k => k.toLowerCase() === lowerPart) ? generatedImages[Object.keys(generatedImages).find(k => k.toLowerCase() === lowerPart)!] : null;
                       if (imgState) {
                         return (
                           <div key={i} className="my-4">
@@ -408,8 +408,8 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                           </div>
                         );
                       }
-                      if (part.startsWith('[URL: ')) {
-                        const url = part.replace('[URL: ', '').replace(']', '').trim();
+                      if (lowerPart.startsWith('[url:')) {
+                        const url = part.replace(/\[URL:\s*/i, '').replace(']', '').trim();
                         return (
                           <div key={i} className="my-4">
                             <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">

@@ -1,9 +1,9 @@
+'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import type { Session } from '@supabase/supabase-js';
 import { supabase } from './lib/supabase';
+import React, { useState, useEffect, useCallback } from 'react';
+import { LogOut } from 'lucide-react';
 import { fetchUserSettings, saveUserSettings, fetchMemories, saveMemory, fetchInterests, saveInterests, fetchIdeas, saveIdeas, fetchArchive, saveArchive } from './services/apiService';
-import AuthScreen from './components/AuthScreen';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
 import IdeasManager from './components/IdeasManager';
@@ -15,6 +15,8 @@ import OmniTerminal from './components/OmniTerminal';
 import SettingsManager from './components/SettingsManager';
 import NicheAnalytics from './components/NicheAnalytics';
 import LimitReachedModal from './components/LimitReachedModal';
+import PricingScreen from './components/PricingScreen';
+import PublicHome from './components/PublicHome';
 import { Idea, Message, Interest, ViewType, UserSettings, NicheAnalyticsData } from './types';
 import { INITIAL_INTERESTS, DEFAULT_SYSTEM_PROMPT } from './constants';
 
@@ -25,7 +27,7 @@ const NeuralLoader: React.FC = () => (
       className="text-4xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-800 bg-clip-text text-transparent italic"
       style={{ fontFamily: "'Orbitron', sans-serif" }}
     >
-      ArsCreatio
+      Creatio
     </div>
     <div className="flex items-center gap-2">
       <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -38,8 +40,6 @@ const NeuralLoader: React.FC = () => (
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
 const App: React.FC = () => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
   const [activeView, setActiveView] = useState<ViewType>('chat');
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -47,6 +47,7 @@ const App: React.FC = () => {
 
   // ── Limit Modal State ──────────────────────────────────────────────────────
   const [limitModal, setLimitModal] = useState<{ message: string } | null>(null);
+  const [showPricingOnce, setShowPricingOnce] = useState(false);
 
   const [userSettings, setUserSettings] = useState<UserSettings>({
     name: 'Operator',
@@ -57,17 +58,29 @@ const App: React.FC = () => {
     linkedAccounts: [],
     xPostImages: true,
     xThreadImages: true,
+    tier: undefined,
+    usage: {
+      analytics: 0,
+      totalAnalytics: 0,
+      content: 0,
+      totalContent: 0,
+      image: 0,
+      gap: 0,
+      chat: 0,
+    }
   });
 
   const [interests, setInterests] = useState<Interest[]>(INITIAL_INTERESTS);
-  const [ideas, setIdeas] = useState<Idea[]>(() => {
-    const saved = localStorage.getItem('ArsCreatio_ideas');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = localStorage.getItem('ArsCreatio_messages');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  // Load from localStorage on client only
+  useEffect(() => {
+    const savedIdeas = localStorage.getItem('Creatio_ideas');
+    if (savedIdeas) setIdeas(JSON.parse(savedIdeas));
+    const savedMessages = localStorage.getItem('Creatio_messages');
+    if (savedMessages) setMessages(JSON.parse(savedMessages));
+  }, []);
 
   const [nicheAnalyticsData, setNicheAnalyticsData] = useState<NicheAnalyticsData>({
     predictions: [],
@@ -75,47 +88,45 @@ const App: React.FC = () => {
     gaps: [],
   });
 
+  // ── Session Sync (Supabase) ────────────────────────────────────────────────
+  const [session, setSession] = useState<any>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session?.user ?? null);
+      setAuthLoading(false);
+    });
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session?.user ?? null);
+      setAuthLoading(false);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   // ── Global limit-reached handler ────────────────────────────────────────────
-  // Children call this when they get a 429 / LIMIT error from the backend
   const onLimitReached = useCallback((message: string) => {
     setLimitModal({ message });
   }, []);
 
-  // ── Auth State Listener ───────────────────────────────────────────────────
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setAuthLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setAuthLoading(false);
-      // Clear data on sign-out / session change
-      if (!session) {
-        setMessages([]);
-        setNeuralMemories([]);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
   // ── Sync Neural Data from Backend ──────────────────────────────────────────
   useEffect(() => {
-    if (!session) return;
-
     const syncNeuralData = async () => {
       try {
-        console.log('Initiating Authenticated Neural Sync...');
+        console.log('Initiating Local Neural Sync...');
 
         const settings = await fetchUserSettings();
-        if (settings?.name) {
+        if (settings) {
           setUserSettings(prev => ({
             ...prev,
             ...settings,
-            email: session.user.email || prev.email,
           }));
+          // If newly logged in or just testing, show pricing
+          if (!localStorage.getItem('Creatio_pricing_shown')) {
+            setShowPricingOnce(true);
+            localStorage.setItem('Creatio_pricing_shown', 'true');
+          }
         }
 
         const serverInterests = await fetchInterests();
@@ -147,34 +158,47 @@ const App: React.FC = () => {
     };
 
     syncNeuralData();
-  }, [session]);
+  }, []); // Run once on mount
 
   // ── Persist Settings to Backend ───────────────────────────────────────────
   useEffect(() => {
-    if (!session || userSettings.name === 'Operator') return;
     saveUserSettings(userSettings).catch(() => { });
-  }, [userSettings, session]);
+  }, [userSettings]);
 
   // ── Persist Interests ──────────────────────────────────────────────────────
   useEffect(() => {
-    if (!session || interests.length === 0) return;
-    localStorage.setItem('ArsCreatio_interests', JSON.stringify(interests));
+    if (interests.length === 0) return;
+    localStorage.setItem('Creatio_interests', JSON.stringify(interests));
     saveInterests(interests).catch(() => { });
-  }, [interests, session]);
+  }, [interests]);
+
+  const handleSelectTier = async (tier: string) => {
+    try {
+      const res = await fetch(`/api/payments/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier }),
+      });
+      const data = await res.json();
+      if (data.checkout_url) window.location.href = data.checkout_url;
+      else throw new Error(data.error || 'No checkout URL returned');
+    } catch (e) {
+      console.error('Checkout failed:', e);
+      alert('Could not start checkout. Please try again.');
+    }
+  };
 
   // ── Persist Ideas ──────────────────────────────────────────────────────────
   useEffect(() => {
-    if (!session) return;
-    localStorage.setItem('ArsCreatio_ideas', JSON.stringify(ideas));
+    localStorage.setItem('Creatio_ideas', JSON.stringify(ideas));
     saveIdeas(ideas).catch(() => { });
-  }, [ideas, session]);
+  }, [ideas]);
 
   // ── Persist Messages ───────────────────────────────────────────────────────
   useEffect(() => {
-    if (!session) return;
-    localStorage.setItem('ArsCreatio_messages', JSON.stringify(messages));
+    localStorage.setItem('Creatio_messages', JSON.stringify(messages));
     saveArchive(messages).catch(() => { });
-  }, [messages, session]);
+  }, [messages]);
 
   // ── Keyboard Shortcuts ────────────────────────────────────────────────────
   useEffect(() => {
@@ -188,14 +212,17 @@ const App: React.FC = () => {
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleClearMemory = () => {
-    if (confirm('Permanently wipe ArsCreatio neural session?')) setMessages([]);
+    if (confirm('Permanently wipe Creatio neural session?')) setMessages([]);
   };
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    setMessages([]);
-    setNeuralMemories([]);
-    setUserSettings({ name: 'Operator', email: '', handle: 'neural_link', avatarColor: '#ffffff', customSystemPrompt: DEFAULT_SYSTEM_PROMPT, linkedAccounts: [] });
+    try {
+      await supabase.auth.signOut();
+      localStorage.removeItem('Creatio_pricing_shown');
+      window.location.reload();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const onSaveIdea = (idea: Idea) => setIdeas(prev => [idea, ...prev]);
@@ -248,22 +275,24 @@ ${neuralMemories.length > 0
 CRITICAL: Do not repeat these memories verbatim. Use them to understand user goals, past decisions, and current projects.
   `.trim();
 
-  // ── Detect if user is a guest (anonymous) ─────────────────────────────────
-  const isGuest = !!session && !session.user.email;
-
   // ── Render ────────────────────────────────────────────────────────────────
   if (authLoading) return <NeuralLoader />;
-  if (!session) return <AuthScreen />;
+  if (!session) return <PublicHome />;
+
+  // Wait for settings to load before checking tier (avoid flash of paywall)
+  // Once email is populated, settings have synced from Supabase
+  const settingsLoaded = !!userSettings.email;
+  if (settingsLoaded && (!userSettings.tier || userSettings.tier === 'Free')) {
+    return <PricingScreen onSelectTier={handleSelectTier} />;
+  }
 
   return (
-    <div className="flex h-screen w-full bg-black text-white overflow-hidden selection:bg-white/10 relative">
+    <div className="flex h-dvh w-full bg-black text-white overflow-hidden selection:bg-white/10 relative">
       {/* Global Limit Modal */}
       {limitModal && (
         <LimitReachedModal
           message={limitModal.message}
-          isGuest={isGuest}
-          onClose={() => setLimitModal(null)}
-        />
+          onClose={() => setLimitModal(null)} isGuest={false} />
       )}
 
       <Sidebar
@@ -286,36 +315,22 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
-            <span className="text-sm font-black tracking-tighter uppercase italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio</span>
+            <span className="text-sm font-black tracking-tighter uppercase italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
           </div>
           <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
         </div>
 
-        {/* Guest Banner */}
-        {isGuest && (
-          <div className="lg:hidden hidden" />
-        )}
-
         <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
-          {/* Guest indicator */}
-          {isGuest && (
-            <button
-              onClick={() => supabase.auth.signOut()}
-              className="flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/30 rounded-full text-[9px] font-black tracking-widest text-amber-400 uppercase hover:bg-amber-500/20 transition-colors"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Guest Mode · Sign Up Free
-            </button>
-          )}
           <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-black tracking-[0.3em] text-zinc-400 uppercase">
             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             Neural Link: Active
           </div>
           <button
-            onClick={() => setIsTerminalOpen(true)}
-            className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-bold text-zinc-500 hover:text-white transition-colors flex items-center gap-2"
+            onClick={handleSignOut}
+            className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-bold text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2"
           >
-            <kbd className="font-sans">⌘</kbd>K
+            <LogOut size={12} />
+            Disconnect
           </button>
         </div>
 

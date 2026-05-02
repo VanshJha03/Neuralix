@@ -18,12 +18,15 @@ export interface UserSettings {
   }[];
   xPostImages?: boolean;
   xThreadImages?: boolean;
-  tier?: 'free' | 'beta';
+  tier?: 'PRO' | 'LTD' | 'beta';
   usage?: {
     analytics: number;
+    totalAnalytics: number;
     content: number;
+    totalContent: number;
     image: number;
     gap: number;
+    chat: number;
   };
 }
 

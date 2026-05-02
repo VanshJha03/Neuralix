@@ -58,9 +58,9 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
           <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em]">Calibrate ArsCreatio Consciousness</p>
 
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-lg">
-            <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-blue-500 animate-pulse' : 'bg-zinc-700'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-white animate-pulse' : 'bg-zinc-700'}`} />
             <span className="text-[8px] font-black uppercase tracking-widest text-zinc-400">
-              Access: {userSettings.email ? `Beta Pioneer Verified (${userSettings.email})` : 'Transient Guest'}
+              Link: {userSettings.email ? `${userSettings.tier} Matrix Verified (${userSettings.email})` : 'Transient Guest'}
             </span>
           </div>
         </div>
@@ -89,16 +89,18 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
             </div>
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-8">
-                <Shield size={18} className="text-blue-500" />
-                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Beta Pioneer Status</h2>
+                <Shield size={18} className="text-zinc-500" />
+                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Active Neural Trajectory</h2>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                 {[
-                  { label: 'Neural Scans', count: userSettings.usage?.analytics ?? 0, limit: 5 },
-                  { label: 'Content Gen', count: userSettings.usage?.content ?? 0, limit: 15 },
-                  { label: 'Visual Synthesis', count: userSettings.usage?.image ?? 0, limit: 10 },
-                  { label: 'Gap Analysis', count: userSettings.usage?.gap ?? 0, limit: '∞' }
+                  { label: 'Niche Analytics', count: userSettings.usage?.analytics ?? 0, limit: 30 },
+                  { label: 'Gap Analysis', count: userSettings.usage?.gap ?? 0, limit: 30 },
+                  { label: 'Chat Messages', count: userSettings.usage?.chat ?? 0, limit: 500 },
+                  { label: 'Content Gen', count: userSettings.usage?.content ?? 0, limit: 100 },
+                  { label: 'AI Images', count: userSettings.usage?.image ?? 0, limit: 100 },
+                  { label: 'Trend Analysis', count: userSettings.usage?.analytics ?? 0, limit: 60 },
                 ].map((stat, i) => (
                   <div key={i} className="p-6 bg-black/40 border border-zinc-800/50 rounded-3xl relative overflow-hidden group/card">
                     <div className="absolute top-0 right-0 p-2 opacity-10 group-hover/card:opacity-20 transition-opacity">
@@ -107,27 +109,23 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
                     <p className="text-[8px] font-black text-zinc-600 uppercase tracking-widest mb-1">{stat.label}</p>
                     <div className="flex items-baseline gap-1">
                       <p className="text-xl font-black text-white italic tracking-tighter">
-                        {stat.limit === '∞' ? 'UNLOCKED' : `${(stat.limit as number) - stat.count}`}
+                        {stat.limit - stat.count}
                       </p>
-                      {stat.limit !== '∞' && <p className="text-[8px] font-bold text-zinc-500">remaining</p>}
+                      <p className="text-[8px] font-bold text-zinc-500">/ {stat.limit} left</p>
+                    </div>
+                    <div className="mt-2 h-1 bg-zinc-900 rounded-full overflow-hidden">
+                      <div className="h-full bg-white/30 rounded-full transition-all" style={{ width: `${Math.min(100, (stat.count / stat.limit) * 100)}%` }} />
                     </div>
                   </div>
                 ))}
               </div>
 
-              <div className="p-8 bg-zinc-950/50 border border-zinc-900 rounded-[2rem] space-y-6">
+              <div className="p-6 bg-zinc-950/50 border border-zinc-900 rounded-[2rem] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-2 italic">Support the Matrix</h4>
-                  <p className="text-zinc-500 text-[10px] font-medium leading-relaxed">
-                    Mention <span className="text-white font-black">@JhaVansh03</span> on X along with <span className="text-white font-black">ArsCreatio</span> to support our evolution.
+                  <p className="text-[10px] font-black text-white uppercase tracking-widest mb-1">
+                    {userSettings.tier === 'LTD' ? 'Lifetime Access' : 'PRO Monthly'} · Limits reset monthly
                   </p>
-                </div>
-                <div className="h-px bg-zinc-900 w-full" />
-                <div>
-                  <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-2 italic">Creator's Pact</h4>
-                  <p className="text-zinc-500 text-[10px] font-medium leading-relaxed">
-                    Help us Making Creatio better for all. Beta Pioneers will receive a <span className="text-blue-400 font-black italic underline decoration-blue-900 underline-offset-4">60% Founder's Discount</span> at the official launch.
-                  </p>
+                  <p className="text-zinc-600 text-[10px] font-medium">All features unlocked. Counters reset on the 1st of each month.</p>
                 </div>
               </div>
             </div>
@@ -328,7 +326,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
             <Shield size={18} className="text-zinc-600" />
             <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600">Neural Data Integrity</h2>
           </div>
-          <p className="text-xs text-zinc-600 mb-6 font-medium">Your data is stored in the local ArsCreatio SQLite database. Resetting will wipe all persistent memory and identity.</p>
+          <p className="text-xs text-zinc-600 mb-6 font-medium">Your data is stored in Supabase. Resetting will wipe all local cache and reload the app.</p>
           <button
             onClick={() => {
               if (confirm("Factory reset all neural data? This cannot be undone.")) {

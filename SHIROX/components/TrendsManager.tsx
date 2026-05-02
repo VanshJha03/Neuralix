@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, Sparkles, Zap, Loader2, X, ExternalLink, Radio, BookmarkPlus, Edit3, Eye, ShieldCheck, Image as ImageIcon, ImageOff, Share2 } from 'lucide-react';
+import { TrendingUp, Zap, Loader2, X, ExternalLink, Radio, BookmarkPlus, Edit3, Eye, ShieldCheck, Image as ImageIcon, ImageOff, Share2 } from 'lucide-react';
 import { fetchLatestTrends, generateMarketingContent, generateNeuralImage, refineMarketingContent } from '../services/apiService';
 import { Interest, Idea } from '../types';
 import ReactMarkdown from 'react-markdown';
@@ -49,8 +49,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
   // Image generation toggle
   const [imagesEnabled, setImagesEnabled] = useState<boolean>(true);
   const imageUsed = userSettings?.usage?.image ?? 0;
-  const imageTier = userSettings?.tier || 'free';
-  const imageLimit = imageTier === 'beta' ? 10 : 0;
+  const imageLimit = 100; // PRO/LTD: 100 images/month
   const imageRemaining = Math.max(0, imageLimit - imageUsed);
 
   useEffect(() => {
@@ -210,11 +209,12 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
         />
       );
     }
-    const parts = generatedScript.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g);
+    const parts = generatedScript.split(/(\[IMAGE:\s*[^\]]+\]|\[URL:\s*[^\]]+\])/gi);
     return (
       <div className="space-y-4 lg:space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
         {parts.map((part, i) => {
-          const imgState = generatedImages[part];
+          const lowerPart = part.toLowerCase();
+          const imgState = Object.keys(generatedImages).find(k => k.toLowerCase() === lowerPart) ? generatedImages[Object.keys(generatedImages).find(k => k.toLowerCase() === lowerPart)!] : null;
           if (imgState) {
             return (
               <div key={i} className="my-4">
@@ -233,8 +233,8 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               </div>
             );
           }
-          if (part.startsWith('[URL: ')) {
-            const url = part.replace('[URL: ', '').replace(']', '').trim();
+          if (lowerPart.startsWith('[url:')) {
+            const url = part.replace(/\[URL:\s*/i, '').replace(']', '').trim();
             return (
               <div key={i} className="my-4">
                 <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl">
@@ -406,7 +406,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               onClick={async () => { await handleRefine(); setShowEditModal(false); }}
               className="mt-3 w-full py-4 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all active:scale-95"
             >
-              {isRefining ? <Loader2 size={16} className="animate-spin" /> : <><Sparkles size={16} /> Apply Transformation</>}
+              {isRefining ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={16} /> Apply Transformation</>}
             </button>
           </div>
         </div>
@@ -431,7 +431,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                   disabled={loading}
                   className="p-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-zinc-500 hover:text-white transition-all disabled:opacity-30"
                 >
-                  <Sparkles size={16} className={loading ? 'animate-spin' : ''} />
+                  <Zap size={16} className={loading ? 'animate-spin' : ''} />
                 </button>
               </div>
               <div className="flex flex-wrap gap-1.5">

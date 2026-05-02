@@ -1,17 +1,22 @@
 /**
- * apiService.ts
- * 
- * All AI & data calls go through here.
- * This module calls YOUR backend (which holds the Gemini key).
- * Zero secrets in the browser.
+ * apiService.ts — All data & AI calls.
+ * Auth: Supabase. Storage: Supabase influencers table (via lib/supabase.ts for
+ * client-side data, and via backend for AI routes that need the Gemini key).
  */
 
-import { getAuthToken } from '../lib/supabase';
-import { TaskMode, Interest, NicheContent, ViralPrediction, CreatorAnalysis, GapAnalysis, UserSettings, Message, Idea } from '../types';
+import { supabase, getAuthToken, getCurrentUserId } from '../lib/supabase';
+import {
+    dbFetchSettings, dbSaveSettings,
+    dbFetchInterests, dbSaveInterests,
+    dbFetchIdeas, dbSaveIdeas,
+    dbFetchMemories, dbSaveMemory,
+    dbFetchArchive, dbSaveArchive,
+} from '../lib/supabase';
+import type { TaskMode, Interest, NicheContent, ViralPrediction, CreatorAnalysis, GapAnalysis, UserSettings, Message, Idea } from '../types';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:2005';
+const BACKEND_URL = ''; // Next.js: API routes are same-origin
 
-// ── Core fetch helper (attaches JWT automatically) ────────────────────────────
+// ── Core fetch helper (attaches Supabase JWT automatically) ──────────────────
 async function apiFetch(path: string, options: RequestInit = {}) {
     const token = await getAuthToken();
     const headers: Record<string, string> = {
@@ -20,8 +25,7 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch(`${BACKEND_URL}${path}`, { ...options, headers });
-
+    const res = await fetch(path, { ...options, headers });
     if (!res.ok) {
         const err = await res.json().catch(() => ({ error: res.statusText }));
         throw new Error(err.error || `Request failed: ${res.status}`);
@@ -38,12 +42,11 @@ export const generateSHIROXResponse = async (
     userSettings?: UserSettings,
     signal?: AbortSignal
 ) => {
-    const data = await apiFetch('/api/chat', {
+    return apiFetch('/api/chat', {
         method: 'POST',
         body: JSON.stringify({ prompt, mode, chatHistory, systemInstruction, userSettings }),
         signal,
     });
-    return data; // { type, content, sources } or { type, data, text }
 };
 
 // ── Memory Extraction ─────────────────────────────────────────────────────────
@@ -105,27 +108,67 @@ export const generateNeuralImage = async (prompt: string): Promise<string | null
     return data.imageData;
 };
 
-// ── Settings (via backend, not direct DB) ────────────────────────────────────
-export const fetchUserSettings = () => apiFetch('/api/settings');
-export const saveUserSettings = (settings: Partial<UserSettings>) =>
-    apiFetch('/api/settings', { method: 'POST', body: JSON.stringify(settings) });
+// ── Settings — direct Supabase ────────────────────────────────────────────────
+export const fetchUserSettings = async (): Promise<Partial<UserSettings> | null> => {
+    const uid = await getCurrentUserId();
+    if (!uid) return null;
+    return dbFetchSettings(uid);
+};
 
-// ── Memories ──────────────────────────────────────────────────────────────────
-export const fetchMemories = (): Promise<string[]> => apiFetch('/api/memories');
-export const saveMemory = (packet: string, category?: string) =>
-    apiFetch('/api/memories', { method: 'POST', body: JSON.stringify({ packet, category }) });
+export const saveUserSettings = async (settings: Partial<UserSettings>) => {
+    const uid = await getCurrentUserId();
+    if (!uid) return;
+    return dbSaveSettings(uid, settings);
+};
 
-// ── Interests ─────────────────────────────────────────────────────────────────
-export const fetchInterests = () => apiFetch('/api/interests');
-export const saveInterests = (interests: Interest[]) =>
-    apiFetch('/api/interests', { method: 'POST', body: JSON.stringify(interests) });
+// ── Memories — direct Supabase ────────────────────────────────────────────────
+export const fetchMemories = async (): Promise<string[]> => {
+    const uid = await getCurrentUserId();
+    if (!uid) return [];
+    return dbFetchMemories(uid);
+};
 
-// ── Ideas ─────────────────────────────────────────────────────────────────────
-export const fetchIdeas = (): Promise<Idea[]> => apiFetch('/api/ideas');
-export const saveIdeas = (ideas: Idea[]) =>
-    apiFetch('/api/ideas', { method: 'POST', body: JSON.stringify(ideas) });
+export const saveMemory = async (packet: string, _category?: string) => {
+    const uid = await getCurrentUserId();
+    if (!uid) return;
+    return dbSaveMemory(uid, packet);
+};
 
-// ── Archive ───────────────────────────────────────────────────────────────────
-export const fetchArchive = (): Promise<Message[]> => apiFetch('/api/archive');
-export const saveArchive = (messages: Message[]) =>
-    apiFetch('/api/archive', { method: 'POST', body: JSON.stringify({ messages }) });
+// ── Interests — direct Supabase ───────────────────────────────────────────────
+export const fetchInterests = async (): Promise<Interest[]> => {
+    const uid = await getCurrentUserId();
+    if (!uid) return [];
+    return dbFetchInterests(uid);
+};
+
+export const saveInterests = async (interests: Interest[]) => {
+    const uid = await getCurrentUserId();
+    if (!uid) return;
+    return dbSaveInterests(uid, interests);
+};
+
+// ── Ideas — direct Supabase ───────────────────────────────────────────────────
+export const fetchIdeas = async (): Promise<Idea[]> => {
+    const uid = await getCurrentUserId();
+    if (!uid) return [];
+    return dbFetchIdeas(uid);
+};
+
+export const saveIdeas = async (ideas: Idea[]) => {
+    const uid = await getCurrentUserId();
+    if (!uid) return;
+    return dbSaveIdeas(uid, ideas);
+};
+
+// ── Archive — direct Supabase ─────────────────────────────────────────────────
+export const fetchArchive = async (): Promise<Message[]> => {
+    const uid = await getCurrentUserId();
+    if (!uid) return [];
+    return dbFetchArchive(uid);
+};
+
+export const saveArchive = async (messages: Message[]) => {
+    const uid = await getCurrentUserId();
+    if (!uid) return;
+    return dbSaveArchive(uid, messages);
+};

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Idea, Interest } from '../types';
-import { Megaphone, MessageSquare, Twitter, Instagram, ArrowRight, Loader2, Sparkles, Copy, Check, Film, Trash2, Youtube, Image as ImageIcon, Edit3, X, Zap } from 'lucide-react';
+import { Megaphone, MessageSquare, Twitter, Instagram, ArrowRight, Loader2, Copy, Check, Film, Trash2, Youtube, Image as ImageIcon, Edit3, X, Zap } from 'lucide-react';
 import { generateMarketingContent, generateNeuralImage, refineMarketingContent } from '../services/apiService';
 import { CONTENT_GENERATION_SYSTEM_PROMPT } from '../constants';
 import ReactMarkdown from 'react-markdown';
@@ -16,6 +16,8 @@ interface MarketingStudioProps {
 }
 
 const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea, userSettings }) => {
+  // All authenticated users are PRO or LTD — no free tier gate needed
+
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [format, setFormat] = useState<string>('Script');
   const [generatedContent, setGeneratedContent] = useState('');
@@ -224,7 +226,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
             onClick={handleGenerate}
             className="w-full py-4 bg-white hover:bg-zinc-200 text-black rounded-xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-20 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
           >
-            {loading ? <Loader2 size={18} className="animate-spin" /> : <><Sparkles size={18} /> Synthesize</>}
+            {loading ? <Loader2 size={18} className="animate-spin" /> : <><Zap size={18} /> Synthesize</>}
           </button>
         </div>
       </div>
@@ -280,8 +282,9 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
               </div>
             </div>
             <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
-              {generatedContent.split(/(\[IMAGE: [^\]]+\]|\[URL: [^\]]+\])/g).map((part, i) => {
-                const imgState = generatedImages[part];
+              {generatedContent.split(/(\[IMAGE:\s*[^\]]+\]|\[URL:\s*[^\]]+\])/gi).map((part, i) => {
+                const lowerPart = part.toLowerCase();
+                const imgState = Object.keys(generatedImages).find(k => k.toLowerCase() === lowerPart) ? generatedImages[Object.keys(generatedImages).find(k => k.toLowerCase() === lowerPart)!] : null;
                 if (imgState) {
                   return (
                     <div key={i} className="my-8">
@@ -303,8 +306,8 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                     </div>
                   );
                 }
-                if (part.startsWith('[URL: ')) {
-                  const url = part.replace('[URL: ', '').replace(']', '').trim();
+                if (lowerPart.startsWith('[url:')) {
+                  const url = part.replace(/\[URL:\s*/i, '').replace(']', '').trim();
                   return (
                     <div key={i} className="my-8">
                       <div className="relative aspect-video bg-zinc-950 border border-zinc-900 rounded-[2.5rem] overflow-hidden group/img shadow-2xl">
@@ -392,7 +395,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                       }}
                       className="w-full py-4 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                     >
-                      {isRefining ? <Loader2 size={16} className="animate-spin" /> : <><Sparkles size={16} /> Apply Transformation</>}
+                      {isRefining ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={16} /> Apply Transformation</>}
                     </button>
                   </div>
                 </div>

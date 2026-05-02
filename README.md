@@ -1,6 +1,6 @@
-# 🛸 ArsCreatio — Neural Intelligence Matrix
+# 🛸 Creatio — Neural Intelligence Matrix
 
-ArsCreatio is a high-performance content intelligence platform designed for deep research, viral trend analysis, and automated content generation. This repository contains the complete stack, from the high-fidelity landing page to the secure, AI-powered backend.
+Creatio is a high-performance content intelligence platform designed for deep research, viral trend analysis, and automated content generation. This repository contains the complete stack, from the high-fidelity landing page to the secure, AI-powered backend.
 
 ## 🏗️ Architecture Overview
 
@@ -102,4 +102,4 @@ The system supports 10 distinct persona styles. The user can select up to two, w
 
 ---
 
-**Built by ArsX · Dedicated to the Creators of the Future.**
+**Built by Creatio · Dedicated to the Creators of the Future.**
