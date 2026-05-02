@@ -39,11 +39,11 @@ const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <nav className="hidden lg:grid grid-cols-3 items-center px-10 h-[90px] bg-black border-b border-white/5 z-[60] flex-shrink-0 shadow-[0_10px_50px_rgba(0,0,0,0.9)]">
-
+    <nav className="hidden lg:flex items-center justify-between px-10 h-[90px] bg-black border-b border-white/5 z-[60] flex-shrink-0 shadow-[0_10px_50px_rgba(0,0,0,0.9)]">
+      
       {/* ── Left: Brand ── */}
       <div
-        className="flex items-center gap-4 cursor-pointer group w-fit"
+        className="flex items-center gap-4 cursor-pointer group w-[280px]"
         onClick={() => setActiveView('chat')}
       >
         <div className="relative">
@@ -60,8 +60,8 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* ── Center: Nav Pills ── */}
-      <div className="flex items-center justify-center">
-        <div className="flex items-center gap-1.5 bg-zinc-900/50 p-1.5 rounded-2xl border border-white/5 shadow-2xl backdrop-blur-3xl">
+      <div className="flex-1 flex justify-center">
+        <div className="flex items-center gap-1 bg-zinc-900/40 p-1 rounded-2xl border border-white/5 backdrop-blur-3xl">
           {navItems.map((item) => {
             const isActive = activeView === item.id;
             const locked = isLocked && item.id !== 'chat' && item.id !== 'settings';
@@ -69,13 +69,13 @@ const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
-                className={`relative flex items-center gap-3 px-6 py-3.5 rounded-xl text-[10px] font-normal uppercase tracking-[0.2em] transition-all duration-300 ${
+                className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-[10px] font-normal uppercase tracking-[0.15em] transition-all duration-300 ${
                   isActive
-                    ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.2)] scale-105'
+                    ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.1)]'
                     : 'text-zinc-500 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <item.icon size={15} strokeWidth={isActive ? 2.5 : 1.8} />
+                <item.icon size={14} strokeWidth={isActive ? 2.5 : 1.8} />
                 <span className="hidden xl:inline">{item.label}</span>
                 {locked && (
                   <Lock size={10} className={`${isActive ? 'text-black/40' : 'text-zinc-700'}`} />
@@ -87,49 +87,50 @@ const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* ── Right: Status + User ── */}
-      <div className="flex items-center justify-end gap-3">
-
+      <div className="flex items-center justify-end gap-6 w-[280px]">
         {/* AI status */}
-        <div className="flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900/60 border border-zinc-800/50 rounded-full">
-          <div className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 bg-zinc-900/60 border border-zinc-800/50 rounded-full">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           <span className="text-[8px] font-normal uppercase tracking-[0.3em] text-zinc-500">AI Active</span>
         </div>
 
-        {/* Search */}
-        <button
-          onClick={() => setActiveView('search')}
-          className={`p-1.5 rounded-lg transition-all duration-200 ${
-            activeView === 'search'
-              ? 'text-white bg-white/10'
-              : 'text-zinc-500 hover:text-white hover:bg-white/5'
-          }`}
-        >
-          <Search size={15} />
-        </button>
-
-        <div className="h-4 w-px bg-zinc-800" />
-
-        {/* User block */}
-        <div className="flex items-center gap-2">
-          <div className="text-right leading-tight">
-            <p className="text-[9px] font-normal uppercase tracking-widest text-zinc-300">
-              {userSettings.name}
-            </p>
-            <p className="text-[8px] text-zinc-600 font-normal">{userSettings.tier || 'Free'}</p>
-          </div>
-          <div
-            className="w-7 h-7 rounded-full border border-zinc-800 flex items-center justify-center text-[9px] font-normal text-white flex-shrink-0 shadow-md"
-            style={{ background: userSettings.avatarColor }}
-          >
-            {userSettings.name.charAt(0).toUpperCase()}
-          </div>
+        {/* Action Group */}
+        <div className="flex items-center gap-4">
           <button
-            onClick={onSignOut}
-            className="p-1.5 text-zinc-700 hover:text-red-400 transition-colors rounded-lg hover:bg-red-950/20"
-            title="Sign out"
+            onClick={() => setActiveView('search')}
+            className={`p-2 rounded-lg transition-all duration-200 ${
+              activeView === 'search'
+                ? 'text-white bg-white/10'
+                : 'text-zinc-500 hover:text-white hover:bg-white/5'
+            }`}
           >
-            <LogOut size={14} />
+            <Search size={16} />
           </button>
+
+          <div className="h-4 w-px bg-zinc-800" />
+
+          {/* User block */}
+          <div className="flex items-center gap-3">
+            <div className="text-right leading-tight hidden sm:block">
+              <p className="text-[10px] font-normal uppercase tracking-widest text-zinc-300">
+                {userSettings.name}
+              </p>
+              <p className="text-[8px] text-zinc-600 font-normal uppercase tracking-widest">{userSettings.tier || 'Free'}</p>
+            </div>
+            <div
+              className="w-8 h-8 rounded-full border border-zinc-800 flex items-center justify-center text-[10px] font-normal text-white flex-shrink-0 shadow-inner"
+              style={{ background: userSettings.avatarColor }}
+            >
+              {userSettings.name.charAt(0).toUpperCase()}
+            </div>
+            <button
+              onClick={onSignOut}
+              className="p-2 text-zinc-700 hover:text-red-400 transition-colors rounded-lg hover:bg-red-950/20"
+              title="Sign out"
+            >
+              <LogOut size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </nav>
