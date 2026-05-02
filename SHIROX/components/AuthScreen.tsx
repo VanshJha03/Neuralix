@@ -67,24 +67,24 @@ const AuthScreen: React.FC = () => {
                 <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="w-5 h-5 border border-white rounded-full" />
-                        <span className="text-lg font-black tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+                        <span className="text-lg font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
                     </div>
                     <p className="text-zinc-700 text-[10px] uppercase tracking-[0.4em]">Neural Intelligence Matrix v5.0</p>
                 </div>
 
                 {/* Pricing cards */}
                 <div className="relative z-10 space-y-4">
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600 mb-6">Choose your plan after signing up</p>
+                    <p className="text-[10px] font-normal uppercase tracking-[0.4em] text-zinc-600 mb-6">Choose your plan after signing up</p>
 
                     {/* PRO */}
                     <div className="p-6 bg-zinc-950 border border-zinc-800 rounded-2xl">
                         <div className="flex items-center justify-between mb-4">
                             <div>
-                                <p className="text-xs font-black uppercase tracking-widest text-white">PRO</p>
+                                <p className="text-xs font-normal uppercase tracking-widest text-white">PRO</p>
                                 <p className="text-[10px] text-zinc-600 uppercase">Monthly</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-2xl font-black text-white">$49</span>
+                                <span className="text-2xl font-normal text-white">$49</span>
                                 <span className="text-xs text-zinc-600 ml-1">/mo</span>
                             </div>
                         </div>
@@ -99,14 +99,14 @@ const AuthScreen: React.FC = () => {
 
                     {/* LTD */}
                     <div className="p-6 bg-white rounded-2xl relative">
-                        <div className="absolute -top-3 left-4 px-3 py-1 bg-black text-white text-[9px] font-black uppercase tracking-widest rounded-full">Best Value</div>
+                        <div className="absolute -top-3 left-4 px-3 py-1 bg-black text-white text-[9px] font-normal uppercase tracking-widest rounded-full">Best Value</div>
                         <div className="flex items-center justify-between mb-4">
                             <div>
-                                <p className="text-xs font-black uppercase tracking-widest text-black">LTD</p>
+                                <p className="text-xs font-normal uppercase tracking-widest text-black">LTD</p>
                                 <p className="text-[10px] text-zinc-500 uppercase">Lifetime</p>
                             </div>
                             <div className="text-right">
-                                <span className="text-2xl font-black text-black">$129</span>
+                                <span className="text-2xl font-normal text-black">$129</span>
                                 <span className="text-xs text-zinc-500 ml-1">once</span>
                             </div>
                         </div>
@@ -130,11 +130,11 @@ const AuthScreen: React.FC = () => {
                 {/* Mobile logo */}
                 <div className="lg:hidden flex items-center gap-2 mb-12">
                     <div className="w-4 h-4 border border-white rounded-full" />
-                    <span className="text-base font-black tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+                    <span className="text-base font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
                 </div>
 
                 <div className="w-full max-w-sm relative z-10">
-                    <h2 className="text-2xl font-black tracking-tighter mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                    <h2 className="text-2xl font-normal tracking-tighter mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>
                         {mode === 'login' ? 'Sign In' : 'Create Account'}
                     </h2>
                     <p className="text-zinc-600 text-[11px] uppercase tracking-widest mb-8">
@@ -144,7 +144,7 @@ const AuthScreen: React.FC = () => {
                     <form onSubmit={handleSubmit} className="space-y-3">
                         {mode === 'signup' && (
                             <div>
-                                <label className="text-[10px] font-black uppercase tracking-widest text-zinc-600 block mb-1.5">Name</label>
+                                <label className="text-[10px] font-normal uppercase tracking-widest text-zinc-600 block mb-1.5">Name</label>
                                 <input
                                     type="text"
                                     placeholder="Your name"
@@ -158,7 +158,7 @@ const AuthScreen: React.FC = () => {
                         )}
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-600 block mb-1.5">Email</label>
+                            <label className="text-[10px] font-normal uppercase tracking-widest text-zinc-600 block mb-1.5">Email</label>
                             <input
                                 type="email"
                                 placeholder="you@example.com"
@@ -171,7 +171,7 @@ const AuthScreen: React.FC = () => {
                         </div>
 
                         <div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-zinc-600 block mb-1.5">Password</label>
+                            <label className="text-[10px] font-normal uppercase tracking-widest text-zinc-600 block mb-1.5">Password</label>
                             <div className="relative">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
@@ -207,7 +207,7 @@ const AuthScreen: React.FC = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-4 bg-white text-black font-black uppercase tracking-[0.15em] text-[11px] rounded-xl hover:bg-zinc-100 transition-all active:scale-[0.98] disabled:opacity-40 mt-2"
+                            className="w-full py-4 bg-white text-black font-normal uppercase tracking-[0.15em] text-[11px] rounded-xl hover:bg-zinc-100 transition-all active:scale-[0.98] disabled:opacity-40 mt-2"
                         >
                             {loading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
                         </button>
@@ -226,15 +226,15 @@ const AuthScreen: React.FC = () => {
 
                     {/* Mobile pricing teaser */}
                     <div className="lg:hidden mt-12 pt-8 border-t border-zinc-900">
-                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600 mb-4 text-center">Plans</p>
+                        <p className="text-[10px] font-normal uppercase tracking-[0.3em] text-zinc-600 mb-4 text-center">Plans</p>
                         <div className="grid grid-cols-2 gap-3">
                             <div className="p-4 bg-zinc-950 border border-zinc-800 rounded-xl text-center">
-                                <p className="text-xs font-black text-white uppercase">PRO</p>
-                                <p className="text-lg font-black text-white">$49<span className="text-xs text-zinc-600">/mo</span></p>
+                                <p className="text-xs font-normal text-white uppercase">PRO</p>
+                                <p className="text-lg font-normal text-white">$49<span className="text-xs text-zinc-600">/mo</span></p>
                             </div>
                             <div className="p-4 bg-white rounded-xl text-center">
-                                <p className="text-xs font-black text-black uppercase">LTD</p>
-                                <p className="text-lg font-black text-black">$129<span className="text-xs text-zinc-500"> once</span></p>
+                                <p className="text-xs font-normal text-black uppercase">LTD</p>
+                                <p className="text-lg font-normal text-black">$129<span className="text-xs text-zinc-500"> once</span></p>
                             </div>
                         </div>
                     </div>

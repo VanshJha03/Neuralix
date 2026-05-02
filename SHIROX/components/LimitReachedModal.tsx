@@ -43,10 +43,10 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, isGuest,
                         <Shield size={28} className="text-zinc-500" />
                     </div>
 
-                    <h3 className="text-xl font-black text-white mb-2 tracking-tighter italic text-center">
+                    <h3 className="text-xl font-normal text-white mb-2 tracking-tighter text-center">
                         Monthly Limit Reached
                     </h3>
-                    <p className="text-xs text-zinc-500 mb-8 leading-relaxed font-medium text-center">
+                    <p className="text-xs text-zinc-500 mb-8 leading-relaxed font-normal text-center">
                         {message.startsWith('NO_SUBSCRIPTION')
                             ? 'You need an active subscription to use this feature.'
                             : message.replace(/NEURAL LIMIT:.*?—\s*/i, '').replace(/\. Upgrade to continue\./i, '.')}
@@ -54,7 +54,7 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, isGuest,
 
                     {/* Feature list */}
                     <div className="p-5 bg-white/5 border border-white/10 rounded-2xl mb-6">
-                        <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400 mb-4">Both plans include:</p>
+                        <p className="text-[9px] font-normal uppercase tracking-widest text-zinc-400 mb-4">Both plans include:</p>
                         <div className="grid grid-cols-2 gap-2">
                             {[
                                 '30 Niche Analytics/mo',
@@ -66,37 +66,53 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, isGuest,
                             ].map(f => (
                                 <div key={f} className="flex items-center gap-2">
                                     <Zap size={9} className="text-white flex-shrink-0" />
-                                    <span className="text-[10px] text-zinc-300 font-semibold">{f}</span>
+                                    <span className="text-[10px] text-zinc-300 font-normal">{f}</span>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* Upgrade buttons */}
-                    <div className="grid grid-cols-2 gap-3 mb-4">
-                        <button
-                            onClick={() => handleUpgrade('pro')}
-                            disabled={!!loading}
-                            className="flex flex-col items-center py-4 px-3 bg-zinc-900 border border-zinc-700 hover:border-white rounded-2xl transition-all active:scale-95 disabled:opacity-50"
-                        >
-                            {loading === 'pro' ? <Loader2 size={16} className="animate-spin mb-1" /> : <Zap size={16} className="mb-1 text-zinc-400" />}
-                            <span className="text-[11px] font-black text-white uppercase tracking-wider">PRO</span>
-                            <span className="text-[10px] text-zinc-500 font-bold">$49/mo</span>
-                        </button>
-                        <button
-                            onClick={() => handleUpgrade('ltd')}
-                            disabled={!!loading}
-                            className="flex flex-col items-center py-4 px-3 bg-white border border-white rounded-2xl transition-all active:scale-95 disabled:opacity-50 hover:bg-zinc-100"
-                        >
-                            {loading === 'ltd' ? <Loader2 size={16} className="animate-spin mb-1 text-black" /> : <Crown size={16} className="mb-1 text-black" />}
-                            <span className="text-[11px] font-black text-black uppercase tracking-wider">LTD</span>
-                            <span className="text-[10px] text-zinc-600 font-bold">$129 once</span>
-                        </button>
-                    </div>
+                    {isGuest ? (
+                        <div className="mb-4">
+                            <button
+                                onClick={async () => {
+                                    const { supabase } = await import('../lib/supabase');
+                                    await supabase.auth.signOut();
+                                    onClose();
+                                    window.location.href = '/';
+                                }}
+                                className="w-full py-4 bg-white text-black font-normal text-[11px] uppercase tracking-widest rounded-2xl hover:bg-zinc-100 transition-all active:scale-95"
+                            >
+                                Sign Up to Continue
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 gap-3 mb-4">
+                            <button
+                                onClick={() => handleUpgrade('pro')}
+                                disabled={!!loading}
+                                className="flex flex-col items-center py-4 px-3 bg-zinc-900 border border-zinc-700 hover:border-white rounded-2xl transition-all active:scale-95 disabled:opacity-50"
+                            >
+                                {loading === 'pro' ? <Loader2 size={16} className="animate-spin mb-1" /> : <Zap size={16} className="mb-1 text-zinc-400" />}
+                                <span className="text-[11px] font-normal text-white uppercase tracking-wider">PRO</span>
+                                <span className="text-[10px] text-zinc-500 font-normal">$49/mo</span>
+                            </button>
+                            <button
+                                onClick={() => handleUpgrade('ltd')}
+                                disabled={!!loading}
+                                className="flex flex-col items-center py-4 px-3 bg-white border border-white rounded-2xl transition-all active:scale-95 disabled:opacity-50 hover:bg-zinc-100"
+                            >
+                                {loading === 'ltd' ? <Loader2 size={16} className="animate-spin mb-1 text-black" /> : <Crown size={16} className="mb-1 text-black" />}
+                                <span className="text-[11px] font-normal text-black uppercase tracking-wider">LTD</span>
+                                <span className="text-[10px] text-zinc-600 font-normal">$129 once</span>
+                            </button>
+                        </div>
+                    )}
 
                     <button
                         onClick={onClose}
-                        className="w-full py-2.5 text-zinc-700 font-bold text-[10px] uppercase tracking-widest hover:text-zinc-400 transition-colors"
+                        className="w-full py-2.5 text-zinc-700 font-normal text-[10px] uppercase tracking-widest hover:text-zinc-400 transition-colors"
                     >
                         Dismiss — Limits reset monthly
                     </button>

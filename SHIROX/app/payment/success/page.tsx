@@ -12,7 +12,7 @@ export default function PaymentSuccess() {
 
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 text-white">
-      <div className="text-4xl font-black tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+      <div className="text-4xl font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>
         Neural Link Upgraded
       </div>
       <p className="text-zinc-500 text-sm">Redirecting to workspace...</p>

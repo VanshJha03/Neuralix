@@ -24,7 +24,7 @@ import { INITIAL_INTERESTS, DEFAULT_SYSTEM_PROMPT } from './constants';
 const NeuralLoader: React.FC = () => (
   <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4">
     <div
-      className="text-4xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-800 bg-clip-text text-transparent italic"
+      className="text-4xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-800 bg-clip-text text-transparent font-normal"
       style={{ fontFamily: "'Orbitron', sans-serif" }}
     >
       Creatio
@@ -34,7 +34,7 @@ const NeuralLoader: React.FC = () => (
       <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 animate-bounce" style={{ animationDelay: '150ms' }} />
       <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 animate-bounce" style={{ animationDelay: '300ms' }} />
     </div>
-    <p className="text-zinc-700 text-[10px] uppercase tracking-[0.5em] font-black">Syncing Neural Link...</p>
+    <p className="text-zinc-700 text-[10px] uppercase tracking-[0.5em] font-normal">Syncing Neural Link...</p>
   </div>
 );
 
@@ -159,6 +159,17 @@ const App: React.FC = () => {
 
     syncNeuralData();
   }, []); // Run once on mount
+
+  // ── Sync Auth State to User Settings ──────────────────────────────────────
+  useEffect(() => {
+    if (session && (!userSettings.email || userSettings.name === 'Operator')) {
+      setUserSettings(prev => ({
+        ...prev,
+        email: session.email || prev.email,
+        name: session.user_metadata?.full_name || session.user_metadata?.name || prev.name,
+      }));
+    }
+  }, [session]);
 
   // ── Persist Settings to Backend ───────────────────────────────────────────
   useEffect(() => {
@@ -315,19 +326,19 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </button>
-            <span className="text-sm font-black tracking-tighter uppercase italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+            <span className="text-sm font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
           </div>
           <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
         </div>
 
         <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
-          <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-black tracking-[0.3em] text-zinc-400 uppercase">
+          <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-normal tracking-[0.3em] text-zinc-400 uppercase">
             <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             Neural Link: Active
           </div>
           <button
             onClick={handleSignOut}
-            className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-bold text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2"
+            className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-normal text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2"
           >
             <LogOut size={12} />
             Disconnect

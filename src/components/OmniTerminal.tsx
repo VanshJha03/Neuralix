@@ -60,9 +60,9 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Search neural link or type '/' for commands..."
-            className="flex-1 bg-transparent border-none focus:ring-0 text-lg font-medium text-white placeholder:text-zinc-700 outline-none"
+            className="flex-1 bg-transparent border-none focus:ring-0 text-lg font-normal text-white placeholder:text-zinc-700 outline-none"
           />
-          <div className="px-2 py-1 bg-zinc-900 rounded-md text-[10px] font-black text-zinc-600 uppercase tracking-widest border border-zinc-800">
+          <div className="px-2 py-1 bg-zinc-900 rounded-md text-[10px] font-normal text-zinc-600 uppercase tracking-widest border border-zinc-800">
             Esc
           </div>
         </div>
@@ -70,7 +70,7 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
         <div className="p-2 max-h-[400px] overflow-y-auto">
           {input.length === 0 && (
             <div className="p-4 space-y-4">
-              <p className="text-[10px] font-black text-zinc-800 uppercase tracking-[0.2em] px-2">Quick Navigation</p>
+              <p className="text-[10px] font-normal text-zinc-800 uppercase tracking-[0.2em] px-2">Quick Navigation</p>
               <div className="grid grid-cols-2 gap-2">
                 {COMMANDS.map((cmd, idx) => (
                   <button
@@ -82,8 +82,8 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
                       <cmd.icon size={16} />
                     </div>
                     <div>
-                      <p className="text-xs font-bold text-zinc-300">{cmd.label}</p>
-                      <p className="text-[9px] text-zinc-600 font-medium font-mono">{cmd.hint}</p>
+                      <p className="text-xs font-normal text-zinc-300">{cmd.label}</p>
+                      <p className="text-[9px] text-zinc-600 font-normal font-mono">{cmd.hint}</p>
                     </div>
                   </button>
                 ))}
@@ -97,9 +97,9 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
                 <Search size={18} className="text-white" />
                 <div>
                   <p className="text-xs text-zinc-400">Deep Neural Search for:</p>
-                  <p className="text-sm font-bold text-white">"{input}"</p>
+                  <p className="text-sm font-normal text-white">"{input}"</p>
                 </div>
-                <div className="ml-auto flex items-center gap-2 text-[10px] font-black text-white">
+                <div className="ml-auto flex items-center gap-2 text-[10px] font-normal text-white">
                   <Zap size={12} fill="currentColor" /> FAST
                 </div>
               </div>
@@ -109,16 +109,16 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
 
         <div className="px-6 py-3 border-t border-zinc-900/50 bg-black/40 flex justify-between items-center">
           <div className="flex gap-4">
-            <div className="flex items-center gap-1.5 text-[9px] font-bold text-zinc-600">
+            <div className="flex items-center gap-1.5 text-[9px] font-normal text-zinc-600">
               <span className="px-1 py-0.5 bg-zinc-900 border border-zinc-800 rounded">↵</span>
               <span>Execute</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[9px] font-bold text-zinc-600">
+            <div className="flex items-center gap-1.5 text-[9px] font-normal text-zinc-600">
               <span className="px-1 py-0.5 bg-zinc-900 border border-zinc-800 rounded">↑↓</span>
               <span>Navigate</span>
             </div>
           </div>
-          <p className="text-[9px] font-black text-zinc-800 uppercase tracking-widest italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio Neural Interface v5.0</p>
+          <p className="text-[9px] font-normal text-zinc-800 uppercase tracking-widest font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio Neural Interface v5.0</p>
         </div>
       </div>
     </div>

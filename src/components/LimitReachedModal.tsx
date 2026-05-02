@@ -17,6 +17,7 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, onClose,
         await signOut(auth);
         await fetch('/api/auth/session', { method: 'DELETE' });
         onClose();
+        window.location.href = '/#auth';
         window.location.reload();
     };
 
@@ -37,17 +38,17 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, onClose,
                         <Shield size={28} className="text-zinc-500" />
                     </div>
 
-                    <h3 className="text-xl font-black text-white mb-2 tracking-tighter italic">
+                    <h3 className="text-xl font-normal text-white mb-2 tracking-tighter">
                         Neural Limit Reached
                     </h3>
-                    <p className="text-xs text-zinc-500 mb-6 leading-relaxed font-medium">
+                    <p className="text-xs text-zinc-500 mb-6 leading-relaxed font-normal">
                         {message}
                     </p>
 
                     {isFree ? (
                         <>
                             <div className="p-5 bg-white/5 border border-white/10 rounded-2xl mb-5 text-left">
-                                <p className="text-[9px] font-black uppercase tracking-widest text-white mb-3">Upgrade for more capacity:</p>
+                                <p className="text-[9px] font-normal uppercase tracking-widest text-white mb-3">Upgrade for more capacity:</p>
                                 <ul className="space-y-2">
                                     {[
                                         'Increased analysis limits',
@@ -57,7 +58,7 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, onClose,
                                     ].map(benefit => (
                                         <li key={benefit} className="flex items-center gap-2">
                                             <Zap size={10} className="text-white flex-shrink-0" />
-                                            <span className="text-[10px] text-zinc-300 font-semibold">{benefit}</span>
+                                            <span className="text-[10px] text-zinc-300 font-normal">{benefit}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -65,15 +66,15 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, onClose,
 
                             <button
                                 onClick={handleSignUp}
-                                className="w-full py-4 bg-white text-black font-black text-xs uppercase tracking-widest rounded-2xl hover:bg-zinc-100 active:scale-[0.98] transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] mb-3"
+                                className="w-full py-4 bg-white text-black font-normal text-xs uppercase tracking-widest rounded-2xl hover:bg-zinc-100 active:scale-[0.98] transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)] mb-3"
                             >
-                                Upgrade Trajectory
+                                Sign Up / Upgrade
                             </button>
                         </>
                     ) : (
                         <button
                             onClick={onClose}
-                            className="w-full py-3 bg-zinc-900 text-zinc-400 font-bold text-xs rounded-xl hover:bg-zinc-800 transition-all"
+                            className="w-full py-3 bg-zinc-900 text-zinc-400 font-normal text-xs rounded-xl hover:bg-zinc-800 transition-all"
                         >
                             Dismiss — Neural Reset at 00:00
                         </button>

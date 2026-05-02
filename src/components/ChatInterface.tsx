@@ -321,8 +321,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <div className="flex-1 flex flex-col items-center justify-center p-6 lg:p-12 max-w-2xl mx-auto w-full z-10">
           <div className="relative mb-8 flex flex-col items-center text-center">
             <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
-            <h1 className="text-4xl lg:text-5xl font-black tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
-            <p className="text-zinc-800 font-black mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Neural Intelligence Matrix v5.0</p>
+            <h1 className="text-4xl lg:text-5xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+            <p className="text-zinc-800 font-normal mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Neural Intelligence Matrix v5.0</p>
           </div>
 
           <div className="w-full relative group">
@@ -333,7 +333,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
                 placeholder={`Initiate synaptic link...`}
                 rows={1}
-                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-medium tracking-tight"
+                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-normal tracking-tight"
               />
               <button onClick={handleSend} className={`p-2 ml-4 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95'}`}>
                 {isLoading ? <Square size={18} fill="currentColor" /> : <Send size={18} />}
@@ -341,7 +341,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
             <div className="mt-8 flex flex-wrap justify-center gap-2 lg:gap-4">
               {['Deep Research', 'Fast', 'Imagine'].map((m) => (
-                <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-4 lg:px-6 py-2 rounded-full text-[7px] lg:text-[8px] font-black uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'}`}>
+                <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-4 lg:px-6 py-2 rounded-full text-[7px] lg:text-[8px] font-normal uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'}`}>
                   {m}
                 </button>
               ))}
@@ -387,11 +387,11 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                               />
                               {msg.sources && msg.sources.length > 0 && (
                                 <div className="mt-6 pt-6 border-t border-zinc-900/50">
-                                  <p className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700 mb-4">Neural Data Nodes:</p>
+                                  <p className="text-[9px] lg:text-[10px] font-normal uppercase tracking-[0.3em] text-zinc-700 mb-4">Neural Data Nodes:</p>
                                   <div className="flex flex-wrap gap-2 lg:gap-3">
                                     {msg.sources.map((source, sIdx) => (
                                       source.web && (
-                                        <a key={sIdx} href={source.web.uri} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 bg-zinc-950 border border-zinc-900 rounded-xl text-[9px] lg:text-[10px] font-bold text-zinc-500 hover:text-white hover:border-zinc-700 transition-all group/link">
+                                        <a key={sIdx} href={source.web.uri} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-3 lg:px-4 py-1.5 lg:py-2 bg-zinc-950 border border-zinc-900 rounded-xl text-[9px] lg:text-[10px] font-normal text-zinc-500 hover:text-white hover:border-zinc-700 transition-all group/link">
                                           <ExternalLink size={12} />
                                           <span className="max-w-[100px] lg:max-w-[150px] truncate">{source.web.title || source.web.uri}</span>
                                         </a>
@@ -402,7 +402,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                               )}
                             </div>
                           ) : (
-                            <p className="text-lg lg:text-xl font-medium leading-relaxed tracking-tight">{msg.content}</p>
+                            <p className="text-lg lg:text-xl font-normal leading-relaxed tracking-tight">{msg.content}</p>
                           )}
                         </>
                       )}
@@ -413,18 +413,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               {isLoading && (
                 <div className="flex items-center gap-4 py-8">
                   <div className="w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full bg-white animate-ping"></div>
-                  <span className="text-[8px] lg:text-[10px] font-black tracking-[0.5em] uppercase text-zinc-700">{status || 'Synaptic Transmission...'}</span>
+                  <span className="text-[8px] lg:text-[10px] font-normal tracking-[0.5em] uppercase text-zinc-700">{status || 'Synaptic Transmission...'}</span>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
           </div>
 
-          <div className="px-4 lg:px-10 pb-6 lg:pb-12 bg-gradient-to-t from-black via-black/95 to-transparent z-20 sticky bottom-0">
+          <div className="px-4 lg:px-10 pb-2 lg:pb-12 bg-gradient-to-t from-black via-black/95 to-transparent z-20 sticky bottom-0">
             <div className="max-w-4xl mx-auto space-y-4">
               <div className="flex justify-center gap-1.5 lg:gap-2">
                 {['Deep Research', 'Fast', 'Imagine'].map((m) => (
-                  <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-3 lg:px-4 py-1 lg:py-1.5 rounded-full text-[6px] lg:text-[7px] font-black uppercase tracking-[0.2em] border transition-all ${mode === m ? 'bg-white text-black border-white' : 'bg-black/40 text-zinc-700 border-zinc-900 hover:text-zinc-500'}`}>
+                  <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-3 lg:px-4 py-1 lg:py-1.5 rounded-full text-[6px] lg:text-[7px] font-normal uppercase tracking-[0.2em] border transition-all ${mode === m ? 'bg-white text-black border-white' : 'bg-black/40 text-zinc-700 border-zinc-900 hover:text-zinc-500'}`}>
                     {m}
                   </button>
                 ))}
@@ -439,7 +439,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                   onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
                   placeholder={isLoading ? "AI responding..." : "Evolving context..."}
                   rows={1}
-                  className="flex-1 bg-transparent border-none focus:ring-0 py-1 lg:py-2 px-2 lg:px-3 text-sm text-white placeholder:text-zinc-800 resize-none outline-none font-medium"
+                  className="flex-1 bg-transparent border-none focus:ring-0 py-1 lg:py-2 px-2 lg:px-3 text-sm text-white placeholder:text-zinc-800 resize-none outline-none font-normal"
                 />
                 <button onClick={handleSend} className={`p-1.5 lg:p-2 ml-1 lg:ml-2 rounded-lg transition-all shadow-lg ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95'}`}>
                   {isLoading ? <Square size={16} fill="currentColor" /> : <Send size={16} />}

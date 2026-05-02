@@ -249,7 +249,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                             </div>
                             <div className="flex gap-2">
                                 <div className="flex-1 py-2 bg-white/5 border border-white/10 rounded text-center text-[0.6rem] text-zinc-400">Refine</div>
-                                <div className="flex-1 py-2 bg-white text-black rounded text-center text-[0.6rem] font-bold">Post to X</div>
+                                <div className="flex-1 py-2 bg-white text-black rounded text-center text-[0.6rem] font-normal">Post to X</div>
                             </div>
                         </div>
                     </div>

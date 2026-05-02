@@ -135,7 +135,7 @@ const AuthScreen: React.FC = () => {
                             <button
                                 onClick={handleGoogleLogin}
                                 disabled={loading}
-                                className="w-full py-4 bg-zinc-900 border border-zinc-800 text-white font-bold text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 hover:bg-zinc-800 transition-all active:scale-[0.98]"
+                                className="w-full py-4 bg-zinc-900 border border-zinc-800 text-white font-normal text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-3 hover:bg-zinc-800 transition-all active:scale-[0.98]"
                             >
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -148,7 +148,7 @@ const AuthScreen: React.FC = () => {
 
                             <div className="flex items-center gap-4">
                                 <div className="flex-1 h-px bg-zinc-900" />
-                                <span className="text-[8px] font-black uppercase text-zinc-800 italic">Neural Credentials</span>
+                                <span className="text-[8px] font-normal uppercase text-zinc-800 font-normal">Neural Credentials</span>
                                 <div className="flex-1 h-px bg-zinc-900" />
                             </div>
 
@@ -160,7 +160,7 @@ const AuthScreen: React.FC = () => {
                                     value={name}
                                     onChange={e => setName(e.target.value)}
                                     required
-                                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-bold"
+                                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
                                 />
                             )}
                             <input
@@ -169,7 +169,7 @@ const AuthScreen: React.FC = () => {
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 required
-                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-bold"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
                             />
                             <input
                                 type="password"
@@ -178,16 +178,16 @@ const AuthScreen: React.FC = () => {
                                 onChange={e => setPassword(e.target.value)}
                                 required
                                 minLength={6}
-                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-bold"
+                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
                             />
 
                             {error && (
-                                <div className="p-4 bg-red-950/20 border border-red-900/30 rounded-2xl text-red-500 text-[10px] font-black uppercase tracking-widest leading-loose">
+                                <div className="p-4 bg-red-950/20 border border-red-900/30 rounded-2xl text-red-500 text-[10px] font-normal uppercase tracking-widest leading-loose">
                                     {error}
                                 </div>
                             )}
                             {successMsg && (
-                                <div className="p-4 bg-green-950/20 border border-green-900/30 rounded-2xl text-green-400 text-[10px] font-black uppercase tracking-widest leading-loose">
+                                <div className="p-4 bg-green-950/20 border border-green-900/30 rounded-2xl text-green-400 text-[10px] font-normal uppercase tracking-widest leading-loose">
                                     {successMsg}
                                 </div>
                             )}
@@ -203,18 +203,18 @@ const AuthScreen: React.FC = () => {
 
                         <div className="mt-8 flex items-center gap-4">
                             <div className="flex-1 h-px bg-zinc-900" />
-                            <span className="text-[9px] font-black uppercase text-zinc-800">or</span>
+                            <span className="text-[9px] font-normal uppercase text-zinc-800">or</span>
                             <div className="flex-1 h-px bg-zinc-900" />
                         </div>
 
                         <button
                             onClick={handleGuestLogin}
-                            className="w-full py-4 mt-6 bg-zinc-950 border border-zinc-900 text-zinc-500 font-bold text-[10px] uppercase tracking-widest rounded-2xl hover:text-white transition-all"
+                            className="w-full py-4 mt-6 bg-zinc-950 border border-zinc-900 text-zinc-500 font-normal text-[10px] uppercase tracking-widest rounded-2xl hover:text-white transition-all"
                         >
                             Guest Mode (Tier: Free)
                         </button>
 
-                        <p className="text-center text-zinc-700 text-[10px] font-black uppercase tracking-widest mt-8">
+                        <p className="text-center text-zinc-700 text-[10px] font-normal uppercase tracking-widest mt-8">
                             {mode === 'login' ? "New Operator? " : 'Known identity? '}
                             <button
                                 onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); clearState(); }}
@@ -244,21 +244,21 @@ const AuthScreen: React.FC = () => {
                             { name: 'LTD PRO', price: '$139.99', icon: <Crown />, features: ['5 Analysis / Day', '10 Posts / Day', 'Studio Enabled (10 limit)', 'Niche: 5', 'Gap: 5'] }
                         ].map(t => (
                             <div key={t.name} className={`relative p-8 rounded-[3rem] bg-zinc-950 border ${t.popular ? 'border-white/20' : 'border-zinc-900'} hover:border-white/40 transition-all group overflow-hidden`}>
-                                {t.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white text-black text-[9px] font-black uppercase rounded-full shadow-2xl">RECOMMENDED</div>}
+                                {t.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white text-black text-[9px] font-normal uppercase rounded-full shadow-2xl">RECOMMENDED</div>}
                                 <div className="w-12 h-12 bg-zinc-900 rounded-2xl flex items-center justify-center mb-6 text-zinc-600 group-hover:text-white transition-colors">{t.icon}</div>
-                                <h3 className="text-xl font-black mb-2 uppercase tracking-tighter italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>{t.name}</h3>
+                                <h3 className="text-xl font-normal mb-2 uppercase tracking-tighter font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>{t.name}</h3>
                                 <div className="flex items-baseline mb-8">
-                                    <span className="text-3xl font-black">{t.price}</span>
-                                    {t.sub && <span className="text-[10px] font-bold text-zinc-700 ml-1 uppercase">{t.sub}</span>}
+                                    <span className="text-3xl font-normal">{t.price}</span>
+                                    {t.sub && <span className="text-[10px] font-normal text-zinc-700 ml-1 uppercase">{t.sub}</span>}
                                 </div>
                                 <ul className="space-y-4 mb-10">
                                     {t.features.map(f => (
-                                        <li key={f} className="flex gap-3 items-start text-[11px] text-zinc-500 font-bold uppercase tracking-tight">
+                                        <li key={f} className="flex gap-3 items-start text-[11px] text-zinc-500 font-normal uppercase tracking-tight">
                                            <Check size={14} className="mt-1 flex-shrink-0" /> {f}
                                         </li>
                                     ))}
                                 </ul>
-                                <a href="#auth" className="block w-full py-4 text-center bg-zinc-900 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all">Select Profile</a>
+                                <a href="#auth" className="block w-full py-4 text-center bg-zinc-900 text-white font-normal uppercase text-[10px] tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all">Select Profile</a>
                             </div>
                         ))}
                     </div>
@@ -266,7 +266,7 @@ const AuthScreen: React.FC = () => {
             </section>
 
             <footer className="relative z-10 py-12 text-center border-t border-zinc-900 mt-20">
-                <p className="text-zinc-800 text-[10px] font-black uppercase tracking-[0.5em]">© 2026 ArsX · Creatiox · All synaptic rights reserved.</p>
+                <p className="text-zinc-800 text-[10px] font-normal uppercase tracking-[0.5em]">© 2026 ArsX · Creatiox · All synaptic rights reserved.</p>
             </footer>
         </div>
     );

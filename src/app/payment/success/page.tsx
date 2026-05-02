@@ -62,7 +62,7 @@ export default function PaymentSuccessPage() {
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-6 p-8">
             <div
-                className="text-3xl font-black tracking-tighter text-white italic"
+                className="text-3xl font-normal tracking-tighter text-white font-normal"
                 style={{ fontFamily: "'Orbitron', sans-serif" }}
             >
                 Creatiox
@@ -72,7 +72,7 @@ export default function PaymentSuccessPage() {
                 <>
                     <div className="w-16 h-16 rounded-full border-2 border-zinc-800 border-t-white animate-spin" />
                     <div className="text-center space-y-2">
-                        <p className="text-white font-black uppercase tracking-widest text-sm">
+                        <p className="text-white font-normal uppercase tracking-widest text-sm">
                             Syncing Neural Link{dots}
                         </p>
                         <p className="text-zinc-600 text-[10px] uppercase tracking-widest">
@@ -88,7 +88,7 @@ export default function PaymentSuccessPage() {
                         ✓
                     </div>
                     <div className="text-center space-y-2">
-                        <p className="text-white font-black uppercase tracking-widest text-sm">Access Granted</p>
+                        <p className="text-white font-normal uppercase tracking-widest text-sm">Access Granted</p>
                         <p className="text-zinc-600 text-[10px] uppercase tracking-widest">Redirecting to Creatiox...</p>
                     </div>
                 </>
@@ -96,13 +96,13 @@ export default function PaymentSuccessPage() {
 
             {status === 'timeout' && (
                 <div className="text-center space-y-4">
-                    <p className="text-white font-black uppercase tracking-widest text-sm">Still processing...</p>
+                    <p className="text-white font-normal uppercase tracking-widest text-sm">Still processing...</p>
                     <p className="text-zinc-500 text-[11px] max-w-xs text-center leading-relaxed">
                         Your payment was received. It may take a moment to activate. Try refreshing the app in a few seconds.
                     </p>
                     <button
                         onClick={() => { window.location.href = '/'; }}
-                        className="px-6 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all"
+                        className="px-6 py-3 bg-white text-black text-[10px] font-normal uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all"
                     >
                         Go to App
                     </button>

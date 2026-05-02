@@ -223,7 +223,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                   {imgState.loading ? (
                     <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/50">
                       <Loader2 size={24} className="animate-spin text-white mb-2" />
-                      <span className="text-[8px] font-black uppercase tracking-widest text-zinc-700">Generating Neural Image</span>
+                      <span className="text-[8px] font-normal uppercase tracking-widest text-zinc-700">Generating Neural Image</span>
                     </div>
                   ) : imgState.data ? (
                     <img src={imgState.data} alt="AI Generated" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-700" />
@@ -241,7 +241,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl">
                   <img src={url} alt="Reference Visual" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
                 </div>
-                <p className="mt-2 text-[8px] font-black text-zinc-800 uppercase tracking-widest text-center italic">External Reference Visual</p>
+                <p className="mt-2 text-[8px] font-normal text-zinc-800 uppercase tracking-widest text-center font-normal">External Reference Visual</p>
               </div>
             );
           }
@@ -264,7 +264,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
         <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="w-full sm:max-w-sm bg-zinc-950 border border-zinc-800 rounded-t-[2rem] sm:rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(255,255,255,0.05)]">
             <div className="flex items-center justify-between mb-6">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Select Format</h4>
+              <h4 className="text-[10px] font-normal uppercase tracking-[0.4em] text-zinc-500">Select Format</h4>
               <button onClick={() => setTrendForFormatSelection(null)} className="p-2 text-zinc-700 hover:text-white transition-all"><X size={18} /></button>
             </div>
             <div className="space-y-3">
@@ -272,7 +272,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 <button
                   key={f}
                   onClick={() => { handleSynthesize(trendForFormatSelection, f); setTrendForFormatSelection(null); }}
-                  className="w-full py-4 bg-zinc-900 hover:bg-white hover:text-black border border-zinc-800 transition-all rounded-2xl text-[10px] font-black uppercase tracking-widest text-zinc-400 active:scale-95"
+                  className="w-full py-4 bg-zinc-900 hover:bg-white hover:text-black border border-zinc-800 transition-all rounded-2xl text-[10px] font-normal uppercase tracking-widest text-zinc-400 active:scale-95"
                 >
                   Create {f}
                 </button>
@@ -294,15 +294,15 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                   <Zap size={18} fill="currentColor" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-base sm:text-xl font-black tracking-tighter text-white">Neural Content Synthesis</h3>
-                  <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-black truncate max-w-[180px] sm:max-w-sm">{synthesizingTrend.topic}</p>
+                  <h3 className="text-base sm:text-xl font-normal tracking-tighter text-white">Neural Content Synthesis</h3>
+                  <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-normal truncate max-w-[180px] sm:max-w-sm">{synthesizingTrend.topic}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 {showImageControls && imageRemaining > 0 && (
                   <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-zinc-900/60 border border-zinc-800 rounded-xl">
                     <ImageIcon size={10} className="text-white" />
-                    <span className="text-[9px] font-black text-zinc-400">{imageRemaining} left</span>
+                    <span className="text-[9px] font-normal text-zinc-400">{imageRemaining} left</span>
                   </div>
                 )}
                 <button onClick={() => setSynthesizingTrend(null)} className="p-2 text-zinc-700 hover:text-white transition-all"><X size={22} /></button>
@@ -315,7 +315,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 <button
                   key={f}
                   onClick={() => handleSynthesize(synthesizingTrend, f)}
-                  className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all border ${selectedFormat === f ? 'bg-white border-white text-black' : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-zinc-300'}`}
+                  className={`px-3 py-1.5 rounded-full text-[9px] font-normal uppercase tracking-widest transition-all border ${selectedFormat === f ? 'bg-white border-white text-black' : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-zinc-300'}`}
                 >
                   {f}
                 </button>
@@ -324,7 +324,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 <button
                   onClick={() => setImagesEnabled(prev => !prev)}
                   disabled={imageRemaining <= 0}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all ${imagesEnabled && imageRemaining > 0 ? 'bg-white/10 border-white/30 text-white' : 'border-zinc-800 text-zinc-600'} ${imageRemaining <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[9px] font-normal uppercase tracking-widest transition-all ${imagesEnabled && imageRemaining > 0 ? 'bg-white/10 border-white/30 text-white' : 'border-zinc-800 text-zinc-600'} ${imageRemaining <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {imagesEnabled && imageRemaining > 0 ? <ImageIcon size={10} /> : <ImageOff size={10} />}
                   <span className="hidden xs:inline">{imagesEnabled && imageRemaining > 0 ? `On (${imageRemaining})` : imageRemaining <= 0 ? 'No Quota' : 'Off'}</span>
@@ -333,7 +333,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               <div className="ml-auto flex items-center gap-2">
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-[9px] font-black uppercase tracking-widest border ${isEditing ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:text-white'}`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-[9px] font-normal uppercase tracking-widest border ${isEditing ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:text-white'}`}
                 >
                   {isEditing ? <><Eye size={12} /> View</> : <><Edit3 size={12} /> Edit</>}
                 </button>
@@ -345,7 +345,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               {!generatedScript ? (
                 <div className="h-60 flex flex-col items-center justify-center space-y-6">
                   <Loader2 className="animate-spin text-white" size={44} />
-                  <p className="text-[10px] font-black uppercase tracking-[0.6em] text-zinc-600">Analyzing Synaptic Pulse...</p>
+                  <p className="text-[10px] font-normal uppercase tracking-[0.6em] text-zinc-600">Analyzing Synaptic Pulse...</p>
                 </div>
               ) : renderScriptContent()}
             </div>
@@ -356,14 +356,14 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <button
                   onClick={() => { navigator.clipboard.writeText(generatedScript || ''); setCopyDone(true); setTimeout(() => setCopyDone(false), 2000); }}
-                  className="flex-1 py-3 border border-zinc-800 text-zinc-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:text-white transition-all"
+                  className="flex-1 py-3 border border-zinc-800 text-zinc-500 text-[10px] font-normal uppercase tracking-widest rounded-xl hover:text-white transition-all"
                 >
                   {copyDone ? '✓ Copied' : 'Copy Text'}
                 </button>
                 {selectedFormat.includes('X') && (
                   <button
                     onClick={syncToX}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200 active:scale-95 transition-all shadow-lg"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-black text-[10px] font-normal uppercase tracking-widest rounded-xl hover:bg-zinc-200 active:scale-95 transition-all shadow-lg"
                   >
                     <Share2 size={13} /> Sync to X
                   </button>
@@ -371,12 +371,12 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 <button
                   onClick={handleSaveToBank}
                   disabled={!generatedScript}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all disabled:opacity-20"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-normal uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all disabled:opacity-20"
                 >
                   <BookmarkPlus size={13} /> Save Idea
                 </button>
               </div>
-              <div className="mt-2 flex items-center justify-center gap-2 text-[9px] font-black uppercase tracking-widest text-zinc-800">
+              <div className="mt-2 flex items-center justify-center gap-2 text-[9px] font-normal uppercase tracking-widest text-zinc-800">
                 <ShieldCheck size={11} className="text-green-900" /> Neural Safe Logic
               </div>
             </div>
@@ -390,8 +390,8 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
           <div className="w-full sm:max-w-lg bg-zinc-950 border border-zinc-800 rounded-t-[2rem] sm:rounded-3xl p-6 sm:p-8">
             <div className="flex items-center justify-between mb-5">
               <div>
-                <h4 className="text-sm font-black uppercase tracking-widest text-white italic">Neural Refinement</h4>
-                <p className="text-[10px] text-zinc-500 uppercase font-bold">Mutate the script with AI</p>
+                <h4 className="text-sm font-normal uppercase tracking-widest text-white font-normal">Neural Refinement</h4>
+                <p className="text-[10px] text-zinc-500 uppercase font-normal">Mutate the script with AI</p>
               </div>
               <button onClick={() => setShowEditModal(false)} className="p-2 text-zinc-600 hover:text-white transition-colors"><X size={18} /></button>
             </div>
@@ -400,12 +400,12 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               value={refinement}
               onChange={(e) => setRefinement(e.target.value)}
               placeholder="E.g. 'Make it punchier', 'Change hashtags to #Fintech'..."
-              className="w-full h-28 bg-zinc-900 border border-zinc-800 focus:border-white/50 rounded-xl p-4 text-xs font-bold text-white placeholder:text-zinc-700 outline-none transition-all resize-none"
+              className="w-full h-28 bg-zinc-900 border border-zinc-800 focus:border-white/50 rounded-xl p-4 text-xs font-normal text-white placeholder:text-zinc-700 outline-none transition-all resize-none"
             />
             <button
               disabled={!refinement || loading}
               onClick={async () => { await handleRefine(); setShowEditModal(false); }}
-              className="mt-3 w-full py-4 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all active:scale-95"
+              className="mt-3 w-full py-4 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black rounded-xl font-normal uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all active:scale-95"
             >
               {isRefining ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={16} /> Apply Transformation</>}
             </button>
@@ -423,8 +423,8 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                 <div className="flex items-center gap-3">
                   <Radio size={18} className="text-white" />
                   <div>
-                    <p className="text-[9px] font-black uppercase tracking-[0.5em] text-zinc-600">Neural Pulse</p>
-                    <p className="text-xl font-black text-white tracking-tighter italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>Intercepted</p>
+                    <p className="text-[9px] font-normal uppercase tracking-[0.5em] text-zinc-600">Neural Pulse</p>
+                    <p className="text-xl font-normal text-white tracking-tighter font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Intercepted</p>
                   </div>
                 </div>
                 <button
@@ -437,7 +437,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {interests.filter(i => i.active).slice(0, 3).map(i => (
-                  <span key={i.id} className="text-[8px] font-black uppercase tracking-widest bg-zinc-900/60 text-zinc-600 px-2.5 py-1 rounded-full border border-zinc-800/50">{i.label}</span>
+                  <span key={i.id} className="text-[8px] font-normal uppercase tracking-widest bg-zinc-900/60 text-zinc-600 px-2.5 py-1 rounded-full border border-zinc-800/50">{i.label}</span>
                 ))}
               </div>
             </div>
@@ -447,13 +447,13 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
               {loading ? (
                 <div className="py-16 flex flex-col items-center justify-center text-zinc-800">
                   <div className="w-10 h-10 border-2 border-zinc-800 border-t-white rounded-full animate-spin mb-4"></div>
-                  <p className="text-[9px] uppercase font-black tracking-[0.3em]">Crawling Digital Cortex...</p>
+                  <p className="text-[9px] uppercase font-normal tracking-[0.3em]">Crawling Digital Cortex...</p>
                 </div>
               ) : trends.length > 0 ? (
                 trends.map((trend, i) => (
                   <div key={i} className="p-4 bg-zinc-900/20 border border-zinc-800/40 rounded-2xl hover:border-zinc-700/60 transition-all duration-300">
                     <div className="flex justify-between items-start mb-3">
-                      <span className={`text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-widest ${trend.platform.toLowerCase().includes('x') ? 'bg-white text-black' : trend.platform.toLowerCase().includes('yt') ? 'bg-red-600 text-white' : 'bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white'}`}>
+                      <span className={`text-[8px] font-normal px-2 py-0.5 rounded-md uppercase tracking-widest ${trend.platform.toLowerCase().includes('x') ? 'bg-white text-black' : trend.platform.toLowerCase().includes('yt') ? 'bg-red-600 text-white' : 'bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white'}`}>
                         {trend.platform}
                       </span>
                       {/* Action buttons — always visible on mobile */}
@@ -472,22 +472,22 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
                         </button>
                       </div>
                     </div>
-                    <h4 className="text-sm font-black text-zinc-200 mb-1.5 leading-tight tracking-tight">{trend.topic}</h4>
-                    <p className="text-[10px] text-zinc-600 italic line-clamp-2 leading-relaxed">"{trend.hook}"</p>
+                    <h4 className="text-sm font-normal text-zinc-200 mb-1.5 leading-tight tracking-tight">{trend.topic}</h4>
+                    <p className="text-[10px] text-zinc-600 font-normal line-clamp-2 leading-relaxed">"{trend.hook}"</p>
                   </div>
                 ))
               ) : (
                 <div className="py-16 text-center">
                   <TrendingUp size={36} className="mx-auto mb-4 text-zinc-900 opacity-20" />
-                  <p className="text-xs text-zinc-700 font-black uppercase tracking-widest">No Active Transmissions</p>
+                  <p className="text-xs text-zinc-700 font-normal uppercase tracking-widest">No Active Transmissions</p>
                 </div>
               )}
             </div>
 
             <div className="px-6 py-4 bg-zinc-950/80 border-t border-zinc-900/50">
               <div className="flex justify-between items-center opacity-30">
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest">Neural Feed</p>
-                <p className="text-[8px] text-zinc-500 font-black uppercase tracking-widest">v5.0</p>
+                <p className="text-[8px] text-zinc-500 font-normal uppercase tracking-widest">Neural Feed</p>
+                <p className="text-[8px] text-zinc-500 font-normal uppercase tracking-widest">v5.0</p>
               </div>
             </div>
           </div>

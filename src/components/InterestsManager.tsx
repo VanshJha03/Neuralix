@@ -111,7 +111,7 @@ const NicheRadarCarousel: React.FC<{ items: NicheContent[] }> = ({ items }) => {
                 <div className="absolute top-6 left-6 flex items-center gap-3">
                   <PlatformBadge platform={item.platform} />
                   {isActive && (
-                    <div className="px-3 py-1 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-[8px] font-black text-white uppercase tracking-[0.2em] animate-pulse">
+                    <div className="px-3 py-1 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-[8px] font-normal text-white uppercase tracking-[0.2em] animate-pulse">
                       Live Pulse
                     </div>
                   )}
@@ -121,24 +121,24 @@ const NicheRadarCarousel: React.FC<{ items: NicheContent[] }> = ({ items }) => {
                     <Play size={24} className="text-white fill-white ml-1" />
                   </div>
                 </div>
-                <div className="absolute bottom-6 right-6 px-3 py-1 bg-black/80 backdrop-blur-xl rounded-xl text-[10px] font-black text-white uppercase tracking-widest border border-white/5">
+                <div className="absolute bottom-6 right-6 px-3 py-1 bg-black/80 backdrop-blur-xl rounded-xl text-[10px] font-normal text-white uppercase tracking-widest border border-white/5">
                   {item.views}
                 </div>
               </div>
 
               <div className="p-8">
-                <h4 className="text-base font-black text-white line-clamp-1 mb-2 tracking-tight">{item.title}</h4>
+                <h4 className="text-base font-normal text-white line-clamp-1 mb-2 tracking-tight">{item.title}</h4>
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-[10px] font-black uppercase text-zinc-500 tracking-[0.1em] mb-1">{item.channel}</p>
-                    <p className="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">{item.date}</p>
+                    <p className="text-[10px] font-normal uppercase text-zinc-500 tracking-[0.1em] mb-1">{item.channel}</p>
+                    <p className="text-[9px] text-zinc-600 font-normal uppercase tracking-widest">{item.date}</p>
                   </div>
                   <a
                     href={item.url}
                     target="_blank"
                     rel="noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-2xl text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all group/btn"
+                    className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-2xl text-[10px] font-normal uppercase tracking-widest text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all group/btn"
                   >
                     Watch <ExternalLink size={12} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   </a>
@@ -200,15 +200,15 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
             </div>
           </div>
           <div>
-            <h1 className="text-3xl lg:text-5xl font-black tracking-tighter mb-1 uppercase" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Radar</h1>
-            <p className="text-zinc-500 font-bold uppercase text-[9px] lg:text-[10px] tracking-[0.3em]">Synaptic alignment with market competitors</p>
+            <h1 className="text-3xl lg:text-5xl font-normal tracking-tighter mb-1 uppercase" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Radar</h1>
+            <p className="text-zinc-500 font-normal uppercase text-[9px] lg:text-[10px] tracking-[0.3em]">Synaptic alignment with market competitors</p>
           </div>
         </div>
 
         <button
           onClick={handleAnalyzeNiche}
           disabled={isSearching || interests.filter(i => i.active).length === 0}
-          className="w-full lg:w-auto group flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 transition-all shadow-[0_20px_60px_rgba(255,255,255,0.05)] disabled:opacity-10"
+          className="w-full lg:w-auto group flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-[2rem] font-normal uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 transition-all shadow-[0_20px_60px_rgba(255,255,255,0.05)] disabled:opacity-10"
         >
           {isSearching ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} className="fill-black" />}
           Deep Neural Scan
@@ -228,7 +228,7 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
                 : 'bg-zinc-900/40 border-zinc-800 text-zinc-600 hover:border-zinc-700 hover:text-zinc-400'
                 }`}
             >
-              <span className="text-[10px] lg:text-xs font-black uppercase tracking-widest">{interest.label}</span>
+              <span className="text-[10px] lg:text-xs font-normal uppercase tracking-widest">{interest.label}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); removeInterest(interest.id); }}
                 className="ml-2 opacity-0 group-hover:opacity-100 text-white/50 hover:text-white transition-opacity"
@@ -247,12 +247,12 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
               onChange={e => setNewLabel(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && addInterest()}
               placeholder="Inject niche marker..."
-              className="w-full bg-black border border-zinc-800 rounded-[1.5rem] lg:rounded-[2rem] pl-16 pr-8 py-4 lg:py-6 text-white focus:border-white/50 outline-none transition-all placeholder:text-zinc-800 font-bold"
+              className="w-full bg-black border border-zinc-800 rounded-[1.5rem] lg:rounded-[2rem] pl-16 pr-8 py-4 lg:py-6 text-white focus:border-white/50 outline-none transition-all placeholder:text-zinc-800 font-normal"
             />
           </div>
           <button
             onClick={addInterest}
-            className="w-full lg:w-auto px-12 py-4 lg:py-0 bg-zinc-100 text-black rounded-[1.5rem] lg:rounded-[2rem] font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all shadow-xl"
+            className="w-full lg:w-auto px-12 py-4 lg:py-0 bg-zinc-100 text-black rounded-[1.5rem] lg:rounded-[2rem] font-normal uppercase tracking-widest text-[10px] hover:bg-white transition-all shadow-xl"
           >
             Inject
           </button>
@@ -262,15 +262,15 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
       {isSearching && (
         <div className="py-24 flex flex-col items-center justify-center animate-pulse">
           <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mb-8"></div>
-          <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-700">Intercepting viral packet streams...</p>
+          <p className="text-[10px] font-normal uppercase tracking-[0.5em] text-zinc-700">Intercepting viral packet streams...</p>
         </div>
       )}
 
       {nicheContent.length > 0 && !isSearching && (
         <section className="animate-in fade-in slide-in-from-bottom-20 duration-1000 mb-32">
           <div className="text-center mb-12 lg:mb-16">
-            <h2 className="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.8em] text-zinc-500 mb-4">Neural Feedback Loop</h2>
-            <h3 className="text-3xl lg:text-5xl font-black text-white tracking-tighter">Viral Niche Pulse</h3>
+            <h2 className="text-[9px] lg:text-[10px] font-normal uppercase tracking-[0.8em] text-zinc-500 mb-4">Neural Feedback Loop</h2>
+            <h3 className="text-3xl lg:text-5xl font-normal text-white tracking-tighter">Viral Niche Pulse</h3>
           </div>
 
           <NicheRadarCarousel items={nicheContent} />
@@ -282,14 +282,14 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
           <div className="w-14 lg:w-16 h-14 lg:h-16 bg-white/5 rounded-[1.2rem] lg:rounded-[1.5rem] flex items-center justify-center text-white mb-6 lg:mb-8 group-hover:rotate-12 transition-transform">
             <Search size={28} />
           </div>
-          <h3 className="text-zinc-200 font-black mb-4 uppercase text-[11px] lg:text-[12px] tracking-[0.2em]">Contextual Grounding</h3>
+          <h3 className="text-zinc-200 font-normal mb-4 uppercase text-[11px] lg:text-[12px] tracking-[0.2em]">Contextual Grounding</h3>
           <p className="leading-relaxed text-zinc-500 text-sm lg:text-base">Markers guide ArsCreatio's deep-web crawlers. When active, research queries prioritize current market gaps and high-fidelity technical breakthroughs specifically in your interest clusters.</p>
         </div>
         <div className="p-8 lg:p-10 bg-zinc-950/50 border border-zinc-900 rounded-[2rem] lg:rounded-[3rem] hover:border-white/20 transition-all group">
           <div className="w-14 lg:w-16 h-14 lg:h-16 bg-white/5 rounded-[1.2rem] lg:rounded-[1.5rem] flex items-center justify-center text-white mb-6 lg:mb-8 group-hover:-rotate-12 transition-transform">
             <Zap size={28} />
           </div>
-          <h3 className="text-zinc-200 font-black mb-4 uppercase text-[11px] lg:text-[12px] tracking-[0.2em]">Competitive Edge</h3>
+          <h3 className="text-zinc-200 font-normal mb-4 uppercase text-[11px] lg:text-[12px] tracking-[0.2em]">Competitive Edge</h3>
           <p className="leading-relaxed text-zinc-500 text-sm lg:text-base">The Niche Radar identifies "Viral Hooks" from top competitors. ArsCreatio synthesizes these into your Marketing Studio, allowing you to adapt successful formats to your unique CognoV perspective.</p>
         </div>
       </div>

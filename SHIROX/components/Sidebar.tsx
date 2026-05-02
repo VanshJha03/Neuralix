@@ -54,10 +54,10 @@ const Sidebar: React.FC<SidebarProps> = ({
         }`}
     >
       <Icon size={20} className={activeView === id ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'} />
-      <span className={`text-[11px] font-bold uppercase tracking-widest truncate ${isCollapsed && 'lg:hidden'}`}>{label}</span>
+      <span className={`text-[11px] font-normal uppercase tracking-widest truncate ${isCollapsed && 'lg:hidden'}`}>{label}</span>
 
       {isCollapsed && (
-        <div className="hidden lg:block absolute left-full ml-4 px-3 py-1 bg-zinc-900/90 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-2xl backdrop-blur-xl">
+        <div className="hidden lg:block absolute left-full ml-4 px-3 py-1 bg-zinc-900/90 border border-zinc-800 text-white text-[10px] font-normal uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-2xl backdrop-blur-xl">
           {label}
         </div>
       )}
@@ -80,8 +80,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           <NeuralLogo size={42} />
           {!isCollapsed && (
             <div>
-              <h1 className="text-2xl font-black tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
-              <p className="text-[7px] font-black uppercase tracking-[0.5em] text-zinc-500">Neural Intelligence</p>
+              <h1 className="text-2xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+              <p className="text-[7px] font-normal uppercase tracking-[0.5em] text-zinc-500">Neural Intelligence</p>
             </div>
           )}
         </div>
@@ -93,9 +93,9 @@ const Sidebar: React.FC<SidebarProps> = ({
             className={`w-full flex items-center gap-4 p-4 mb-4 bg-white/5 border border-white/5 rounded-2xl text-zinc-400 hover:border-white/20 hover:text-white transition-all group relative backdrop-blur-md`}
           >
             <Search size={18} />
-            {!isCollapsed && <span className="text-[10px] font-black uppercase tracking-[0.2em]">Global Search</span>}
+            {!isCollapsed && <span className="text-[10px] font-normal uppercase tracking-[0.2em]">Global Search</span>}
             {isCollapsed && (
-              <div className="absolute left-full ml-4 px-3 py-1 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-2xl backdrop-blur-xl">
+              <div className="absolute left-full ml-4 px-3 py-1 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-normal uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-2xl backdrop-blur-xl">
                 Global Search
               </div>
             )}
@@ -111,13 +111,13 @@ const Sidebar: React.FC<SidebarProps> = ({
           {!isCollapsed && (
             <div className="flex items-center gap-3 px-2 py-3 mb-2">
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-black flex-shrink-0"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[11px] font-normal flex-shrink-0"
                 style={{ background: userSettings.avatarColor || '#dc2626' }}
               >
                 {userSettings.name?.charAt(0).toUpperCase() || 'O'}
               </div>
               <div className="min-w-0">
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-300 truncate">{userSettings.name}</p>
+                <p className="text-[10px] font-normal uppercase tracking-widest text-zinc-300 truncate">{userSettings.name}</p>
                 <p className="text-[9px] text-zinc-600 truncate">{userSettings.email || '@' + userSettings.handle}</p>
               </div>
             </div>
@@ -128,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             className={`w-full flex items-center gap-3 p-4 rounded-xl text-zinc-600 hover:text-white transition-colors group relative`}
           >
             <Trash2 size={18} />
-            {!isCollapsed && <span className="text-[9px] font-black uppercase tracking-[0.2em]">Wipe Session</span>}
+            {!isCollapsed && <span className="text-[9px] font-normal uppercase tracking-[0.2em]">Wipe Session</span>}
           </button>
 
           <button
@@ -136,7 +136,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             className={`w-full flex items-center gap-3 p-4 rounded-xl text-zinc-600 hover:text-red-400 hover:bg-red-950/20 transition-all group relative border border-transparent hover:border-red-900/50`}
           >
             <LogOut size={18} className="group-hover:rotate-12 transition-transform" />
-            {!isCollapsed && <span className="text-[9px] font-black uppercase tracking-[0.2em]">Disconnect Matrix</span>}
+            {!isCollapsed && <span className="text-[9px] font-normal uppercase tracking-[0.2em]">Disconnect Matrix</span>}
           </button>
 
           <button

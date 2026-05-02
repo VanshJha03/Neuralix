@@ -63,6 +63,22 @@ export default function MainInterface({
         }
     }, [userSettings.tier]);
 
+    // ── Sync Auth state to user settings ────────────────────────────────────
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChange((user) => {
+            if (user && (!userSettings.email || userSettings.name === 'Operator')) {
+                const updatedSettings = {
+                    ...userSettings,
+                    email: user.email || userSettings.email,
+                    name: user.displayName || user.email?.split('@')[0] || userSettings.name
+                };
+                setUserSettings(updatedSettings);
+                actions.saveUserSettings(updatedSettings).catch(() => {});
+            }
+        });
+        return unsubscribe;
+    }, [userSettings]);
+
     const handleSignOut = async () => {
         await signOut(auth);
         await fetch('/api/auth/session', { method: 'DELETE' });
@@ -136,11 +152,11 @@ ${neuralMemories.length > 0 ? neuralMemories.map((m, i) => `${i + 1}. ${m}`).joi
 
             <main className="flex-1 relative flex flex-col bg-zinc-950/50 min-w-0">
                 <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
-                    <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-black tracking-[0.3em] text-zinc-400 uppercase">
+                    <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-normal tracking-[0.3em] text-zinc-400 uppercase">
                         <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                         Neural Link: Active
                     </div>
-                    <button onClick={handleSignOut} className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-bold text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2">
+                    <button onClick={handleSignOut} className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-normal text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2">
                         <LogOut size={12} /> Disconnect
                     </button>
                 </div>

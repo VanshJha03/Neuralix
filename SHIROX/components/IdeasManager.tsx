@@ -16,8 +16,8 @@ const IdeasManager: React.FC<IdeasManagerProps> = ({ ideas, setIdeas }) => {
   return (
     <div className="p-12 max-w-5xl mx-auto h-full overflow-y-auto pb-32">
       <div className="mb-12">
-        <h1 className="text-5xl font-black tracking-tighter italic mb-2" style={{ fontFamily: "'Orbitron', sans-serif" }}>IDEA BANK</h1>
-        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-500">Neural Repository of Breakthroughs</p>
+        <h1 className="text-5xl font-normal tracking-tighter font-normal mb-2" style={{ fontFamily: "'Orbitron', sans-serif" }}>IDEA BANK</h1>
+        <p className="text-[10px] font-normal uppercase tracking-[0.4em] text-zinc-500">Neural Repository of Breakthroughs</p>
       </div>
 
       <div className="grid gap-6">
@@ -28,8 +28,8 @@ const IdeasManager: React.FC<IdeasManagerProps> = ({ ideas, setIdeas }) => {
                 {idea.type === 'Imagine' ? <Sparkles size={20} /> : <BookOpen size={20} />}
               </div>
               <div>
-                <span className="text-[10px] uppercase font-black text-zinc-500 tracking-[0.2em]">{idea.type} Mode</span>
-                <div className="flex items-center gap-2 text-[10px] text-zinc-600 font-bold uppercase tracking-widest mt-1">
+                <span className="text-[10px] uppercase font-normal text-zinc-500 tracking-[0.2em]">{idea.type} Mode</span>
+                <div className="flex items-center gap-2 text-[10px] text-zinc-600 font-normal uppercase tracking-widest mt-1">
                   <Calendar size={12} /> {new Date(idea.timestamp).toLocaleDateString()}
                 </div>
               </div>
@@ -40,14 +40,14 @@ const IdeasManager: React.FC<IdeasManagerProps> = ({ ideas, setIdeas }) => {
                 <Trash2 size={16} />
               </button>
             </div>
-            <h3 className="text-xl font-bold text-white mb-4 tracking-tight">{idea.title}</h3>
+            <h3 className="text-xl font-normal text-white mb-4 tracking-tight">{idea.title}</h3>
             <p className="text-zinc-400 leading-relaxed text-sm whitespace-pre-wrap">{idea.content}</p>
           </div>
         ))}
         {ideas.length === 0 && (
           <div className="flex flex-col items-center justify-center py-32 text-zinc-800">
             <Lightbulb size={64} className="mb-6 opacity-10" />
-            <p className="text-xs font-black uppercase tracking-[0.2em]">Neural storage currently decoupled</p>
+            <p className="text-xs font-normal uppercase tracking-[0.2em]">Neural storage currently decoupled</p>
           </div>
         )}
       </div>

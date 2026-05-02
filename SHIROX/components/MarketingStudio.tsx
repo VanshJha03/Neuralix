@@ -135,17 +135,17 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
     <div className="p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide">
       <div className="w-full lg:w-1/3 space-y-6 lg:space-y-8 flex flex-col h-auto lg:h-full shrink-0">
         <div className="text-center lg:text-left">
-          <h1 className="text-3xl font-black tracking-tighter mb-1 uppercase italic">Content Studio</h1>
-          <p className="text-zinc-600 text-[10px] font-black uppercase tracking-[0.3em]">Neural Asset Production</p>
+          <h1 className="text-3xl font-normal tracking-tighter mb-1 uppercase font-normal">Content Studio</h1>
+          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.3em]">Neural Asset Production</p>
         </div>
 
         <div className="flex-1 lg:overflow-y-auto space-y-3 lg:pr-2 scrollbar-hide">
           {format === 'Google Docs Report' ? (
             <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
-              <h3 className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.2em] mb-2">Report Parameters</h3>
+              <h3 className="text-[10px] font-normal text-zinc-700 uppercase tracking-[0.2em] mb-2">Report Parameters</h3>
 
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold text-zinc-500">Topic / Subject</label>
+                <label className="text-[10px] uppercase font-normal text-zinc-500">Topic / Subject</label>
                 <input
                   type="text"
                   value={topic}
@@ -156,7 +156,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold text-zinc-500">Image 1 Concept</label>
+                <label className="text-[10px] uppercase font-normal text-zinc-500">Image 1 Concept</label>
                 <textarea
                   value={image1Prompt}
                   onChange={(e) => setImage1Prompt(e.target.value)}
@@ -166,7 +166,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] uppercase font-bold text-zinc-500">Image 2 Concept</label>
+                <label className="text-[10px] uppercase font-normal text-zinc-500">Image 2 Concept</label>
                 <textarea
                   value={image2Prompt}
                   onChange={(e) => setImage2Prompt(e.target.value)}
@@ -177,7 +177,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
             </div>
           ) : (
             <>
-              <h3 className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.2em] mb-4">Research Pillars</h3>
+              <h3 className="text-[10px] font-normal text-zinc-700 uppercase tracking-[0.2em] mb-4">Research Pillars</h3>
               {ideas.map(idea => (
                 <div
                   key={idea.id}
@@ -187,8 +187,8 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                     }`}
                 >
                   <div onClick={() => setSelectedIdea(idea)} className="cursor-pointer">
-                    <p className={`text-xs font-bold truncate mb-1 ${selectedIdea?.id === idea.id ? 'text-white' : 'text-zinc-500'}`}>{idea.title}</p>
-                    <p className="text-[10px] line-clamp-2 opacity-60 italic text-zinc-600">{idea.content}</p>
+                    <p className={`text-xs font-normal truncate mb-1 ${selectedIdea?.id === idea.id ? 'text-white' : 'text-zinc-500'}`}>{idea.title}</p>
+                    <p className="text-[10px] line-clamp-2 opacity-60 font-normal text-zinc-600">{idea.content}</p>
                   </div>
 
                   <button
@@ -202,7 +202,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                 </div>
               ))}
               {ideas.length === 0 && (
-                <p className="text-zinc-800 text-xs italic text-center mt-12 opacity-20">No active research pillars.</p>
+                <p className="text-zinc-800 text-xs font-normal text-center mt-12 opacity-20">No active research pillars.</p>
               )}
             </>
           )}
@@ -214,7 +214,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
               <button
                 key={f}
                 onClick={() => setFormat(f)}
-                className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg border transition-all ${format === f ? 'bg-white text-black border-white' : 'bg-transparent border-zinc-800 text-zinc-600'
+                className={`px-4 py-2 text-[10px] font-normal uppercase tracking-widest rounded-lg border transition-all ${format === f ? 'bg-white text-black border-white' : 'bg-transparent border-zinc-800 text-zinc-600'
                   }`}
               >
                 {f}
@@ -224,7 +224,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
           <button
             disabled={(format !== 'Google Docs Report' && !selectedIdea) || (format === 'Google Docs Report' && (!topic || !image1Prompt || !image2Prompt)) || loading}
             onClick={handleGenerate}
-            className="w-full py-4 bg-white hover:bg-zinc-200 text-black rounded-xl font-black uppercase tracking-widest text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-20 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+            className="w-full py-4 bg-white hover:bg-zinc-200 text-black rounded-xl font-normal uppercase tracking-widest text-sm flex items-center justify-center gap-2 transition-all disabled:opacity-20 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
           >
             {loading ? <Loader2 size={18} className="animate-spin" /> : <><Zap size={18} /> Synthesize</>}
           </button>
@@ -235,14 +235,14 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
         {!generatedContent && !loading && (
           <div className="h-full flex flex-col items-center justify-center text-zinc-700 space-y-4">
             <Megaphone size={48} className="opacity-10" />
-            <p className="text-sm italic">Synthesized content will appear here.</p>
+            <p className="text-sm font-normal">Synthesized content will appear here.</p>
           </div>
         )}
 
         {loading && (
           <div className="h-full flex flex-col items-center justify-center space-y-4">
             <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-[10px] font-black tracking-widest text-zinc-600 uppercase">Constructing Viral Narrative...</p>
+            <p className="text-[10px] font-normal tracking-widest text-zinc-600 uppercase">Constructing Viral Narrative...</p>
           </div>
         )}
 
@@ -255,14 +255,14 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                     format.includes('IG') ? <Instagram size={18} /> :
                       format.includes('YT') ? <Youtube size={18} /> : <Megaphone size={18} />}
                 </div>
-                <h3 className="font-black text-xl tracking-tighter uppercase italic">Neural {format} Output</h3>
+                <h3 className="font-normal text-xl tracking-tighter uppercase font-normal">Neural {format} Output</h3>
               </div>
               <div className="flex items-center gap-2 w-full sm:w-auto">
                 {format.includes('X') && (
                   <button
                     onClick={copyImageAndShare}
                     title="Share to X"
-                    className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-[10px] font-black uppercase tracking-widest transition-all hover:bg-zinc-200"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-[10px] font-normal uppercase tracking-widest transition-all hover:bg-zinc-200"
                   >
                     <Twitter size={14} />
                     Sync to X
@@ -271,7 +271,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                 <button
                   onClick={() => setShowEditModal(true)}
                   title="Edit script"
-                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 hover:border-white rounded-lg text-zinc-400 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all"
+                  className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 hover:border-white rounded-lg text-zinc-400 hover:text-white text-[10px] font-normal uppercase tracking-widest transition-all"
                 >
                   <Edit3 size={14} />
                   Edit Script
@@ -292,7 +292,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                         {imgState.loading ? (
                           <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/80">
                             <Loader2 size={32} className="animate-spin text-white mb-4" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">Synthesizing Visual Core</span>
+                            <span className="text-[10px] font-normal uppercase tracking-[0.4em] text-zinc-600">Synthesizing Visual Core</span>
                           </div>
                         ) : imgState.data ? (
                           <img src={imgState.data} alt="AI Representation" className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-1000" />
@@ -302,7 +302,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                           </div>
                         )}
                       </div>
-                      <p className="mt-4 text-[9px] font-black text-zinc-800 uppercase tracking-[0.3em] text-center italic">Visual logic based on neural narrative</p>
+                      <p className="mt-4 text-[9px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center font-normal">Visual logic based on neural narrative</p>
                     </div>
                   );
                 }
@@ -313,7 +313,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                       <div className="relative aspect-video bg-zinc-950 border border-zinc-900 rounded-[2.5rem] overflow-hidden group/img shadow-2xl">
                         <img src={url} alt="Reference Content" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
                       </div>
-                      <p className="mt-4 text-[9px] font-black text-zinc-800 uppercase tracking-[0.3em] text-center italic">External Visual Reference</p>
+                      <p className="mt-4 text-[9px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center font-normal">External Visual Reference</p>
                     </div>
                   );
                 }
@@ -341,7 +341,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                   onChange={(e) => setRefinement(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleRefine()}
                   placeholder="Inject shift in narrative or fuse new ideas..."
-                  className="w-full bg-zinc-950/50 border border-zinc-800 focus:border-white/50 rounded-2xl py-4 pl-12 pr-24 text-xs font-bold text-white placeholder:text-zinc-700 outline-none transition-all group-hover:border-zinc-700"
+                  className="w-full bg-zinc-950/50 border border-zinc-800 focus:border-white/50 rounded-2xl py-4 pl-12 pr-24 text-xs font-normal text-white placeholder:text-zinc-700 outline-none transition-all group-hover:border-zinc-700"
                 />
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-white transition-colors">
                   <MessageSquare size={16} />
@@ -349,12 +349,12 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                 <button
                   disabled={!refinement || loading}
                   onClick={handleRefine}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black text-[10px] font-normal uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)]"
                 >
                   {isRefining ? <Loader2 size={14} className="animate-spin" /> : 'Refine'}
                 </button>
               </div>
-              <p className="mt-4 text-[8px] font-black text-zinc-800 uppercase tracking-[0.3em] text-center">Neural Iteration Cycle Active</p>
+              <p className="mt-4 text-[8px] font-normal text-zinc-800 uppercase tracking-[0.3em] text-center">Neural Iteration Cycle Active</p>
             </div>
 
             {/* AI Edit Modal Overlay */}
@@ -365,8 +365,8 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
 
                   <div className="flex items-center justify-between mb-6">
                     <div>
-                      <h4 className="text-sm font-black uppercase tracking-widest text-white italic">Neural Refinement</h4>
-                      <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Instruct AI to mutate script</p>
+                      <h4 className="text-sm font-normal uppercase tracking-widest text-white font-normal">Neural Refinement</h4>
+                      <p className="text-[10px] text-zinc-500 uppercase font-normal tracking-tighter">Instruct AI to mutate script</p>
                     </div>
                     <button
                       type="button"
@@ -384,7 +384,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                       value={refinement}
                       onChange={(e) => setRefinement(e.target.value)}
                       placeholder="E.g. 'Make it more punchy', 'Change the hashtags to #Fintech', 'Focus more on the ROI'..."
-                      className="w-full h-32 bg-zinc-900 border border-zinc-800 focus:border-white/50 rounded-xl p-4 text-xs font-bold text-white placeholder:text-zinc-700 outline-none transition-all resize-none"
+                      className="w-full h-32 bg-zinc-900 border border-zinc-800 focus:border-white/50 rounded-xl p-4 text-xs font-normal text-white placeholder:text-zinc-700 outline-none transition-all resize-none"
                     />
 
                     <button
@@ -393,7 +393,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                         await handleRefine();
                         setShowEditModal(false);
                       }}
-                      className="w-full py-4 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                      className="w-full py-4 bg-white hover:bg-zinc-200 disabled:bg-zinc-800 text-black rounded-xl font-normal uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                     >
                       {isRefining ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={16} /> Apply Transformation</>}
                     </button>

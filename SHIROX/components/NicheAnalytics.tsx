@@ -154,7 +154,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
     return (
       <div className="h-full flex flex-col items-center justify-center p-8 text-center">
         <div className="p-8 bg-zinc-900 border border-zinc-800 rounded-full mb-6 text-zinc-700"><BarChart3 size={40} /></div>
-        <h2 className="text-xl font-black tracking-tight text-white mb-2">No Neural Markers Active</h2>
+        <h2 className="text-xl font-normal tracking-tight text-white mb-2">No Neural Markers Active</h2>
         <p className="text-zinc-500 max-w-xs text-sm">Activate a niche in Interest Markers to begin deep analytics.</p>
       </div>
     );
@@ -165,12 +165,12 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       {/* ── Page Header ────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 lg:mb-12">
         <div>
-          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter italic" style={{ fontFamily: "'Orbitron', sans-serif" }}>NICHE ANALYTICS</h1>
-          <p className="text-[9px] font-black uppercase tracking-[0.4em] text-zinc-600 mt-1">Synaptic Competitive Mapping</p>
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-normal tracking-tighter font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>NICHE ANALYTICS</h1>
+          <p className="text-[9px] font-normal uppercase tracking-[0.4em] text-zinc-600 mt-1">Synaptic Competitive Mapping</p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {imageRemaining > 0 && (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-zinc-800 rounded-full text-[9px] font-black uppercase text-zinc-500">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-zinc-800 rounded-full text-[9px] font-normal uppercase text-zinc-500">
               <ImageIcon size={10} />
               {imageRemaining} imgs
             </div>
@@ -178,7 +178,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
           <button
             onClick={performFullAnalysis}
             disabled={loading}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-3 px-6 py-3 bg-white text-black rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-zinc-100 active:scale-95 transition-all"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-3 px-6 py-3 bg-white text-black rounded-2xl font-normal uppercase tracking-widest text-[10px] hover:bg-zinc-100 active:scale-95 transition-all"
           >
             {loading ? <Loader2 className="animate-spin" size={16} /> : <Zap size={16} fill="black" />}
             Refresh Scan
@@ -196,7 +196,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === tab.id ? 'bg-white text-black' : 'text-zinc-600 hover:text-white'}`}
+            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-full text-[10px] font-normal uppercase tracking-widest transition-all ${activeTab === tab.id ? 'bg-white text-black' : 'text-zinc-600 hover:text-white'}`}
           >
             <tab.icon size={14} />
             <span className="hidden sm:inline">{tab.label}</span>
@@ -209,7 +209,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       {loading ? (
         <div className="py-32 flex flex-col items-center justify-center space-y-6">
           <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-[10px] font-black uppercase tracking-[0.6em] text-zinc-700">Intercepting Market Frequency...</p>
+          <p className="text-[10px] font-normal uppercase tracking-[0.6em] text-zinc-700">Intercepting Market Frequency...</p>
         </div>
       ) : (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -219,12 +219,12 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
               {predictions.map((p, i) => (
                 <div key={i} className="p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800 rounded-2xl lg:rounded-[3rem] hover:border-zinc-700 transition-all">
                   <div className="flex justify-between items-start mb-6">
-                    <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${p.velocity === 'Early' ? 'bg-blue-600/10 text-blue-500 border border-blue-900/30' : p.velocity === 'Rising' ? 'bg-green-600/10 text-green-500 border border-green-900/30' : p.velocity === 'Peak' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-500'}`}>
+                    <div className={`px-3 py-1 rounded-full text-[9px] font-normal uppercase tracking-widest ${p.velocity === 'Early' ? 'bg-blue-600/10 text-blue-500 border border-blue-900/30' : p.velocity === 'Rising' ? 'bg-green-600/10 text-green-500 border border-green-900/30' : p.velocity === 'Peak' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-500'}`}>
                       {p.velocity} Phase
                     </div>
-                    <p className="text-xl font-black italic text-zinc-700">{p.score}%</p>
+                    <p className="text-xl font-normal font-normal text-zinc-700">{p.score}%</p>
                   </div>
-                  <h3 className="text-xl font-black text-white mb-3 tracking-tighter leading-none">{p.topic}</h3>
+                  <h3 className="text-xl font-normal text-white mb-3 tracking-tighter leading-none">{p.topic}</h3>
                   <p className="text-zinc-500 text-sm leading-relaxed mb-6">{p.why}</p>
                   <div className="h-1.5 w-full bg-zinc-950 rounded-full overflow-hidden mb-6">
                     <div className={`h-full transition-all duration-1000 ${p.score > 80 ? 'bg-white' : 'bg-zinc-700'}`} style={{ width: `${p.score}%` }} />
@@ -232,7 +232,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                   <div className="flex flex-wrap gap-2">
                     {formats.map(f => (
                       <button key={f} onClick={() => handleSynthesize(`${p.topic}: ${p.why}`, p.topic, f)}
-                        className="px-3 py-1.5 bg-zinc-950 border border-zinc-900 rounded-lg text-[9px] font-black uppercase text-zinc-500 hover:text-white hover:border-zinc-700 transition-all active:scale-95">
+                        className="px-3 py-1.5 bg-zinc-950 border border-zinc-900 rounded-lg text-[9px] font-normal uppercase text-zinc-500 hover:text-white hover:border-zinc-700 transition-all active:scale-95">
                         {f}
                       </button>
                     ))}
@@ -254,14 +254,14 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                       {c.platform === 'IG' && <Instagram className="text-pink-500" size={20} />}
                     </div>
                     <div>
-                      <h3 className="text-lg font-black text-white italic">{c.name}</h3>
-                      <p className="text-[10px] font-bold text-zinc-600 uppercase tracking-wider">{c.style}</p>
+                      <h3 className="text-lg font-normal text-white font-normal">{c.name}</h3>
+                      <p className="text-[10px] font-normal text-zinc-600 uppercase tracking-wider">{c.style}</p>
                     </div>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {formats.map(f => (
                       <button key={f} onClick={() => handleSynthesize(`${c.name} style: ${c.style}. Hooks: ${c.successfulHooks.join(' | ')}`, c.name, f)}
-                        className="px-3 py-1.5 bg-zinc-950 border border-zinc-900 rounded-lg text-[9px] font-black uppercase text-zinc-500 hover:text-white hover:border-zinc-700 transition-all active:scale-95">
+                        className="px-3 py-1.5 bg-zinc-950 border border-zinc-900 rounded-lg text-[9px] font-normal uppercase text-zinc-500 hover:text-white hover:border-zinc-700 transition-all active:scale-95">
                         {f}
                       </button>
                     ))}
@@ -278,30 +278,30 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                 <div key={i} className="bg-zinc-900/20 border border-zinc-800 rounded-2xl lg:rounded-[4rem] p-6 lg:p-12 flex flex-col lg:flex-row gap-6 lg:gap-12 relative overflow-hidden">
                   <div className="flex-1 space-y-5">
                     <div>
-                      <h3 className="text-2xl font-black italic text-white tracking-tighter">{g.trend}</h3>
+                      <h3 className="text-2xl font-normal font-normal text-white tracking-tighter">{g.trend}</h3>
                       <div className="h-0.5 w-12 bg-white mt-2" />
                     </div>
                     <div className="p-4 lg:p-6 bg-zinc-950/50 rounded-2xl border border-zinc-900">
-                      <p className="text-[9px] font-black uppercase text-zinc-700 tracking-widest mb-2">Common Narrative</p>
-                      <p className="text-zinc-500 text-sm italic">"{g.crowdIsSaying}"</p>
+                      <p className="text-[9px] font-normal uppercase text-zinc-700 tracking-widest mb-2">Common Narrative</p>
+                      <p className="text-zinc-500 text-sm font-normal">"{g.crowdIsSaying}"</p>
                     </div>
                     <div className="p-4 lg:p-6 bg-red-600/5 rounded-2xl border border-red-900/20">
                       <div className="flex items-center gap-2 mb-2">
                         <BrainCircuit className="text-red-500" size={16} />
-                        <p className="text-[9px] font-black uppercase text-red-600 tracking-widest">The Synaptic Gap</p>
+                        <p className="text-[9px] font-normal uppercase text-red-600 tracking-widest">The Synaptic Gap</p>
                       </div>
-                      <p className="text-zinc-200 text-sm font-bold">{g.missingPiece}</p>
+                      <p className="text-zinc-200 text-sm font-normal">{g.missingPiece}</p>
                     </div>
                   </div>
 
                   <div className="w-full lg:w-1/3 bg-black/60 border border-zinc-800 p-6 lg:p-8 rounded-2xl lg:rounded-[3rem] flex flex-col items-center text-center">
                     <Lightbulb className="text-yellow-500 mb-4" size={36} />
-                    <h4 className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3">Neural Hook</h4>
-                    <p className="text-sm font-black italic text-white leading-tight mb-6">"{g.hookUSP}"</p>
+                    <h4 className="text-[10px] font-normal uppercase tracking-widest text-zinc-500 mb-3">Neural Hook</h4>
+                    <p className="text-sm font-normal font-normal text-white leading-tight mb-6">"{g.hookUSP}"</p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {formats.map(f => (
                         <button key={f} onClick={() => handleSynthesize(`${g.trend} gap: ${g.missingPiece}. USP: ${g.hookUSP}`, g.trend, f)}
-                          className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-[9px] font-black uppercase text-zinc-500 hover:text-white hover:border-zinc-700 transition-all active:scale-95">
+                          className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-[9px] font-normal uppercase text-zinc-500 hover:text-white hover:border-zinc-700 transition-all active:scale-95">
                           {f}
                         </button>
                       ))}
@@ -326,15 +326,15 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                   <Zap size={18} fill="currentColor" />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-base sm:text-xl font-black tracking-tighter text-white">Neural Niche Synthesis</h3>
-                  <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-black truncate max-w-[160px] sm:max-w-sm">{synthesizingTitle}</p>
+                  <h3 className="text-base sm:text-xl font-normal tracking-tighter text-white">Neural Niche Synthesis</h3>
+                  <p className="text-[9px] text-zinc-600 uppercase tracking-widest font-normal truncate max-w-[160px] sm:max-w-sm">{synthesizingTitle}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 {showImageControls && imageRemaining > 0 && (
                   <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900/60 border border-zinc-800 rounded-xl">
                     <ImageIcon size={10} className="text-white" />
-                    <span className="text-[9px] font-black text-zinc-400">{imageRemaining} left</span>
+                    <span className="text-[9px] font-normal text-zinc-400">{imageRemaining} left</span>
                   </div>
                 )}
                 <button onClick={() => setSynthesizingContext(null)} className="p-2 text-zinc-700 hover:text-white transition-all">
@@ -349,7 +349,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                 <button
                   key={f}
                   onClick={() => handleSynthesize(synthesizingContext, synthesizingTitle, f)}
-                  className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all border ${selectedFormat === f ? 'bg-white border-white text-black' : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-zinc-300'}`}
+                  className={`px-3 py-1.5 rounded-full text-[9px] font-normal uppercase tracking-widest transition-all border ${selectedFormat === f ? 'bg-white border-white text-black' : 'bg-zinc-900 border-zinc-800 text-zinc-500 hover:text-zinc-300'}`}
                 >
                   {f}
                 </button>
@@ -358,7 +358,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                 <button
                   onClick={() => setImagesEnabled(prev => !prev)}
                   disabled={imageRemaining <= 0}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[9px] font-black uppercase tracking-widest transition-all ${imagesEnabled && imageRemaining > 0 ? 'bg-white/10 border-white/30 text-white' : 'border-zinc-800 text-zinc-600'} ${imageRemaining <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-[9px] font-normal uppercase tracking-widest transition-all ${imagesEnabled && imageRemaining > 0 ? 'bg-white/10 border-white/30 text-white' : 'border-zinc-800 text-zinc-600'} ${imageRemaining <= 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   {imagesEnabled && imageRemaining > 0 ? <ImageIcon size={10} /> : <ImageOff size={10} />}
                   <span className="hidden xs:inline">{imagesEnabled && imageRemaining > 0 ? `On (${imageRemaining})` : imageRemaining <= 0 ? 'No Quota' : 'Off'}</span>
@@ -367,7 +367,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
               <div className="ml-auto">
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-[9px] font-black uppercase tracking-widest border ${isEditing ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:text-white'}`}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all text-[9px] font-normal uppercase tracking-widest border ${isEditing ? 'bg-white text-black border-white' : 'border-zinc-800 text-zinc-500 hover:text-white'}`}
                 >
                   {isEditing ? <><Eye size={12} /> View</> : <><Edit3 size={12} /> Edit</>}
                 </button>
@@ -379,7 +379,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
               {isGenerating ? (
                 <div className="h-60 flex flex-col items-center justify-center space-y-6">
                   <Loader2 className="animate-spin text-white" size={44} />
-                  <p className="text-[10px] font-black uppercase tracking-[0.6em] text-zinc-600">Reconfiguring Synaptic Output...</p>
+                  <p className="text-[10px] font-normal uppercase tracking-[0.6em] text-zinc-600">Reconfiguring Synaptic Output...</p>
                 </div>
               ) : generatedScript ? (
                 <div className="space-y-4">
@@ -415,7 +415,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                             <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
                               <img src={url} alt="Reference Visual" className="w-full h-full object-cover" onError={(e) => (e.currentTarget.style.display = 'none')} />
                             </div>
-                            <p className="mt-2 text-[8px] font-black text-zinc-800 uppercase tracking-widest text-center italic">External Reference Visual</p>
+                            <p className="mt-2 text-[8px] font-normal text-zinc-800 uppercase tracking-widest text-center font-normal">External Reference Visual</p>
                           </div>
                         );
                       }
@@ -437,21 +437,21 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={() => { navigator.clipboard.writeText(generatedScript || ''); setCopyDone(true); setTimeout(() => setCopyDone(false), 2000); }}
-                  className="flex-1 py-3 border border-zinc-800 text-zinc-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:text-white transition-all active:scale-95"
+                  className="flex-1 py-3 border border-zinc-800 text-zinc-500 text-[10px] font-normal uppercase tracking-widest rounded-xl hover:text-white transition-all active:scale-95"
                 >
                   {copyDone ? '✓ Copied' : 'Copy Text'}
                 </button>
                 {selectedFormat.includes('X') && (
                   <button
                     onClick={syncToX}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-black text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all active:scale-95 shadow-lg"
+                    className="flex-1 flex items-center justify-center gap-2 py-3 bg-white text-black text-[10px] font-normal uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all active:scale-95 shadow-lg"
                   >
                     <Share2 size={13} /> Sync to X
                   </button>
                 )}
                 <button
                   onClick={() => saveToIdeaBank(`${selectedFormat}: ${synthesizingTitle}`, generatedScript || '')}
-                  className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all active:scale-95"
+                  className="flex-1 flex items-center justify-center gap-2 py-3 bg-zinc-900 border border-zinc-800 text-white text-[10px] font-normal uppercase tracking-widest rounded-xl hover:bg-zinc-800 transition-all active:scale-95"
                 >
                   <BookmarkPlus size={13} /> Save Idea
                 </button>
