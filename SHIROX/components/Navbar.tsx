@@ -39,25 +39,29 @@ const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <nav className="hidden lg:grid grid-cols-3 items-center px-6 py-2.5 bg-black/90 backdrop-blur-2xl border-b border-zinc-900/80 z-50 flex-shrink-0">
+    <nav className="hidden lg:grid grid-cols-3 items-center px-10 h-[90px] bg-black border-b border-white/5 z-[60] flex-shrink-0 shadow-[0_10px_50px_rgba(0,0,0,0.9)]">
 
       {/* ── Left: Brand ── */}
       <div
-        className="flex items-center gap-2.5 cursor-pointer group w-fit"
+        className="flex items-center gap-4 cursor-pointer group w-fit"
         onClick={() => setActiveView('chat')}
       >
-        <NeuralLogo size={26} />
-        <h1
-          className="text-base font-normal tracking-tighter text-white group-hover:text-zinc-300 transition-colors"
-          style={{ fontFamily: "'Orbitron', sans-serif" }}
-        >
-          Creatio
-        </h1>
+        <div className="relative">
+          <div className="absolute inset-0 bg-white/20 blur-xl rounded-full animate-pulse"></div>
+          <NeuralLogo size={36} />
+        </div>
+        <div>
+          <h1 className="text-xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+          <div className="flex items-center gap-2 mt-0.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+            <span className="text-[7px] font-normal uppercase tracking-[0.4em] text-zinc-500">v5.1 Core Active</span>
+          </div>
+        </div>
       </div>
 
       {/* ── Center: Nav Pills ── */}
       <div className="flex items-center justify-center">
-        <div className="flex items-center gap-0.5 bg-zinc-950 p-1 rounded-xl border border-zinc-800/70 shadow-xl">
+        <div className="flex items-center gap-1.5 bg-zinc-900/50 p-1.5 rounded-2xl border border-white/5 shadow-2xl backdrop-blur-3xl">
           {navItems.map((item) => {
             const isActive = activeView === item.id;
             const locked = isLocked && item.id !== 'chat' && item.id !== 'settings';
@@ -65,17 +69,16 @@ const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
-                title={item.label}
-                className={`relative flex items-center gap-2 px-4 py-3 rounded-xl text-[10px] font-normal uppercase tracking-widest transition-all duration-200 ${
+                className={`relative flex items-center gap-3 px-6 py-3.5 rounded-xl text-[10px] font-normal uppercase tracking-[0.2em] transition-all duration-300 ${
                   isActive
-                    ? 'bg-white text-black shadow-lg scale-[1.02]'
-                    : 'text-zinc-500 hover:text-zinc-200 hover:bg-white/5'
+                    ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.2)] scale-105'
+                    : 'text-zinc-500 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <item.icon size={12} strokeWidth={isActive ? 2.5 : 1.8} />
+                <item.icon size={15} strokeWidth={isActive ? 2.5 : 1.8} />
                 <span className="hidden xl:inline">{item.label}</span>
                 {locked && (
-                  <Lock size={8} className={`${isActive ? 'text-black/40' : 'text-zinc-700'}`} />
+                  <Lock size={10} className={`${isActive ? 'text-black/40' : 'text-zinc-700'}`} />
                 )}
               </button>
             );

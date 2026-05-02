@@ -448,8 +448,12 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       </div>
 
       {isLocked && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-zinc-950/60 backdrop-blur-xl p-6 text-center">
-          <div className="relative group overflow-hidden bg-zinc-900/40 border border-zinc-800 p-8 lg:p-14 rounded-[2.5rem] lg:rounded-[4rem] shadow-[0_0_100px_rgba(0,0,0,0.5)] max-w-xl animate-in zoom-in-95 duration-700">
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-2xl p-6 text-center animate-in fade-in duration-500 overflow-hidden">
+          {/* Immersive Neural Glow Background */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+          <div className="relative group overflow-hidden bg-zinc-900/60 border border-white/10 p-8 lg:p-14 rounded-[2.5rem] lg:rounded-[4rem] shadow-[0_0_100px_rgba(0,0,0,0.8)] max-w-xl animate-in zoom-in-95 duration-700">
             {/* Background Glow */}
             <div className="absolute -top-24 -left-24 w-64 h-64 bg-white/5 rounded-full blur-[80px] pointer-events-none"></div>
             
