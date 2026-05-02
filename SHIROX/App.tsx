@@ -304,7 +304,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
   const isLocked = !userSettings.tier || userSettings.tier === 'Free';
 
   return (
-    <div className="flex h-dvh w-full bg-black text-white overflow-hidden selection:bg-white/10 relative flex-col">
+    <div className="flex flex-col h-dvh w-full bg-black text-white overflow-hidden">
       <Navbar 
         activeView={activeView} 
         setActiveView={setActiveView} 
@@ -326,7 +326,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
           isLocked={isLocked}
         />
 
-        <main className="flex-1 relative flex flex-col bg-zinc-950/50 min-w-0">
+        <main className="flex-1 flex flex-col bg-zinc-950/50 min-w-0">
           {/* Mobile Header */}
           <div className="lg:hidden flex items-center justify-between p-4 border-b border-zinc-900 bg-black/50 backdrop-blur-xl z-20">
             <div className="flex items-center gap-3">
@@ -341,14 +341,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
             <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
           </div>
 
-          <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
-            <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-normal tracking-[0.3em] text-zinc-400 uppercase">
-              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              Neural Link: Active
-            </div>
-          </div>
-
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-hidden min-h-0">
             {activeView === 'chat' && (
               <ChatInterface
                 messages={messages}

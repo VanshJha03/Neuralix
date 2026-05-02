@@ -360,8 +360,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         </div>
       ) : (
         <>
-          <div className="flex-1 overflow-y-auto px-4 lg:px-8 py-20 lg:py-32 z-10 scrollbar-hide">
-            <div className="max-w-4xl mx-auto space-y-16 lg:space-y-24 pb-20">
+          <div className="flex-1 overflow-y-auto px-4 lg:px-8 py-6 lg:py-16 z-10 scrollbar-hide">
+            <div className="max-w-4xl mx-auto space-y-8 lg:space-y-16 pb-4">
               {messages.map((msg, idx) => (
                 <div key={msg.id} className="animate-in fade-in slide-in-from-bottom-8 duration-700 group">
                   <div className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
@@ -430,8 +430,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
           </div>
 
-          <div className="px-4 lg:px-10 pb-2 lg:pb-12 bg-gradient-to-t from-black via-black/95 to-transparent z-20 sticky bottom-0">
-            <div className="max-w-4xl mx-auto space-y-4">
+          <div className="px-3 lg:px-10 pb-3 lg:pb-8 pt-3 bg-black border-t border-zinc-900/60 z-20 flex-shrink-0">
+            <div className="max-w-4xl mx-auto space-y-2 lg:space-y-3">
               <div className="flex justify-center gap-1.5 lg:gap-2">
                 {['Deep Research', 'Fast', 'Imagine'].map((m) => (
                   <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-3 lg:px-4 py-1 lg:py-1.5 rounded-full text-[6px] lg:text-[7px] font-normal uppercase tracking-[0.2em] border transition-all ${mode === m ? 'bg-white text-black border-white' : 'bg-black/40 text-zinc-700 border-zinc-900 hover:text-zinc-500'}`}>
