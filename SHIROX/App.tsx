@@ -35,7 +35,7 @@ const NeuralLoader: React.FC = () => (
       <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 animate-bounce" style={{ animationDelay: '150ms' }} />
       <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 animate-bounce" style={{ animationDelay: '300ms' }} />
     </div>
-    <p className="text-zinc-700 text-[10px] uppercase tracking-[0.5em] font-normal">Syncing Neural Link...</p>
+    <p className="text-zinc-700 text-[10px] uppercase tracking-[0.5em] font-normal">Initializing System...</p>
   </div>
 );
 
@@ -44,7 +44,7 @@ const App: React.FC = () => {
   const [activeView, setActiveView] = useState<ViewType>('chat');
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [neuralMemories, setNeuralMemories] = useState<string[]>([]);
+  const [savedHistory, setSavedHistory] = useState<string[]>([]);
 
   // ── Limit Modal State ──────────────────────────────────────────────────────
   const [limitModal, setLimitModal] = useState<{ message: string } | null>(null);
@@ -145,7 +145,7 @@ const App: React.FC = () => {
         }
 
         const memories = await fetchMemories();
-        setNeuralMemories(memories);
+        setSavedHistory(memories);
 
         const serverIdeas = await fetchIdeas();
         if (serverIdeas && serverIdeas.length > 0) {
@@ -251,7 +251,7 @@ const App: React.FC = () => {
     if (confirm('Permanently remove this research pillar?')) setIdeas(prev => prev.filter(i => i.id !== id));
   };
 
-  const onSaveData = async (data: string) => {
+  const onCommitMemory = async (data: string) => {
     try {
       await saveMemory(data, 'manual');
       setSavedHistory(prev => [data, ...prev]);
@@ -289,8 +289,8 @@ ${userSettings.styles && userSettings.styles.length > 0
       : ''}
 
 NEURAL LEDGER (Prior Context Archives):
-${neuralMemories.length > 0
-      ? neuralMemories.map((m, i) => `${i + 1}. ${m}`).join('\n')
+${savedHistory.length > 0
+      ? savedHistory.map((m, i) => `${i + 1}. ${m}`).join('\n')
       : 'Empty state. Initializing fresh intelligence.'}
 
 CRITICAL: Do not repeat these memories verbatim. Use them to understand user goals, past decisions, and current projects.
