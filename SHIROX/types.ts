@@ -18,7 +18,7 @@ export interface UserSettings {
   }[];
   xPostImages?: boolean;
   xThreadImages?: boolean;
-  tier?: 'PRO' | 'LTD' | 'beta';
+  tier?: 'PRO' | 'LTD' | 'beta' | 'Free';
   usage?: {
     analytics: number;
     totalAnalytics: number;

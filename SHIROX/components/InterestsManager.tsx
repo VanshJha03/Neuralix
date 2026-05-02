@@ -14,13 +14,15 @@ import {
   Instagram,
   Twitter,
   Loader2,
-  Play
+  Play,
+  Lock
 } from 'lucide-react';
 import { searchNicheContent } from '../services/apiService';
 
 interface InterestsManagerProps {
   interests: Interest[];
   setInterests: React.Dispatch<React.SetStateAction<Interest[]>>;
+  isLocked?: boolean;
 }
 
 const NicheRadarCarousel: React.FC<{ items: NicheContent[] }> = ({ items }) => {
@@ -152,7 +154,7 @@ const NicheRadarCarousel: React.FC<{ items: NicheContent[] }> = ({ items }) => {
   );
 };
 
-const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInterests }) => {
+const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInterests, isLocked = false }) => {
   const [newLabel, setNewLabel] = useState('');
   const [nicheContent, setNicheContent] = useState<NicheContent[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -207,11 +209,11 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
 
         <button
           onClick={handleAnalyzeNiche}
-          disabled={isSearching || interests.filter(i => i.active).length === 0}
+          disabled={isLocked || isSearching || interests.filter(i => i.active).length === 0}
           className="w-full lg:w-auto group flex items-center justify-center gap-4 px-10 py-5 bg-white text-black rounded-[2rem] font-normal uppercase tracking-widest text-[10px] hover:scale-105 active:scale-95 transition-all shadow-[0_20px_60px_rgba(255,255,255,0.05)] disabled:opacity-10"
         >
-          {isSearching ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} className="fill-black" />}
-          Deep Neural Scan
+          {isLocked ? <Lock size={18} /> : (isSearching ? <Loader2 className="animate-spin" size={18} /> : <Zap size={18} className="fill-black" />)}
+          {isLocked ? 'Neural Link Required' : 'Deep Neural Scan'}
         </button>
       </div>
 

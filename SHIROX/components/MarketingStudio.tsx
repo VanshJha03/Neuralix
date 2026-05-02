@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Idea, Interest } from '../types';
-import { Megaphone, MessageSquare, Twitter, Instagram, ArrowRight, Loader2, Copy, Check, Film, Trash2, Youtube, Image as ImageIcon, Edit3, X, Zap } from 'lucide-react';
+import { Megaphone, MessageSquare, Twitter, Instagram, ArrowRight, Loader2, Copy, Check, Film, Trash2, Youtube, Image as ImageIcon, Edit3, X, Zap, Lock } from 'lucide-react';
 import { generateMarketingContent, generateNeuralImage, refineMarketingContent } from '../services/apiService';
 import { CONTENT_GENERATION_SYSTEM_PROMPT } from '../constants';
 import ReactMarkdown from 'react-markdown';
@@ -13,10 +13,11 @@ interface MarketingStudioProps {
   systemInstruction: string;
   onDeleteIdea: (id: string) => void;
   userSettings: any;
+  isLocked?: boolean;
 }
 
-const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea, userSettings }) => {
-  // All authenticated users are PRO or LTD — no free tier gate needed
+const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea, userSettings, isLocked = false }) => {
+  // All authenticated users are PRO or LTD — no free tier gate needed (removed comment, now uses isLocked)
 
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
   const [format, setFormat] = useState<string>('Script');
@@ -132,7 +133,8 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
   };
 
   return (
-    <div className="p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide">
+    <div className="relative h-full overflow-hidden bg-black">
+      <div className={`p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide ${isLocked ? 'blur-md pointer-events-none select-none' : ''}`}>
       <div className="w-full lg:w-1/3 space-y-6 lg:space-y-8 flex flex-col h-auto lg:h-full shrink-0">
         <div className="text-center lg:text-left">
           <h1 className="text-3xl font-normal tracking-tighter mb-1 uppercase font-normal">Content Studio</h1>
@@ -403,6 +405,27 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
             )}
           </div>
         )}
+      </div>
+
+      {isLocked && (
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm p-6 text-center">
+          <div className="bg-zinc-900/90 border border-zinc-800 p-12 rounded-[3rem] shadow-2xl max-w-md animate-in zoom-in-95 duration-500">
+            <div className="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8">
+              <Lock size={40} className="text-white" />
+            </div>
+            <h2 className="text-3xl font-normal tracking-tighter text-white mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>Restricted Studio</h2>
+            <p className="text-zinc-400 text-sm font-normal leading-relaxed mb-10">
+              The Marketing Studio and Asset Generation require a Neural Link upgrade.
+            </p>
+            <button 
+              onClick={() => window.location.href = '#pricing'} 
+              className="w-full py-4 bg-white text-black rounded-2xl text-[10px] font-normal uppercase tracking-widest hover:bg-zinc-200 transition-all active:scale-95"
+            >
+              Upgrade to PRO
+            </button>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

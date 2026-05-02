@@ -17,6 +17,7 @@ import NicheAnalytics from './components/NicheAnalytics';
 import LimitReachedModal from './components/LimitReachedModal';
 import PricingScreen from './components/PricingScreen';
 import PublicHome from './components/PublicHome';
+import Navbar from './components/Navbar';
 import { Idea, Message, Interest, ViewType, UserSettings, NicheAnalyticsData } from './types';
 import { INITIAL_INTERESTS, DEFAULT_SYSTEM_PROMPT } from './constants';
 
@@ -127,6 +128,15 @@ const App: React.FC = () => {
             setShowPricingOnce(true);
             localStorage.setItem('Creatio_pricing_shown', 'true');
           }
+        } else if (session) {
+          // Auto-create user settings if not found but session exists
+          const initialSettings = {
+            ...userSettings,
+            email: session.email,
+            name: session.user_metadata?.full_name || session.user_metadata?.name || 'Operator',
+          };
+          setUserSettings(initialSettings);
+          await saveUserSettings(initialSettings);
         }
 
         const serverInterests = await fetchInterests();
@@ -290,109 +300,116 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
   if (authLoading) return <NeuralLoader />;
   if (!session) return <PublicHome />;
 
-  // Wait for settings to load before checking tier (avoid flash of paywall)
-  // Once email is populated, settings have synced from Supabase
-  const settingsLoaded = !!userSettings.email;
-  if (settingsLoaded && (!userSettings.tier || (userSettings.tier as string) === 'Free')) {
-    return <PricingScreen onSelectTier={handleSelectTier} />;
-  }
+  // User is locked if on Free tier
+  const isLocked = !userSettings.tier || userSettings.tier === 'Free';
 
   return (
-    <div className="flex h-dvh w-full bg-black text-white overflow-hidden selection:bg-white/10 relative">
-      {/* Global Limit Modal */}
+    <div className="flex h-dvh w-full bg-black text-white overflow-hidden selection:bg-white/10 relative flex-col">
+      <Navbar 
+        activeView={activeView} 
+        setActiveView={setActiveView} 
+        userSettings={userSettings} 
+        onSignOut={handleSignOut} 
+        isLocked={isLocked}
+      />
+
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Sidebar - Mobile Only */}
+        <Sidebar
+          activeView={activeView}
+          setActiveView={(v) => { setActiveView(v); setIsMobileMenuOpen(false); }}
+          onClearMemory={handleClearMemory}
+          userSettings={userSettings}
+          onSignOut={handleSignOut}
+          isMobileOpen={isMobileMenuOpen}
+          setIsMobileOpen={setIsMobileMenuOpen}
+          isLocked={isLocked}
+        />
+
+        <main className="flex-1 relative flex flex-col bg-zinc-950/50 min-w-0">
+          {/* Mobile Header */}
+          <div className="lg:hidden flex items-center justify-between p-4 border-b border-zinc-900 bg-black/50 backdrop-blur-xl z-20">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="p-2 -ml-2 text-zinc-400 hover:text-white"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              </button>
+              <span className="text-sm font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+            </div>
+            <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
+          </div>
+
+          <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
+            <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-normal tracking-[0.3em] text-zinc-400 uppercase">
+              <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              Neural Link: Active
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-auto">
+            {activeView === 'chat' && (
+              <ChatInterface
+                messages={messages}
+                setMessages={setMessages}
+                onSaveIdea={onSaveIdea}
+                onCommitMemory={onCommitMemory}
+                userSettings={userSettings}
+                systemInstruction={enhancedSystemPrompt}
+                isLocked={isLocked}
+              />
+            )}
+            {activeView === 'search' && (
+              <SearchManager ideas={ideas} messages={messages} setActiveView={setActiveView} isLocked={isLocked} />
+            )}
+            {activeView === 'ideas' && (
+              <IdeasManager ideas={ideas} setIdeas={setIdeas} isLocked={isLocked} />
+            )}
+            {activeView === 'interests' && (
+              <InterestsManager interests={interests} setInterests={setInterests} isLocked={isLocked} />
+            )}
+            {activeView === 'marketing' && (
+              <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} isLocked={isLocked} />
+            )}
+            {activeView === 'analytics' && (
+              <NicheAnalytics
+                interests={interests}
+                onSaveIdea={onSaveIdea}
+                userSettings={userSettings}
+                systemInstruction={enhancedSystemPrompt}
+                data={nicheAnalyticsData}
+                onUpdateData={setNicheAnalyticsData}
+                onLimitReached={onLimitReached}
+                isLocked={isLocked}
+              />
+            )}
+            {activeView === 'settings' && (
+              <SettingsManager userSettings={userSettings} setUserSettings={setUserSettings} />
+            )}
+          </div>
+
+          <TrendsManager
+            interests={interests}
+            onSaveIdea={onSaveIdea}
+            userSettings={userSettings}
+            systemInstruction={enhancedSystemPrompt}
+            onLimitReached={onLimitReached}
+            isLocked={isLocked}
+          />
+          <OmniTerminal isOpen={isTerminalOpen} setIsOpen={setIsTerminalOpen} onCommand={handleTerminalCommand} />
+        </main>
+      </div>
+
       {limitModal && (
         <LimitReachedModal
           message={limitModal.message}
           onClose={() => setLimitModal(null)} isGuest={false} />
       )}
 
-      <Sidebar
-        activeView={activeView}
-        setActiveView={(v) => { setActiveView(v); setIsMobileMenuOpen(false); }}
-        onClearMemory={handleClearMemory}
-        userSettings={userSettings}
-        onSignOut={handleSignOut}
-        isMobileOpen={isMobileMenuOpen}
-        setIsMobileOpen={setIsMobileMenuOpen}
-      />
-
-      <main className="flex-1 relative flex flex-col bg-zinc-950/50 min-w-0">
-        {/* Mobile Header */}
-        <div className="lg:hidden flex items-center justify-between p-4 border-b border-zinc-900 bg-black/50 backdrop-blur-xl z-20">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 -ml-2 text-zinc-400 hover:text-white"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-            <span className="text-sm font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
-          </div>
-          <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
-        </div>
-
-        <div className="absolute top-6 right-8 z-10 hidden lg:flex items-center gap-4">
-          <div className="flex items-center gap-3 px-4 py-2 bg-zinc-900/60 backdrop-blur-xl border border-zinc-800 rounded-full text-[10px] font-normal tracking-[0.3em] text-zinc-400 uppercase">
-            <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            Neural Link: Active
-          </div>
-          <button
-            onClick={handleSignOut}
-            className="px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-md text-[10px] font-normal text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-2"
-          >
-            <LogOut size={12} />
-            Disconnect
-          </button>
-        </div>
-
-        <div className="flex-1 overflow-auto">
-          {activeView === 'chat' && (
-            <ChatInterface
-              messages={messages}
-              setMessages={setMessages}
-              onSaveIdea={onSaveIdea}
-              onCommitMemory={onCommitMemory}
-              userSettings={userSettings}
-              systemInstruction={enhancedSystemPrompt}
-            />
-          )}
-          {activeView === 'search' && (
-            <SearchManager ideas={ideas} messages={messages} setActiveView={setActiveView} />
-          )}
-          {activeView === 'ideas' && (
-            <IdeasManager ideas={ideas} setIdeas={setIdeas} />
-          )}
-          {activeView === 'interests' && (
-            <InterestsManager interests={interests} setInterests={setInterests} />
-          )}
-          {activeView === 'marketing' && (
-            <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} />
-          )}
-          {activeView === 'analytics' && (
-            <NicheAnalytics
-              interests={interests}
-              onSaveIdea={onSaveIdea}
-              userSettings={userSettings}
-              systemInstruction={enhancedSystemPrompt}
-              data={nicheAnalyticsData}
-              onUpdateData={setNicheAnalyticsData}
-              onLimitReached={onLimitReached}
-            />
-          )}
-          {activeView === 'settings' && (
-            <SettingsManager userSettings={userSettings} setUserSettings={setUserSettings} />
-          )}
-        </div>
-
-        <TrendsManager
-          interests={interests}
-          onSaveIdea={onSaveIdea}
-          userSettings={userSettings}
-          systemInstruction={enhancedSystemPrompt}
-          onLimitReached={onLimitReached}
-        />
-        <OmniTerminal isOpen={isTerminalOpen} setIsOpen={setIsTerminalOpen} onCommand={handleTerminalCommand} />
-      </main>
+      {showPricingOnce && isLocked && (
+        <PricingScreen onSelectTier={handleSelectTier} />
+      )}
     </div>
   );
 };

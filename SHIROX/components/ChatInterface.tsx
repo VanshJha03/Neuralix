@@ -13,6 +13,7 @@ interface ChatInterfaceProps {
   onCommitMemory: (packet: string) => void;
   userSettings: any;
   systemInstruction: string;
+  isLocked?: boolean;
 }
 
 const TypewriterText: React.FC<{ text: string; onComplete?: () => void; isTyping?: boolean }> = ({ text, onComplete, isTyping = false }) => {
@@ -136,7 +137,7 @@ const NeuralBackground: React.FC<{ isTyping: boolean }> = ({ isTyping }) => {
 };
 
 const ChatInterface: React.FC<ChatInterfaceProps> = ({
-  messages, setMessages, onSaveIdea, onCommitMemory, userSettings, systemInstruction
+  messages, setMessages, onSaveIdea, onCommitMemory, userSettings, systemInstruction, isLocked = false
 }) => {
   const [input, setInput] = useState('');
   const [mode, setMode] = useState<TaskMode>('Deep Research');
@@ -330,17 +331,27 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                placeholder={`Initiate synaptic link...`}
+                placeholder={isLocked ? "Upgrade to PRO to interact with Neural AI..." : `Initiate synaptic link...`}
                 rows={1}
-                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-normal tracking-tight"
+                disabled={isLocked}
+                className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-normal tracking-tight disabled:cursor-not-allowed"
               />
-              <button onClick={handleSend} className={`p-2 ml-4 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95'}`}>
-                {isLoading ? <Square size={18} fill="currentColor" /> : <Send size={18} />}
+              <button 
+                onClick={handleSend} 
+                disabled={isLocked}
+                className={`p-2 ml-4 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'}`}
+              >
+                {isLocked ? <Brain size={18} className="text-zinc-500" /> : isLoading ? <Square size={18} fill="currentColor" /> : <Send size={18} />}
               </button>
             </div>
             <div className="mt-8 flex flex-wrap justify-center gap-2 lg:gap-4">
               {['Deep Research', 'Fast', 'Imagine'].map((m) => (
-                <button key={m} onClick={() => setMode(m as TaskMode)} className={`px-4 lg:px-6 py-2 rounded-full text-[7px] lg:text-[8px] font-normal uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'}`}>
+                <button 
+                  key={m} 
+                  disabled={isLocked}
+                  onClick={() => setMode(m as TaskMode)} 
+                  className={`px-4 lg:px-6 py-2 rounded-full text-[7px] lg:text-[8px] font-normal uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'} disabled:opacity-20`}
+                >
                   {m}
                 </button>
               ))}
@@ -371,10 +382,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                       ) : (
                         <>
                           <div className={`absolute lg:top-0 -bottom-8 lg:bottom-auto flex-row lg:flex-col ${msg.role === 'user' ? 'lg:-left-12 right-0 flex-row-reverse lg:flex-row' : 'lg:-right-12 left-0'} opacity-0 group-hover:opacity-100 transition-all flex gap-2 z-20`}>
-                            <button onClick={() => handleEdit(msg)} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Edit2 size={12} /></button>
+                            <button onClick={() => handleEdit(msg)} disabled={isLocked} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all disabled:opacity-20"><Edit2 size={12} /></button>
                             <button onClick={() => handleCopy(msg.content)} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Copy size={12} /></button>
                             {msg.role === 'assistant' && (
-                              <button onClick={() => { onCommitMemory(msg.content); alert("Neural Packet Committed."); }} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all"><Brain size={12} /></button>
+                              <button onClick={() => { onCommitMemory(msg.content); alert("Neural Packet Committed."); }} disabled={isLocked} className="p-1.5 lg:p-2 bg-zinc-950 border border-zinc-900 rounded-lg text-zinc-600 hover:text-white transition-all disabled:opacity-20"><Brain size={12} /></button>
                             )}
                           </div>
 

@@ -6,9 +6,10 @@ import { Lightbulb, Trash2, Calendar, Sparkles, BookOpen } from 'lucide-react';
 interface IdeasManagerProps {
   ideas: Idea[];
   setIdeas: React.Dispatch<React.SetStateAction<Idea[]>>;
+  isLocked?: boolean;
 }
 
-const IdeasManager: React.FC<IdeasManagerProps> = ({ ideas, setIdeas }) => {
+const IdeasManager: React.FC<IdeasManagerProps> = ({ ideas, setIdeas, isLocked = false }) => {
   const deleteIdea = (id: string) => {
     setIdeas(ideas.filter(i => i.id !== id));
   };
@@ -35,7 +36,8 @@ const IdeasManager: React.FC<IdeasManagerProps> = ({ ideas, setIdeas }) => {
               </div>
               <button
                 onClick={() => deleteIdea(idea.id)}
-                className="ml-auto opacity-0 group-hover:opacity-100 p-3 bg-zinc-950 border border-zinc-900 rounded-xl text-zinc-600 hover:text-white transition-all shadow-xl"
+                disabled={isLocked}
+                className="ml-auto opacity-0 group-hover:opacity-100 p-3 bg-zinc-950 border border-zinc-900 rounded-xl text-zinc-600 hover:text-white transition-all shadow-xl disabled:opacity-20 disabled:cursor-not-allowed"
               >
                 <Trash2 size={16} />
               </button>

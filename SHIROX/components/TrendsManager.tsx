@@ -26,9 +26,10 @@ interface TrendsManagerProps {
   systemInstruction: string;
   userSettings: any;
   onLimitReached: (message: string) => void;
+  isLocked?: boolean;
 }
 
-const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, systemInstruction, userSettings, onLimitReached }) => {
+const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, systemInstruction, userSettings, onLimitReached, isLocked = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [trends, setTrends] = useState<TrendItem[]>([]);
   const [sources, setSources] = useState<any[]>([]);
@@ -494,8 +495,14 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
 
         {/* FAB Button */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-[0_20px_60px_rgba(255,255,255,0.05)] transition-all duration-500 group ${isOpen ? 'bg-white text-black rotate-[225deg] scale-90 rounded-full' : 'bg-white text-black hover:bg-zinc-100 border border-white/10 active:scale-95'}`}
+          onClick={() => {
+            if (isLocked) {
+               alert("Real-time Trends require Neural Link upgrade.");
+               return;
+            }
+            setIsOpen(!isOpen);
+          }}
+          className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-[0_20px_60px_rgba(255,255,255,0.05)] transition-all duration-500 group ${isOpen ? 'bg-white text-black rotate-[225deg] scale-90 rounded-full' : 'bg-white text-black hover:bg-zinc-100 border border-white/10 active:scale-95'} ${isLocked ? 'opacity-50 grayscale cursor-not-allowed' : ''}`}
         >
           {isOpen ? <X size={24} /> : (
             <div className="relative">

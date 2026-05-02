@@ -7,9 +7,10 @@ interface SearchManagerProps {
   ideas: Idea[];
   messages: Message[];
   setActiveView: (view: any) => void;
+  isLocked?: boolean;
 }
 
-const SearchManager: React.FC<SearchManagerProps> = ({ ideas, messages, setActiveView }) => {
+const SearchManager: React.FC<SearchManagerProps> = ({ ideas, messages, setActiveView, isLocked = false }) => {
   const [query, setQuery] = useState('');
 
   const filteredIdeas = ideas.filter(i =>
@@ -22,7 +23,8 @@ const SearchManager: React.FC<SearchManagerProps> = ({ ideas, messages, setActiv
   );
 
   return (
-    <div className="p-6 lg:p-16 max-w-5xl mx-auto h-full overflow-y-auto pb-32">
+    <div className="relative h-full overflow-hidden">
+      <div className={`p-6 lg:p-16 max-w-5xl mx-auto h-full overflow-y-auto pb-32 ${isLocked ? 'blur-md pointer-events-none select-none' : ''}`}>
       <div className="relative mb-12 lg:mb-24">
         <div className="absolute inset-0 bg-white/5 blur-[60px] rounded-full pointer-events-none"></div>
         <Search className="absolute left-6 lg:left-8 top-1/2 -translate-y-1/2 text-zinc-700" size={24} />
@@ -89,6 +91,7 @@ const SearchManager: React.FC<SearchManagerProps> = ({ ideas, messages, setActiv
             {query && filteredIdeas.length === 0 && <p className="text-[10px] text-zinc-800 font-normal uppercase tracking-widest font-normal text-center py-12">No pillars found.</p>}
           </div>
         </section>
+      </div>
       </div>
     </div>
   );

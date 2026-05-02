@@ -9,7 +9,8 @@ import {
   Settings,
   BarChart3,
   ChevronRight,
-  LogOut
+  LogOut,
+  Lock
 } from 'lucide-react';
 import NeuralLogo from './NeuralLogo';
 import React, { useState } from 'react';
@@ -23,6 +24,7 @@ interface SidebarProps {
   userSettings: UserSettings;
   isMobileOpen?: boolean;
   setIsMobileOpen?: (open: boolean) => void;
+  isLocked?: boolean;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -32,7 +34,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   onSignOut,
   userSettings,
   isMobileOpen,
-  setIsMobileOpen
+  setIsMobileOpen,
+  isLocked = false
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -55,6 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     >
       <Icon size={20} className={activeView === id ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'} />
       <span className={`text-[11px] font-normal uppercase tracking-widest truncate ${isCollapsed && 'lg:hidden'}`}>{label}</span>
+      {isLocked && id !== 'chat' && id !== 'settings' && <Lock size={10} className="ml-auto text-zinc-600" />}
 
       {isCollapsed && (
         <div className="hidden lg:block absolute left-full ml-4 px-3 py-1 bg-zinc-900/90 border border-zinc-800 text-white text-[10px] font-normal uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-2xl backdrop-blur-xl">
@@ -74,7 +78,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
 
-      <div className={`fixed lg:relative inset-y-0 left-0 h-full bg-zinc-900/90 lg:bg-zinc-900/30 backdrop-blur-3xl border-r border-zinc-800/50 flex flex-col transition-all duration-500 z-50 ${isCollapsed ? 'lg:w-20' : 'lg:w-72'} ${isMobileOpen ? 'translate-x-0 w-72' : '-translate-x-full lg:translate-x-0'}`}>
+      <div className={`lg:hidden fixed inset-y-0 left-0 h-full bg-zinc-900/90 backdrop-blur-3xl border-r border-zinc-800/50 flex flex-col transition-all duration-500 z-50 ${isMobileOpen ? 'translate-x-0 w-72' : '-translate-x-full'}`}>
         {/* Brand */}
         <div className="p-8 mb-8 flex items-center gap-4 cursor-pointer" onClick={() => setActiveView('chat')}>
           <NeuralLogo size={42} />
