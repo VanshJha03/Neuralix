@@ -491,7 +491,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       </div>
 
       {isLocked && (
-        <div className="absolute inset-0 z-[100] bg-black overflow-y-auto">
+        <div className="fixed inset-0 z-[100] bg-black overflow-y-auto">
           <PricingScreen onSelectTier={onSelectTier!} />
         </div>
       )}

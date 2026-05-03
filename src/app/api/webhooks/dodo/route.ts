@@ -42,6 +42,8 @@ export async function POST(req: Request) {
         let tier = 'Free';
         if (productId === process.env.DODO_PRODUCT_PRO) tier = 'PRO';
         if (productId === process.env.DODO_PRODUCT_LTD) tier = 'LTD';
+        if (productId === process.env.DODO_PRODUCT_LTD_49) tier = 'LTD_49';
+        if (productId === process.env.DODO_PRODUCT_LTD_129) tier = 'LTD_129';
 
         console.log(`🚀 Upgrading User ${userId} to Tier: ${tier}`);
 

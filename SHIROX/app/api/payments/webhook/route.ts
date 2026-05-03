@@ -6,6 +6,8 @@ import { createServerSupabase, upsertRow } from '@/lib/supabase-server';
 const PRODUCT_TIER_MAP: Record<string, string> = {
   [process.env.DODO_PRODUCT_PRO!]: 'PRO',
   [process.env.DODO_PRODUCT_LTD!]: 'LTD',
+  [process.env.DODO_PRODUCT_LTD_49!]: 'LTD_49',
+  [process.env.DODO_PRODUCT_LTD_129!]: 'LTD_129',
 };
 
 export async function POST(req: NextRequest) {

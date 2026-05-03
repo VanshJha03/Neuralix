@@ -40,8 +40,9 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
 
     const handleCouponCheck = (val: string) => {
         setCoupon(val);
-        const secretCode = process.env.NEXT_PUBLIC_COUPON_CODE || 'CREATIO_SECRET';
-        if (val.trim() === secretCode) {
+        // Verify WAVE18 coupon code - case insensitive, trim whitespace
+        const isValidCoupon = val.trim().toUpperCase() === 'WAVE18';
+        if (isValidCoupon) {
             setIsSecretRevealed(true);
         }
     };
@@ -71,27 +72,35 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                 {/* Coupon Input - High Visibility */}
                 <div className="mb-12 w-full max-w-sm relative group">
                     <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl group-focus-within:bg-white/10 transition-all"></div>
-                    <div className="relative bg-zinc-950 border border-zinc-800 rounded-2xl py-1.5 flex items-center group-focus-within:border-zinc-700 transition-all">
-                        <div className="pl-5 text-zinc-700 group-focus-within:text-white transition-colors">
+                    <div className={`relative bg-zinc-950 border rounded-2xl py-1.5 flex items-center transition-all ${isSecretRevealed ? 'border-green-700 bg-green-950/20' : 'border-zinc-800 group-focus-within:border-zinc-700'}`}>
+                        <div className={`pl-5 transition-colors ${isSecretRevealed ? 'text-green-500' : 'text-zinc-700 group-focus-within:text-white'}`}>
                             <Ticket size={16} />
                         </div>
-                        <input
-                            type="text"
-                            value={coupon}
-                            onChange={(e) => handleCouponCheck(e.target.value)}
-                            placeholder="HAVE A COUPON CODE?"
-                            className="w-full bg-transparent border-none py-3 pl-4 pr-32 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
-                        />
-                        <button 
-                            onClick={() => handleCouponCheck(coupon)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-white text-black text-[9px] uppercase tracking-widest font-normal rounded-xl hover:bg-zinc-200 transition-all active:scale-95"
-                        >
-                            Verify
-                        </button>
+                        {!isSecretRevealed ? (
+                            <>
+                                <input
+                                    type="text"
+                                    value={coupon}
+                                    onChange={(e) => handleCouponCheck(e.target.value)}
+                                    placeholder="HAVE A COUPON CODE?"
+                                    className="w-full bg-transparent border-none py-3 pl-4 pr-32 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
+                                />
+                                <button 
+                                    onClick={() => handleCouponCheck(coupon)}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-white text-black text-[9px] uppercase tracking-widest font-normal rounded-xl hover:bg-zinc-200 transition-all active:scale-95"
+                                >
+                                    Verify
+                                </button>
+                            </>
+                        ) : (
+                            <span className="w-full py-3 pl-4 text-[11px] uppercase tracking-[0.3em] text-green-400 font-normal">
+                                ✓ Coupon Verified · LTD Tiers Unlocked
+                            </span>
+                        )}
                     </div>
                     {coupon.length > 0 && !isSecretRevealed && (
                         <p className="absolute -bottom-6 left-0 w-full text-center text-[9px] uppercase tracking-widest text-zinc-600">
-                            Checking clearance...
+                            Verifying code...
                         </p>
                     )}
                 </div>

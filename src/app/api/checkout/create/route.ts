@@ -11,6 +11,8 @@ export async function POST(req: Request) {
     const tierToProductMap: Record<string, string | undefined> = {
         'PRO': process.env.DODO_PRODUCT_PRO,
         'LTD': process.env.DODO_PRODUCT_LTD,
+        'LTD_49': process.env.DODO_PRODUCT_LTD_49,
+        'LTD_129': process.env.DODO_PRODUCT_LTD_129,
         'LTD_PRO': process.env.DODO_PRODUCT_LTD_PRO,
     };
 
