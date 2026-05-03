@@ -106,6 +106,35 @@ const App: React.FC = () => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // ── Realtime tier sync ─────────────────────────────────────────────────────
+  // When Dodo's webhook writes the tier to the DB, Supabase Realtime fires an
+  // UPDATE event here → we patch userSettings immediately without a page reload.
+  useEffect(() => {
+    if (!session?.id) return;
+
+    const channel = supabase
+      .channel('tier-sync')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'influencers',
+          filter: `user_id=eq.${session.id}`,
+        },
+        (payload) => {
+          const newTier = (payload.new as any)?.tier;
+          if (newTier !== undefined) {
+            console.log(`🔄 Realtime: tier updated to "${newTier}"`);
+            setUserSettings(prev => ({ ...prev, tier: newTier }));
+          }
+        },
+      )
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
+  }, [session?.id]);
+
   // ── Global limit-reached handler ────────────────────────────────────────────
   const onLimitReached = useCallback((message: string) => {
     setLimitModal({ message });

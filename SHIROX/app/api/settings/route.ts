@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     customSystemPrompt: r.custom_system_prompt,
     xPostImages: r.x_post_images !== false,
     xThreadImages: r.x_thread_images !== false,
-    tier: r.tier || 'PRO',
+    tier: r.tier ?? null,
     styles: r.styles || [],
     email,
     usage: {

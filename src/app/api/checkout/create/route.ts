@@ -41,6 +41,7 @@ export async function POST(req: Request) {
                 },
                 metadata: {
                     user_id: auth.user.id,
+                    tier: tierKey,
                 },
                 return_url: `${process.env.APP_URL}/payment/success`,
             }),

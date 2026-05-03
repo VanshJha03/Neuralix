@@ -1,7 +1,9 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 
 const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
+    const [isLifetime, setIsLifetime] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -336,14 +338,52 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
             <section id="pricing" className="py-40 px-6 md:px-10 max-w-[1240px] mx-auto">
                 <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block text-center">Investment</span>
                 <h2 className="reveal lp-heading text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-4 text-center">Scale Your Intelligence.</h2>
-                <p className="reveal text-zinc-500 text-center text-[0.85rem] mb-16">Two tiers. No bloat. Full power.</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-[860px] mx-auto">
-                    {/* PRO Monthly */}
-                    <div className="reveal border border-white/10 p-10 rounded-sm flex flex-col bg-zinc-950/50">
-                        <span className="text-[0.6rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">Monthly</span>
-                        <h3 className="lp-heading text-2xl mb-1 text-white">PRO</h3>
-                        <div className="lp-heading text-5xl my-6 text-white">$49<span className="text-base text-zinc-600 ml-1">/mo</span></div>
-                        <ul className="text-[0.82rem] text-zinc-400 space-y-3 mb-10 flex-1">
+                <p className="reveal text-zinc-500 text-center text-[0.85rem] mb-12">Choose the plan that fits your growth trajectory.</p>
+
+                {/* Toggle Switch */}
+                <div className="reveal flex justify-center items-center gap-4 mb-16">
+                    <span className={`text-[0.7rem] tracking-widest uppercase transition-colors ${!isLifetime ? 'text-white' : 'text-zinc-600'}`}>Monthly</span>
+                    <button 
+                        onClick={() => setIsLifetime(!isLifetime)}
+                        className="w-14 h-7 bg-zinc-900 border border-white/10 rounded-full relative p-1 transition-all hover:border-white/20"
+                    >
+                        <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-300 ease-out ${isLifetime ? 'translate-x-7' : 'translate-x-0'}`} />
+                    </button>
+                    <span className={`text-[0.7rem] tracking-widest uppercase transition-colors ${isLifetime ? 'text-white' : 'text-zinc-600'}`}>Lifetime</span>
+                    {isLifetime && (
+                        <span className="text-[0.55rem] bg-white text-black px-2 py-0.5 rounded-sm tracking-tighter animate-pulse">MOST POPULAR</span>
+                    )}
+                </div>
+
+                <div className="max-w-[480px] mx-auto">
+                    <div className={`reveal transition-all duration-500 ${isLifetime ? 'bg-white text-black' : 'bg-zinc-950 border border-white/10 text-white'} p-8 md:p-12 rounded-sm flex flex-col relative overflow-hidden`}>
+                        {isLifetime && (
+                            <div className="absolute top-0 right-0 p-4">
+                                <span className="text-[0.55rem] bg-black text-white px-2 py-1 tracking-[0.2em] uppercase">Limited Offer</span>
+                            </div>
+                        )}
+                        
+                        <div className="flex justify-between items-start mb-8">
+                            <div>
+                                <span className={`text-[0.6rem] tracking-[0.3em] uppercase mb-2 block ${isLifetime ? 'text-zinc-500' : 'text-zinc-500'}`}>
+                                    {isLifetime ? 'Full Access' : 'Monthly Access'}
+                                </span>
+                                <h3 className={`lp-heading text-3xl ${isLifetime ? 'text-black' : 'text-white'}`}>
+                                    {isLifetime ? 'LTD' : 'PRO'}
+                                </h3>
+                            </div>
+                        </div>
+
+                        <div className="flex items-baseline gap-1 my-8">
+                            <span className="lp-heading text-6xl tracking-tighter">
+                                ${isLifetime ? '129' : '49'}
+                            </span>
+                            <span className={`text-base font-outfit ${isLifetime ? 'text-zinc-500' : 'text-zinc-600'}`}>
+                                {isLifetime ? 'once' : '/mo'}
+                            </span>
+                        </div>
+
+                        <ul className={`text-[0.85rem] space-y-4 mb-12 flex-1 ${isLifetime ? 'text-zinc-700' : 'text-zinc-400'}`}>
                             {[
                                 '30 Niche Analytics / month',
                                 '30 Gap Analysis / month',
@@ -351,76 +391,88 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                                 '100 Post Generations / month',
                                 '100 Images embedded with posts',
                                 '60 Trend Analysis / month',
-                            ].map(f => (
-                                <li key={f} className="flex items-start gap-3">
-                                    <span className="text-zinc-600 mt-0.5">—</span>
+                                isLifetime ? 'Lifetime support & updates' : 'Standard support',
+                                isLifetime ? 'Early access to v5.0' : 'v4.2 core features',
+                            ].map((f, i) => (
+                                <li key={i} className="flex items-start gap-4">
+                                    <span className={`${isLifetime ? 'text-zinc-300' : 'text-zinc-700'} mt-1`}>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </span>
                                     <span>{f}</span>
                                 </li>
                             ))}
                         </ul>
-                        <button onClick={onGetStarted} className="w-full py-4 border border-white/10 text-white text-[0.75rem] tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all">Get Started</button>
-                    </div>
-                    {/* LTD */}
-                    <div className="reveal bg-white p-10 rounded-sm flex flex-col relative overflow-hidden">
-                        <span className="absolute top-4 right-4 text-[0.55rem] bg-black text-white px-2 py-1 tracking-[0.2em] uppercase">Best Value</span>
-                        <span className="text-[0.6rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">Lifetime</span>
-                        <h3 className="lp-heading text-2xl mb-1 text-black">LTD</h3>
-                        <div className="lp-heading text-5xl my-6 text-black">$129<span className="text-base text-zinc-500 ml-1">once</span></div>
-                        <ul className="text-[0.82rem] text-zinc-700 space-y-3 mb-10 flex-1">
-                            {[
-                                '30 Niche Analytics / month',
-                                '30 Gap Analysis / month',
-                                '500 User Chats / month',
-                                '100 Post Generations / month',
-                                '100 Images embedded with posts',
-                                '60 Trend Analysis / month',
-                            ].map(f => (
-                                <li key={f} className="flex items-start gap-3">
-                                    <span className="text-zinc-400 mt-0.5">—</span>
-                                    <span>{f}</span>
-                                </li>
-                            ))}
-                        </ul>
-                        <button onClick={onGetStarted} className="w-full py-4 bg-black text-white text-[0.75rem] tracking-[0.2em] uppercase hover:opacity-80 transition-all">Get Lifetime Access</button>
+
+                        <button 
+                            onClick={onGetStarted} 
+                            className={`w-full py-5 text-[0.75rem] tracking-[0.2em] uppercase transition-all duration-300 ${
+                                isLifetime 
+                                ? 'bg-black text-white hover:opacity-80' 
+                                : 'border border-white/10 text-white hover:bg-white hover:text-black'
+                            }`}
+                        >
+                            {isLifetime ? 'Get Lifetime Access' : 'Get Started Now'}
+                        </button>
+                        
+                        <p className={`text-center text-[0.65rem] mt-6 ${isLifetime ? 'text-zinc-400' : 'text-zinc-600'}`}>
+                            {isLifetime ? 'Secure one-time payment. No hidden fees.' : 'Cancel anytime. No long-term commitment.'}
+                        </p>
                     </div>
                 </div>
             </section>
 
             {/* ── Footer ── */}
             <footer className="py-16 px-6 md:px-10 max-w-[1240px] mx-auto border-t border-white/5">
-                <div className="flex flex-col md:flex-row justify-between items-start gap-20 mb-24">
-                    <a href="#" className="lp-heading text-[1.3rem] tracking-tight text-white flex items-center gap-3">
-                        <div className="w-5 h-5 border border-white rounded-full" />
-                        Creatio
-                    </a>
-                    <div className="flex gap-20 flex-wrap">
+                <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-20">
+                    <div className="flex flex-col gap-3">
+                        <a href="#" className="lp-heading text-[1.3rem] tracking-tight text-white flex items-center gap-3">
+                            <div className="w-5 h-5 border border-white rounded-full" />
+                            Creatio
+                        </a>
+                        <p className="text-[0.7rem] text-zinc-600 max-w-[200px] leading-relaxed">
+                            An AI content intelligence platform by <span className="text-zinc-400">VYNDRIQ</span>.
+                        </p>
+                    </div>
+                    <div className="flex gap-16 flex-wrap">
                         <div className="min-w-[100px]">
                             <h5 className="text-[0.7rem] text-zinc-600 tracking-[0.2em] uppercase mb-6">Platform</h5>
                             <div className="flex flex-col gap-3 text-[0.8rem] text-zinc-500">
                                 <a href="#analysis" className="hover:text-white transition-colors">Analysis</a>
                                 <a href="#generation" className="hover:text-white transition-colors">Generation</a>
                                 <a href="#sync" className="hover:text-white transition-colors">Distribution</a>
+                                <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
                             </div>
                         </div>
                         <div className="min-w-[100px]">
-                            <h5 className="text-[0.7rem] text-zinc-600 tracking-[0.2em] uppercase mb-6">Company</h5>
+                            <h5 className="text-[0.7rem] text-zinc-600 tracking-[0.2em] uppercase mb-6">Legal</h5>
                             <div className="flex flex-col gap-3 text-[0.8rem] text-zinc-500">
-                                <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-                                <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+                                <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                                <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
                             </div>
                         </div>
                         <div className="min-w-[100px]">
                             <h5 className="text-[0.7rem] text-zinc-600 tracking-[0.2em] uppercase mb-6">Connect</h5>
                             <div className="flex flex-col gap-3 text-[0.8rem] text-zinc-500">
-                                <a href="#" className="hover:text-white transition-colors">Twitter / X</a>
-                                <a href="#" className="hover:text-white transition-colors">Discord</a>
+                                <a
+                                    href="https://x.com/JhaVansh03"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-white transition-colors flex items-center gap-2"
+                                >
+                                    Twitter / X
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                                <span className="flex items-center gap-2 cursor-default select-none">
+                                    Discord
+                                    <span className="text-[0.5rem] bg-zinc-800 text-zinc-500 px-1.5 py-0.5 rounded-sm tracking-widest uppercase">Soon</span>
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-between items-center text-[0.7rem] text-zinc-700">
-                    <p>© 2026 Creatio Intelligence Labs. All rights reserved.</p>
-                    <p>Built for the creators of tomorrow.</p>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-[0.7rem] text-zinc-700">
+                    <p>© 2026 <span className="text-zinc-600">VYNDRIQ</span>. All rights reserved.</p>
+                    <p>Creatio is a product of VYNDRIQ — built for the creators of tomorrow.</p>
                 </div>
             </footer>
         </div>
@@ -428,3 +480,4 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
 };
 
 export default LandingPage;
+
