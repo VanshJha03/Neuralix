@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const session = await dodo.checkoutSessions.create({
       product_cart: [{ product_id: productId, quantity: 1 }],
       customer: { email: auth.email, name: (row?.name as string) || 'Operator' },
-      return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/payment/success`,
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://creatiox.vercel.app'}/payment/success`,
       metadata: { user_id: auth.userId, tier: tier.toUpperCase() },
     });
     return NextResponse.json({ checkout_url: session.checkout_url });

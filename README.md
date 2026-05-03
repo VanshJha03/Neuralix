@@ -53,7 +53,7 @@ PORT=2005
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 GEMINI_API_KEY=your_gemini_key
-ALLOWED_ORIGIN=http://localhost:3000
+ALLOWED_ORIGIN=http://creatiox.vercel.app
 ```
 
 ### 2. Frontend Configuration
