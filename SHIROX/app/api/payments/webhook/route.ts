@@ -73,8 +73,17 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-      await upsertRow(sb, userId, { tier });
-      console.log(`✅ Tier upgraded: user=${userId}  tier=${tier}  event=${eventType}`);
+      await upsertRow(sb, userId, { 
+        tier,
+        niche_count: 0,
+        gap_count: 0,
+        chat_count: 0,
+        content_count: 0,
+        image_count: 0,
+        trend_count: 0,
+        last_reset: new Date().toISOString().substring(0, 7)
+      });
+      console.log(`✅ Tier upgraded & limits reset: user=${userId}  tier=${tier}  event=${eventType}`);
     } catch (err: unknown) {
       console.error('❌ DB upsert failed:', err);
       return NextResponse.json({ error: 'Database update failed' }, { status: 500 });

@@ -172,3 +172,11 @@ export const saveArchive = async (messages: Message[]) => {
     if (!uid) return;
     return dbSaveArchive(uid, messages);
 };
+
+// ── Payments ──────────────────────────────────────────────────────────────────
+export const createCheckoutSession = async (tier: string): Promise<{ checkout_url: string }> => {
+    return apiFetch('/api/payments/checkout', {
+        method: 'POST',
+        body: JSON.stringify({ tier }),
+    });
+};

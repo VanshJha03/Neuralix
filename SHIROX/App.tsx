@@ -3,7 +3,7 @@
 import { supabase } from './lib/supabase';
 import React, { useState, useEffect, useCallback } from 'react';
 import { LogOut } from 'lucide-react';
-import { fetchUserSettings, saveUserSettings, fetchMemories, saveMemory, fetchInterests, saveInterests, fetchIdeas, saveIdeas, fetchArchive, saveArchive } from './services/apiService';
+import { fetchUserSettings, saveUserSettings, fetchMemories, saveMemory, fetchInterests, saveInterests, fetchIdeas, saveIdeas, fetchArchive, saveArchive, createCheckoutSession } from './services/apiService';
 import Sidebar from './components/Sidebar';
 import ChatInterface from './components/ChatInterface';
 import IdeasManager from './components/IdeasManager';
@@ -224,14 +224,9 @@ const App: React.FC = () => {
 
   const handleSelectTier = async (tier: string) => {
     try {
-      const res = await fetch(`/api/payments/checkout`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier }),
-      });
-      const data = await res.json();
+      const data = await createCheckoutSession(tier);
       if (data.checkout_url) window.location.href = data.checkout_url;
-      else throw new Error(data.error || 'No checkout URL returned');
+      else throw new Error('No checkout URL returned');
     } catch (e) {
       console.error('Checkout failed:', e);
       alert('Could not start checkout. Please try again.');

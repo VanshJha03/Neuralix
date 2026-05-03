@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Zap, Shield, X, Crown, ArrowRight, Loader2 } from 'lucide-react';
+import { createCheckoutSession } from '../services/apiService';
 
 interface LimitReachedModalProps {
     message: string;
@@ -13,12 +14,7 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, isGuest,
     const handleUpgrade = async (tier: 'pro' | 'ltd') => {
         setLoading(tier);
         try {
-            const res = await fetch(`/api/payments/checkout`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tier }),
-            });
-            const data = await res.json();
+            const data = await createCheckoutSession(tier);
             if (data.checkout_url) {
                 window.location.href = data.checkout_url;
             }

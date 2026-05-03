@@ -49,7 +49,16 @@ export async function POST(req: Request) {
             // Update Supabase influencers table
             const { error: sbError } = await supabaseAdmin
                 .from('influencers')
-                .update({ tier })
+                .update({ 
+                    tier,
+                    niche_count: 0,
+                    gap_count: 0,
+                    chat_count: 0,
+                    content_count: 0,
+                    image_count: 0,
+                    trend_count: 0,
+                    last_reset: new Date().toISOString().substring(0, 7)
+                })
                 .eq('user_id', userId);
             
             if (sbError) throw sbError;
