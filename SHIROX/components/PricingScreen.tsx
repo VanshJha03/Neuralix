@@ -56,8 +56,8 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
     };
 
     return (
-        <div className="min-h-dvh bg-black flex flex-col items-center justify-center p-6 lg:p-12 overflow-y-auto">
-            <div className="max-w-4xl w-full mx-auto flex flex-col items-center">
+        <div className="min-h-full bg-black flex flex-col items-center justify-start p-6 lg:p-12 overflow-y-auto">
+            <div className="max-w-4xl w-full mx-auto flex flex-col items-center mt-4 sm:mt-12">
                 <div className="mb-8 flex flex-col items-center text-center">
                     <NeuralLogo size={52} />
                     <h2 className="text-3xl lg:text-5xl font-normal text-white mt-8 tracking-tighter">
@@ -80,9 +80,20 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                             value={coupon}
                             onChange={(e) => handleCouponCheck(e.target.value)}
                             placeholder="HAVE A COUPON CODE?"
-                            className="w-full bg-transparent border-none py-3 pl-4 pr-6 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
+                            className="w-full bg-transparent border-none py-3 pl-4 pr-32 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
                         />
+                        <button 
+                            onClick={() => handleCouponCheck(coupon)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-white text-black text-[9px] uppercase tracking-widest font-normal rounded-xl hover:bg-zinc-200 transition-all active:scale-95"
+                        >
+                            Verify
+                        </button>
                     </div>
+                    {coupon.length > 0 && !isSecretRevealed && (
+                        <p className="absolute -bottom-6 left-0 w-full text-center text-[9px] uppercase tracking-widest text-zinc-600">
+                            Checking clearance...
+                        </p>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
