@@ -161,11 +161,11 @@ const App: React.FC = () => {
             localStorage.setItem('Creatio_pricing_shown', 'true');
           }
         } else if (session) {
-          // Auto-create user settings if not found but session exists
-          const initialSettings = {
+          const initialSettings: UserSettings = {
             ...userSettings,
             email: session.email,
             name: session.user_metadata?.full_name || session.user_metadata?.name || 'Operator',
+            tier: null as any, // Explicitly set to null to indicate "no tier yet"
           };
           setUserSettings(initialSettings);
           await saveUserSettings(initialSettings);
@@ -220,13 +220,20 @@ const App: React.FC = () => {
 
   // ── Auto-checkout pending tier ───────────────────────────────────────────
   useEffect(() => {
+    // We wait until userSettings.tier is no longer undefined (meaning sync finished)
     if (session && userSettings.tier !== undefined) {
       const pendingTier = localStorage.getItem('Creatio_pending_checkout_tier');
-      // Only trigger if they are currently Free/null
-      if (pendingTier && (!userSettings.tier || userSettings.tier === 'Free')) {
+      
+      // Only trigger if they are currently Free or null (no active subscription)
+      const isFree = !userSettings.tier || userSettings.tier === 'Free';
+      
+      if (pendingTier && isFree) {
+        console.log(`Auto-checkout: Triggering for pending tier "${pendingTier}"`);
         localStorage.removeItem('Creatio_pending_checkout_tier');
         handleSelectTier(pendingTier);
       } else if (pendingTier) {
+        // They already have a tier, clear the pending one
+        console.log("Auto-checkout: User already has a tier, clearing pending checkout");
         localStorage.removeItem('Creatio_pending_checkout_tier');
       }
     }
