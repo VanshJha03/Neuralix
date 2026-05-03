@@ -47,10 +47,12 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
   const [trendForFormatSelection, setTrendForFormatSelection] = useState<TrendItem | null>(null);
   const [copyDone, setCopyDone] = useState(false);
 
-  // Image generation toggle
-  const [imagesEnabled, setImagesEnabled] = useState<boolean>(true);
-  const imageUsed = userSettings?.usage?.image ?? 0;
-  const imageLimit = 100; // PRO/LTD: 100 images/month
+  // Dynamic limit based on tier
+  const tier = userSettings?.tier || 'Free';
+  const tierLimits = {
+    MONTHLY: 100, YEARLY: 100, LTD_129: 200, LTD_49: 50, PRO: 100, LTD: 100, beta: 999, Free: 0
+  };
+  const imageLimit = tierLimits[tier as keyof typeof tierLimits] || 0;
   const imageRemaining = Math.max(0, imageLimit - imageUsed);
 
   useEffect(() => {

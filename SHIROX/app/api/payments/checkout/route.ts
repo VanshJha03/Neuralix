@@ -8,8 +8,10 @@ const dodo = new DodoPayments({
 });
 
 const PRODUCT_IDS: Record<string, string | undefined> = {
-  PRO: process.env.DODO_PRODUCT_PRO,
-  LTD: process.env.DODO_PRODUCT_LTD,
+  MONTHLY: process.env.DODO_PRODUCT_MONTHLY,
+  YEARLY: process.env.DODO_PRODUCT_YEARLY,
+  LTD_49: process.env.DODO_PRODUCT_LTD_49,
+  LTD_129: process.env.DODO_PRODUCT_LTD_129,
 };
 
 export async function POST(req: NextRequest) {
