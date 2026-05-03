@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const { prompt } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-31b-it',
+      model: 'gemma-4-26b-it',
       contents: { parts: [{ text: `Generate futuristic marketing visual: ${prompt}. Dark tech, glowing red accents. No text.` }] },
       config: { responseModalities: ['IMAGE', 'TEXT'] },
     });

@@ -18,13 +18,13 @@ export async function POST(req: NextRequest) {
   const { activeLabels } = await req.json();
   try {
     const research = await ai.models.generateContent({
-      model: 'gemma-4-31b-it',
+      model: 'gemma-4-26b-it',
       contents: `For niches: ${activeLabels}, find 3 major trends from the last 4-7 days. For each trend identify: what the crowd is saying, what important perspective is missing, and a unique viral hook.`,
       config: { tools: [{ googleSearch: {} }] },
     });
 
     const extraction = await ai.models.generateContent({
-      model: 'gemma-4-31b-it',
+      model: 'gemma-4-26b-it',
       contents: `Extract gap analysis from the research below. Return ONLY a valid JSON array, no markdown, no explanation.\n\nResearch:\n${research.text}`,
       config: {
         responseMimeType: 'application/json',

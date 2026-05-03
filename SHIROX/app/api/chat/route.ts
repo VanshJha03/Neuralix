@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   if (isImageRequest || mode === 'Imagine') {
     try {
       const imgRes = await ai.models.generateContent({
-        model: 'gemma-4-31b-it',
+        model: 'gemma-4-26b-it',
         contents: { parts: [{ text: `Generate a high-quality futuristic marketing visual for: ${prompt}. Dark tech aesthetic, glowing red accents. No text in image.` }] },
         config: { responseModalities: ['IMAGE', 'TEXT'] },
       });
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   const fullSystemContext = `${userSettings?.customSystemPrompt || origSI}${styleOverride}`;
 
   // Default: gemma-3-1b-it for chat (fast, conversational)
-  // Deep Research: gemma-4-31b-it with Google Search (powerful, grounded)
+  // Deep Research: gemma-4-26b-it with Google Search (powerful, grounded)
   let modelName = 'gemma-3-1b-it';
   const config: Record<string, unknown> = {
     temperature: 0.8,
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
     ]}],
   };
   if (mode === 'Deep Research') {
-    modelName = 'gemma-4-31b-it';
+    modelName = 'gemma-4-26b-it';
     config.tools = [{ googleSearch: {} }];
   }
 
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     let contents = [...chatHistory, { role: 'user', parts: [{ text: firstMessageText }] }];
     let response = await ai.models.generateContent({ model: modelName, contents, config });
 
-    // Tool call loop — gemma-3-1b-it doesn't use function calling, but gemma-4-31b-it (Deep Research) might
+    // Tool call loop — gemma-3-1b-it doesn't use function calling, but gemma-4-26b-it (Deep Research) might
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let calls: any[] = response.candidates?.[0]?.content?.parts?.filter((p: any) => p.functionCall) || [];
     while (calls.length > 0) {

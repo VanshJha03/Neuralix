@@ -125,8 +125,11 @@ const App: React.FC = () => {
         (payload) => {
           const newTier = (payload.new as any)?.tier;
           if (newTier !== undefined) {
-            console.log(`🔄 Realtime: tier updated to "${newTier}"`);
-            setUserSettings(prev => ({ ...prev, tier: newTier }));
+            setUserSettings(prev => {
+              if (prev.tier === newTier) return prev;
+              console.log(`🔄 Realtime: tier updated to "${newTier}"`);
+              return { ...prev, tier: newTier };
+            });
           }
         },
       )
