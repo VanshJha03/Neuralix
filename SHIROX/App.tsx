@@ -411,7 +411,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
               <InterestsManager interests={interests} setInterests={setInterests} isLocked={isLocked} />
             )}
             {activeView === 'marketing' && (
-              <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} isLocked={isLocked} onShowPricing={() => setShowPricingOnce(true)} />
+              <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} isLocked={isLocked} onShowPricing={() => setShowPricingOnce(true)} onSelectTier={handleSelectTier} />
             )}
             {activeView === 'analytics' && (
               <NicheAnalytics
@@ -424,6 +424,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
                 onLimitReached={onLimitReached}
                 isLocked={isLocked}
                 onShowPricing={() => setShowPricingOnce(true)}
+                onSelectTier={handleSelectTier}
               />
             )}
             {activeView === 'settings' && (
