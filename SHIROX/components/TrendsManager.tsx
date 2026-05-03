@@ -27,9 +27,10 @@ interface TrendsManagerProps {
   userSettings: any;
   onLimitReached: (message: string) => void;
   isLocked?: boolean;
+  onShowPricing?: () => void;
 }
 
-const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, systemInstruction, userSettings, onLimitReached, isLocked = false }) => {
+const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, systemInstruction, userSettings, onLimitReached, isLocked = false, onShowPricing }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [trends, setTrends] = useState<TrendItem[]>([]);
   const [sources, setSources] = useState<any[]>([]);
@@ -501,7 +502,7 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
         <button
           onClick={() => {
             if (isLocked) {
-               alert("Real-time Trends require a Pro account.");
+               if (onShowPricing) onShowPricing();
                return;
             }
             setIsOpen(!isOpen);

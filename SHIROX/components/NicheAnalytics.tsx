@@ -10,6 +10,7 @@ import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketi
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { NicheAnalyticsData } from '../types';
+import PricingScreen from './PricingScreen';
 
 interface NicheAnalyticsProps {
   interests: Interest[];
@@ -490,27 +491,8 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       </div>
 
       {isLocked && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-3xl p-6 overflow-y-auto">
-          {/* Background Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-indigo-600/10 rounded-full blur-[160px] pointer-events-none"></div>
-
-          <div className="relative w-full max-w-lg bg-zinc-950/50 border border-white/5 rounded-[3rem] p-8 lg:p-14 shadow-[0_0_100px_rgba(0,0,0,0.8)] animate-in zoom-in-95 duration-700 text-center">
-            <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Crown size={32} className="text-white" />
-            </div>
-            <h2 className="text-3xl lg:text-4xl font-normal tracking-tight text-white mb-3">Professional Access Required</h2>
-            <p className="text-zinc-500 text-sm font-normal max-w-xs mx-auto mb-8 leading-relaxed">
-              Advanced market mapping and gap analysis are reserved for professional intelligence accounts.
-            </p>
-            
-            <button 
-              onClick={onShowPricing} 
-              className="w-full py-4 rounded-xl bg-white text-black text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all mb-4"
-            >
-              Choose Your Plan
-            </button>
-            <p className="text-zinc-800 text-[8px] uppercase tracking-widest">Pricing starts from $49 lifetime</p>
-          </div>
+        <div className="absolute inset-0 z-[100] bg-black overflow-y-auto">
+          <PricingScreen onSelectTier={onSelectTier!} />
         </div>
       )}
     </div>

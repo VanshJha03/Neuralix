@@ -438,6 +438,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
             systemInstruction={enhancedSystemPrompt}
             onLimitReached={onLimitReached}
             isLocked={isLocked}
+            onShowPricing={() => setShowPricingOnce(true)}
           />
           <OmniTerminal isOpen={isTerminalOpen} setIsOpen={setIsTerminalOpen} onCommand={handleTerminalCommand} />
         </main>
