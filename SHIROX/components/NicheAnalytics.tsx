@@ -21,10 +21,11 @@ interface NicheAnalyticsProps {
   onLimitReached: (message: string) => void;
   isLocked?: boolean;
   onSelectTier?: (tier: string) => void;
+  onShowPricing?: () => void;
 }
 
 const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
-  interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false, onSelectTier
+  interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false, onSelectTier, onShowPricing
 }) => {
   const [loading, setLoading] = useState(false);
   const [loadingDeep, setLoadingDeep] = useState(false);
@@ -497,18 +498,18 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
             <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
               <Crown size={32} className="text-white" />
             </div>
-            <h2 className="text-3xl lg:text-4xl font-normal tracking-tighter text-white mb-3" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Lock Active</h2>
-            <p className="text-zinc-500 text-sm font-normal max-w-xs mx-auto mb-8">
-              Advanced market mapping and gap analysis are reserved for professional intelligence operators.
+            <h2 className="text-3xl lg:text-4xl font-normal tracking-tight text-white mb-3">Professional Access Required</h2>
+            <p className="text-zinc-500 text-sm font-normal max-w-xs mx-auto mb-8 leading-relaxed">
+              Advanced market mapping and gap analysis are reserved for professional intelligence accounts.
             </p>
             
             <button 
-              onClick={() => window.location.reload()} 
+              onClick={onShowPricing} 
               className="w-full py-4 rounded-xl bg-white text-black text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all mb-4"
             >
-              View Available Plans
+              Choose Your Plan
             </button>
-            <p className="text-zinc-800 text-[8px] uppercase tracking-widest">Access starts from $69/mo</p>
+            <p className="text-zinc-800 text-[8px] uppercase tracking-widest">Pricing starts from $49 lifetime</p>
           </div>
         </div>
       )}

@@ -60,29 +60,30 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
             <div className="max-w-4xl w-full mx-auto flex flex-col items-center">
                 <div className="mb-8 flex flex-col items-center text-center">
                     <NeuralLogo size={52} />
-                    <h2 className="text-3xl lg:text-5xl font-normal text-white mt-8 tracking-tighter font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                        Activate Your Plan
+                    <h2 className="text-3xl lg:text-5xl font-normal text-white mt-8 tracking-tighter">
+                        Activate Professional Plan
                     </h2>
                     <p className="text-zinc-600 text-[11px] uppercase tracking-[0.4em] font-normal mt-3">
                         {isSecretRevealed ? 'Secret Tiers Unlocked' : 'A subscription is required to access Creatio'}
                     </p>
                 </div>
 
-                {/* Coupon Input */}
-                {!isSecretRevealed && (
-                    <div className="mb-10 w-full max-w-xs relative group">
-                        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-zinc-700 group-focus-within:text-white transition-colors">
-                            <Ticket size={14} />
+                {/* Coupon Input - High Visibility */}
+                <div className="mb-12 w-full max-w-sm relative group">
+                    <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl group-focus-within:bg-white/10 transition-all"></div>
+                    <div className="relative bg-zinc-950 border border-zinc-800 rounded-2xl py-1.5 flex items-center group-focus-within:border-zinc-700 transition-all">
+                        <div className="pl-5 text-zinc-700 group-focus-within:text-white transition-colors">
+                            <Ticket size={16} />
                         </div>
                         <input
                             type="text"
                             value={coupon}
                             onChange={(e) => handleCouponCheck(e.target.value)}
-                            placeholder="HAVE A COUPON?"
-                            className="w-full bg-zinc-950 border border-zinc-900 rounded-2xl py-3 pl-12 pr-4 text-[10px] uppercase tracking-[0.2em] text-white placeholder:text-zinc-800 focus:outline-none focus:border-zinc-700 transition-all text-center"
+                            placeholder="HAVE A COUPON CODE?"
+                            className="w-full bg-transparent border-none py-3 pl-4 pr-6 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
                         />
                     </div>
-                )}
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                     {!isSecretRevealed ? (
@@ -92,7 +93,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                                 <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6 text-zinc-400">
                                     <Zap size={22} />
                                 </div>
-                                <h3 className="text-2xl font-normal text-white tracking-tighter uppercase mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>PRO</h3>
+                                <h3 className="text-2xl font-normal text-white tracking-tight uppercase mb-1">Professional</h3>
                                 <p className="text-zinc-600 text-[10px] uppercase tracking-widest mb-6">Monthly · Cancel anytime</p>
                                 <div className="flex items-baseline gap-1 mb-8">
                                     <span className="text-4xl font-normal text-white">$69</span>
@@ -123,7 +124,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                                 <div className="w-12 h-12 rounded-2xl bg-black/10 flex items-center justify-center mb-6 text-black">
                                     <Crown size={22} />
                                 </div>
-                                <h3 className="text-2xl font-normal text-black tracking-tighter uppercase mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>ELITE</h3>
+                                <h3 className="text-2xl font-normal text-black tracking-tight uppercase mb-1">Elite Access</h3>
                                 <p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-6">Yearly · Full Access</p>
                                 <div className="flex items-baseline gap-1 mb-8">
                                     <span className="text-4xl font-normal text-black">$299</span>
@@ -153,7 +154,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                                 <div className="w-12 h-12 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6 text-zinc-400">
                                     <Ticket size={22} />
                                 </div>
-                                <h3 className="text-2xl font-normal text-white tracking-tighter uppercase mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>Starter</h3>
+                                <h3 className="text-2xl font-normal text-white tracking-tight uppercase mb-1">Starter</h3>
                                 <p className="text-zinc-600 text-[10px] uppercase tracking-widest mb-6">Lifetime · Limited Features</p>
                                 <div className="flex items-baseline gap-1 mb-8">
                                     <span className="text-4xl font-normal text-white">$49</span>
@@ -184,7 +185,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                                 <div className="w-12 h-12 rounded-2xl bg-black/10 flex items-center justify-center mb-6 text-black">
                                     <Crown size={22} />
                                 </div>
-                                <h3 className="text-2xl font-normal text-black tracking-tighter uppercase mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>LIFETIME</h3>
+                                <h3 className="text-2xl font-normal text-black tracking-tight uppercase mb-1">Lifetime</h3>
                                 <p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-6">Lifetime · Double Access</p>
                                 <div className="flex items-baseline gap-1 mb-8">
                                     <span className="text-4xl font-normal text-black">$129</span>
