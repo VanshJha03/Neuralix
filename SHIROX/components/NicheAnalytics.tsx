@@ -6,7 +6,7 @@ import {
   BookmarkPlus, Eye, Edit3, Image as ImageIcon, ImageOff, Share2, X as CloseIcon, Lock, Crown
 } from 'lucide-react';
 import { Interest, ViralPrediction, CreatorAnalysis, GapAnalysis, Idea } from '../types';
-import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketingContent, generateNeuralImage } from '../services/apiService';
+import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketingContent, generateNeuralImage, runNicheDiscovery, runNicheDetails } from '../services/apiService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { NicheAnalyticsData } from '../types';
@@ -27,6 +27,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
   interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false, onSelectTier
 }) => {
   const [loading, setLoading] = useState(false);
+  const [loadingDeep, setLoadingDeep] = useState(false);
   const [activeTab, setActiveTab] = useState<'VIRAL' | 'CREATORS' | 'GAPS'>('VIRAL');
 
   // Synthesis state
@@ -63,19 +64,36 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
   const performFullAnalysis = async () => {
     if (activeInterests.length === 0) return;
     setLoading(true);
+    setLoadingDeep(true);
+    // Clear old results to show skeletons
+    onUpdateData({ predictions: [], creators: [], gaps: [] });
+
     try {
-      const [vData, cData, gData] = await Promise.all([
-        runViralPrediction(interests),
-        runCreatorAnalysis(interests),
-        runGapAnalysis(interests)
+      // 🟢 STAGE 1: Discovery (Topics + Creators)
+      const discovery = await runNicheDiscovery(interests);
+      
+      // Update creators immediately
+      onUpdateData({ ...data, creators: discovery.creators });
+      setLoading(false); // Switch from full screen loader to card skeletons
+
+      // 🟡 STAGE 2: Parallel Deep Analysis
+      const [details, gapResults] = await Promise.all([
+        runNicheDetails(discovery.topics),
+        runGapAnalysis(interests, discovery.topics)
       ]);
-      onUpdateData({ predictions: vData, creators: cData, gaps: gData });
+      
+      onUpdateData({ 
+        predictions: details, 
+        creators: discovery.creators, 
+        gaps: gapResults 
+      });
     } catch (e: any) {
       const msg = e?.message || '';
       if (msg.includes('LIMIT') || msg.includes('429')) onLimitReached(msg);
       else console.error('Analysis failed', e);
     } finally {
       setLoading(false);
+      setLoadingDeep(false);
     }
   };
 
@@ -216,7 +234,16 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             {activeTab === 'VIRAL' && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
-                {predictions.map((p, i) => (
+                {predictions.length === 0 && loadingDeep ? (
+                   // Skeletons for viral cards
+                   [1,2,3,4].map(i => (
+                    <div key={i} className="p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800 rounded-2xl lg:rounded-[3rem] animate-pulse">
+                      <div className="h-4 w-24 bg-zinc-800 rounded-full mb-6"></div>
+                      <div className="h-8 w-full bg-zinc-800 rounded-xl mb-3"></div>
+                      <div className="h-20 w-full bg-zinc-800/50 rounded-xl"></div>
+                    </div>
+                   ))
+                ) : predictions.map((p, i) => (
                   <div key={i} className="p-6 lg:p-10 bg-zinc-900/40 border border-zinc-800 rounded-2xl lg:rounded-[3rem] hover:border-zinc-700 transition-all">
                     <div className="flex justify-between items-start mb-6">
                       <div className={`px-3 py-1 rounded-full text-[9px] font-normal uppercase tracking-widest ${p.velocity === 'Early' ? 'bg-blue-600/10 text-blue-500 border border-blue-900/30' : p.velocity === 'Rising' ? 'bg-green-600/10 text-green-500 border border-green-900/30' : p.velocity === 'Peak' ? 'bg-white text-black' : 'bg-zinc-800 text-zinc-500'}`}>
@@ -272,7 +299,14 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
 
             {activeTab === 'GAPS' && (
               <div className="space-y-6 lg:space-y-12">
-                {gaps.map((g, i) => (
+                {gaps.length === 0 && loadingDeep ? (
+                  [1,2,3].map(i => (
+                    <div key={i} className="bg-zinc-900/20 border border-zinc-800 rounded-2xl lg:rounded-[4rem] p-6 lg:p-12 animate-pulse">
+                      <div className="h-10 w-2/3 bg-zinc-800 rounded-xl mb-8"></div>
+                      <div className="h-32 w-full bg-zinc-800/40 rounded-3xl"></div>
+                    </div>
+                  ))
+                ) : gaps.map((g, i) => (
                   <div key={i} className="bg-zinc-900/20 border border-zinc-800 rounded-2xl lg:rounded-[4rem] p-6 lg:p-12 flex flex-col lg:flex-row gap-6 lg:gap-12 relative overflow-hidden">
                     <div className="flex-1 space-y-5">
                       <div>

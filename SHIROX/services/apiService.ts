@@ -75,6 +75,15 @@ export const refineMarketingContent = async (currentContent: string, refinement:
 };
 
 // ── Trends ────────────────────────────────────────────────────────────────────
+export const runNicheDiscovery = async (interests: Interest[]): Promise<{ topics: string[], creators: CreatorAnalysis[] }> => {
+    const activeLabels = interests.filter(i => i.active).map(i => i.label).join(', ');
+    return apiFetch('/api/trends/discover', { method: 'POST', body: JSON.stringify({ activeLabels }) });
+};
+
+export const runNicheDetails = async (topics: string[]): Promise<ViralPrediction[]> => {
+    return apiFetch('/api/trends/details', { method: 'POST', body: JSON.stringify({ topics }) });
+};
+
 export const runViralPrediction = async (interests: Interest[]): Promise<ViralPrediction[]> => {
     const activeLabels = interests.filter(i => i.active).map(i => i.label).join(', ');
     return apiFetch('/api/trends/viral', { method: 'POST', body: JSON.stringify({ activeLabels }) });
@@ -85,9 +94,9 @@ export const runCreatorAnalysis = async (interests: Interest[]): Promise<Creator
     return apiFetch('/api/trends/creators', { method: 'POST', body: JSON.stringify({ activeLabels }) });
 };
 
-export const runGapAnalysis = async (interests: Interest[]): Promise<GapAnalysis[]> => {
+export const runGapAnalysis = async (interests: Interest[], topics?: string[]): Promise<GapAnalysis[]> => {
     const activeLabels = interests.filter(i => i.active).map(i => i.label).join(', ');
-    return apiFetch('/api/trends/gaps', { method: 'POST', body: JSON.stringify({ activeLabels }) });
+    return apiFetch('/api/trends/gaps', { method: 'POST', body: JSON.stringify({ activeLabels, topics }) });
 };
 
 export const fetchLatestTrends = async (interests: Interest[]) => {

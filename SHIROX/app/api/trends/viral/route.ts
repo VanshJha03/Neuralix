@@ -16,15 +16,13 @@ export async function POST(req: NextRequest) {
 
   const { activeLabels } = await req.json();
   try {
-    const research = await ai.models.generateContent({
+    const response = await ai.models.generateContent({
       model: 'gemma-4-26b-a4b-it',
-      contents: `Research viral trends from the last 4-7 days in these niches: ${activeLabels}. Find 4 trending topics and assess their velocity (Early/Rising/Peak/Saturation) and a score 0-100.`,
-      config: { tools: [{ googleSearch: {} }] },
-    });
-    const extraction = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it',
-      contents: `Extract trending topics from the research below. Return ONLY a valid JSON array, no markdown.\n\nResearch:\n${research.text}`,
-      config: {
+      contents: `Perform high-speed grounding search for viral trends (last 7 days) in these niches: ${activeLabels}. 
+      Find 4 topics. Return ONLY a JSON array. 
+      CRITICAL: Skip introductory text and reasoning.`,
+      config: { 
+        tools: [{ googleSearch: {} }],
         responseMimeType: 'application/json',
         responseSchema: {
           type: Type.ARRAY,
@@ -42,7 +40,7 @@ export async function POST(req: NextRequest) {
       },
     });
     await incrementUsage(auth.sb, auth.userId, 'trend_count');
-    return NextResponse.json(JSON.parse(cleanJSON(extraction.text || '[]')));
+    return NextResponse.json(JSON.parse(cleanJSON(response.text || '[]')));
   } catch (err: unknown) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }

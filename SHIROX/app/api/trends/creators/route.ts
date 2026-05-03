@@ -18,8 +18,10 @@ export async function POST(req: NextRequest) {
   try {
     const response = await ai.models.generateContent({
       model: 'gemma-4-26b-a4b-it',
-      contents: `Find top performing creators in these niches: ${activeLabels} on YouTube, X, and Instagram. Return ONLY a valid JSON array, no markdown.\n\nFor each creator include: name, platform (YT/X/IG), content style, and 3 successful viral hooks.`,
+      contents: `High-speed search for top creators in these niches: ${activeLabels} on YouTube, X, and Instagram. 
+      Return ONLY a JSON array. Skip introductory text and reasoning.`,
       config: {
+        tools: [{ googleSearch: {} }],
         responseMimeType: 'application/json',
         responseSchema: {
           type: Type.ARRAY,

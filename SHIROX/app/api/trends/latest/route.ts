@@ -12,7 +12,12 @@ export async function POST(req: NextRequest) {
 
   const { activeLabels } = await req.json();
   try {
-    const response = await ai.models.generateContent({ model: 'gemma-4-26b-a4b-it', contents: `Find 5 viral trends last 4-7 days in: ${activeLabels}. Format: PLATFORM | TOPIC | VIRAL_HOOK`, config: { tools: [{ googleSearch: {} }] } });
+    const response = await ai.models.generateContent({ 
+      model: 'gemma-4-26b-a4b-it', 
+      contents: `Instant grounding search for 5 viral trends (last 7 days) in: ${activeLabels}. 
+      Format: PLATFORM | TOPIC | VIRAL_HOOK. Skip intro.`, 
+      config: { tools: [{ googleSearch: {} }] } 
+    });
     await incrementUsage(auth.sb, auth.userId, 'trend_count');
     return NextResponse.json({ text: response.text, sources: response.candidates?.[0]?.groundingMetadata?.groundingChunks || [] });
   } catch (err: unknown) { return NextResponse.json({ error: (err as Error).message }, { status: 500 }); }

@@ -48,6 +48,8 @@ const TrendsManager: React.FC<TrendsManagerProps> = ({ interests, onSaveIdea, sy
   const [copyDone, setCopyDone] = useState(false);
 
   // Dynamic limit based on tier
+  const [imagesEnabled, setImagesEnabled] = useState<boolean>(true);
+  const imageUsed = userSettings?.usage?.image ?? 0;
   const tier = userSettings?.tier || 'Free';
   const tierLimits = {
     MONTHLY: 100, YEARLY: 100, LTD_129: 200, LTD_49: 50, PRO: 100, LTD: 100, beta: 999, Free: 0
