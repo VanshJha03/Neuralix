@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const { activeLabels } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-it', contents: `Find real content from YT, IG, X for: ${activeLabels} last 4-7 days. Return 9 items JSON.`,
+      model: 'gemma-4-26b-a4b-it', contents: `Find real content from YT, IG, X for: ${activeLabels} last 4-7 days. Return 9 items JSON.`,
       config: { responseMimeType: 'application/json', responseSchema: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, platform: { type: Type.STRING }, title: { type: Type.STRING }, channel: { type: Type.STRING }, views: { type: Type.STRING }, date: { type: Type.STRING }, url: { type: Type.STRING }, thumbnail: { type: Type.STRING } }, required: ['id', 'platform', 'title', 'channel', 'views', 'date', 'url', 'thumbnail'] } } },
     });
     await incrementUsage(auth.sb, auth.userId, 'niche_count');

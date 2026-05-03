@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   const { activeLabels } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-it',
+      model: 'gemma-4-26b-a4b-it',
       contents: `Find top performing creators in these niches: ${activeLabels} on YouTube, X, and Instagram. Return ONLY a valid JSON array, no markdown.\n\nFor each creator include: name, platform (YT/X/IG), content style, and 3 successful viral hooks.`,
       config: {
         responseMimeType: 'application/json',

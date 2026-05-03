@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const conversationText = messages.map((m: { role: string; content: string }) => `${m.role.toUpperCase()}: ${m.content}`).join('\n');
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-it',
+      model: 'gemma-4-26b-a4b-it',
       contents: `Extract 2-3 Neural Memory Packets from this conversation:\n${conversationText}\nReturn JSON array.`,
       config: {
         responseMimeType: 'application/json',
