@@ -54,7 +54,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                         <a href="#sync" className="hover:text-white transition-colors">Social Sync</a>
                         <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
                     </div>
-                    <button onClick={onGetStarted} className="bg-white text-black px-5 py-2 rounded-sm text-[0.8rem] tracking-wider hover:opacity-90 transition-all">
+                    <button onClick={() => onGetStarted()} className="bg-white text-black px-5 py-2 rounded-sm text-[0.8rem] tracking-wider hover:opacity-90 transition-all">
                         Connect Link
                     </button>
                 </div>
@@ -70,7 +70,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                     A high-fidelity workspace designed for deep content research, niche dominance, and automated social distribution. Engineered for the future of digital sovereignty.
                 </p>
                 <div>
-                    <button onClick={onGetStarted} className="bg-white text-black px-10 py-4 rounded-sm text-[0.8rem] tracking-[0.2em] hover:scale-[0.98] transition-all">
+                    <button onClick={() => onGetStarted()} className="bg-white text-black px-10 py-4 rounded-sm text-[0.8rem] tracking-[0.2em] hover:scale-[0.98] transition-all">
                         Launch Matrix
                     </button>
                 </div>
