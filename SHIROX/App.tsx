@@ -218,6 +218,20 @@ const App: React.FC = () => {
     saveUserSettings(userSettings).catch(() => { });
   }, [userSettings]);
 
+  // ── Auto-checkout pending tier ───────────────────────────────────────────
+  useEffect(() => {
+    if (session && userSettings.tier !== undefined) {
+      const pendingTier = localStorage.getItem('Creatio_pending_checkout_tier');
+      // Only trigger if they are currently Free/null
+      if (pendingTier && (!userSettings.tier || userSettings.tier === 'Free')) {
+        localStorage.removeItem('Creatio_pending_checkout_tier');
+        handleSelectTier(pendingTier);
+      } else if (pendingTier) {
+        localStorage.removeItem('Creatio_pending_checkout_tier');
+      }
+    }
+  }, [session, userSettings.tier]);
+
   // ── Persist Interests ──────────────────────────────────────────────────────
   useEffect(() => {
     if (interests.length === 0) return;
@@ -390,7 +404,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
               <InterestsManager interests={interests} setInterests={setInterests} isLocked={isLocked} />
             )}
             {activeView === 'marketing' && (
-              <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} isLocked={isLocked} />
+              <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} isLocked={isLocked} onSelectTier={handleSelectTier} />
             )}
             {activeView === 'analytics' && (
               <NicheAnalytics
@@ -402,6 +416,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
                 onUpdateData={setNicheAnalyticsData}
                 onLimitReached={onLimitReached}
                 isLocked={isLocked}
+                onSelectTier={handleSelectTier}
               />
             )}
             {activeView === 'settings' && (

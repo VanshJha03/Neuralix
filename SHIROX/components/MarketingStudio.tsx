@@ -14,9 +14,10 @@ interface MarketingStudioProps {
   onDeleteIdea: (id: string) => void;
   userSettings: any;
   isLocked?: boolean;
+  onSelectTier?: (tier: string) => void;
 }
 
-const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea, userSettings, isLocked = false }) => {
+const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, systemInstruction, onDeleteIdea, userSettings, isLocked = false, onSelectTier }) => {
   // All authenticated users are PRO or LTD — no free tier gate needed (removed comment, now uses isLocked)
 
   const [selectedIdea, setSelectedIdea] = useState<Idea | null>(null);
@@ -445,7 +446,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                     ))}
                   </ul>
                   <button
-                    onClick={() => window.location.hash = 'pricing'}
+                    onClick={() => onSelectTier?.('PRO')}
                     className="w-full py-4 rounded-xl bg-white text-black text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all"
                   >
                     Start Pro — $49/mo
@@ -474,7 +475,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
                     ))}
                   </ul>
                   <button
-                    onClick={() => window.location.hash = 'pricing'}
+                    onClick={() => onSelectTier?.('LTD')}
                     className="w-full py-4 rounded-xl bg-black text-white text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl"
                   >
                     Get Lifetime — $129

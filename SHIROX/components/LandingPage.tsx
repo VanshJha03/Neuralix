@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
-const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) => {
+const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGetStarted }) => {
     const [isLifetime, setIsLifetime] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -404,7 +404,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                         </ul>
 
                         <button 
-                            onClick={onGetStarted} 
+                            onClick={() => onGetStarted(isLifetime ? 'LTD' : 'PRO')} 
                             className={`w-full py-5 text-[0.75rem] tracking-[0.2em] uppercase transition-all duration-300 ${
                                 isLifetime 
                                 ? 'bg-black text-white hover:opacity-80' 

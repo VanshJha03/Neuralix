@@ -20,10 +20,11 @@ interface NicheAnalyticsProps {
   systemInstruction: string;
   onLimitReached: (message: string) => void;
   isLocked?: boolean;
+  onSelectTier?: (tier: string) => void;
 }
 
 const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
-  interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false
+  interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false, onSelectTier
 }) => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'VIRAL' | 'CREATORS' | 'GAPS'>('VIRAL');
@@ -485,7 +486,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                   ))}
                 </ul>
                 <button 
-                  onClick={() => window.location.hash = 'pricing'} 
+                  onClick={() => onSelectTier?.('PRO')} 
                   className="w-full py-4 rounded-xl bg-white text-black text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all"
                 >
                   Start Pro — $49/mo
@@ -514,7 +515,7 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
                   ))}
                 </ul>
                 <button 
-                  onClick={() => window.location.hash = 'pricing'} 
+                  onClick={() => onSelectTier?.('LTD')} 
                   className="w-full py-4 rounded-xl bg-black text-white text-[10px] font-normal uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl"
                 >
                   Get Lifetime — $129

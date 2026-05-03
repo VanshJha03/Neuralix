@@ -20,7 +20,14 @@ const PublicHome: React.FC = () => {
         );
     }
 
-    return <LandingPage onGetStarted={() => setShowAuth(true)} />;
+    const handleGetStarted = (tier?: string) => {
+        if (tier) {
+            localStorage.setItem('Creatio_pending_checkout_tier', tier);
+        }
+        setShowAuth(true);
+    };
+
+    return <LandingPage onGetStarted={handleGetStarted} />;
 };
 
 export default PublicHome;
