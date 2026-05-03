@@ -188,13 +188,13 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                     <h2 className="reveal lp-heading text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Mining the Signal from the Noise.</h2>
                     <p className="reveal text-zinc-400 text-[1.05rem] leading-relaxed">Our neural engines scan the digital landscape to identify untapped opportunities before they become mainstream. Position your brand where the attention is going, not where it has been.</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 border border-white/10">
                     {[
                         { num: 'SYSTEM.ANALYSIS', title: 'Niche Analysis', desc: 'Quantify audience sentiment and keyword saturation. Break down complex market dynamics into actionable data points for your next campaign.' },
                         { num: 'SYSTEM.IDENTIFY', title: 'Gap Analysis', desc: 'Discover the content your competitors are afraid to touch. Highlight the conversational voids where your voice can achieve maximum resonance.' },
                         { num: 'SYSTEM.PREDICT', title: 'Trend Management', desc: 'Monitor real-time cultural shifts across platforms. Our predictive models help you catch viral waves during their initial ascent.' }
                     ].map((f, i) => (
-                        <div key={i} className="reveal bg-black p-14 border border-white/5 hover:bg-zinc-950 transition-all">
+                        <div key={i} className={`reveal bg-black p-8 md:p-14 border border-white/5 hover:bg-zinc-950 transition-all ${i === 2 ? 'sm:col-span-2 md:col-span-1' : ''}`}>
                             <span className="text-[0.6rem] text-zinc-600 mb-6 block">{f.num}</span>
                             <h3 className="lp-heading text-[1.4rem] tracking-tight mb-5">{f.title}</h3>
                             <p className="text-[0.9rem] text-zinc-500 leading-relaxed">{f.desc}</p>
@@ -205,7 +205,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
 
             {/* ── Generation ── */}
             <section id="generation" className="py-24 md:py-40 px-6 md:px-10 max-w-[1240px] mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 md:gap-24 items-center">
                     <div className="reveal">
                         <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">02. Automated Production</span>
                         <h2 className="lp-heading text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Content Without Compromise.</h2>
@@ -258,7 +258,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
 
             {/* ── Sync / Distribution ── */}
             <section id="sync" className="py-24 md:py-40 px-6 md:px-10 max-w-[1240px] mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 md:gap-24 items-center">
                     {/* Trend Radar mockup */}
                     <div className="reveal order-2 lg:order-1 bg-zinc-950 border border-white/10 rounded-lg overflow-hidden flex flex-col h-[320px] sm:h-auto sm:[aspect-ratio:4/3]">
                         <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-black/40">
@@ -317,7 +317,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
             <section className="py-24 md:py-40 px-6 md:px-10 max-w-[1240px] mx-auto text-center">
                 <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block">Workflow</span>
                 <h2 className="reveal lp-heading text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-20">The Architecture of Output.</h2>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-10 text-left">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-left">
                     {[
                         { title: '01. Memory Sync', desc: 'The AI learns your goals and past research to build a persistent knowledge ledger.' },
                         { title: '02. Intelligence Analysis', desc: 'Scan for gaps and trends to ensure your content is positioned for maximum impact.' },
@@ -337,7 +337,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                 <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block text-center">Investment</span>
                 <h2 className="reveal lp-heading text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-4 text-center">Scale Your Intelligence.</h2>
                 <p className="reveal text-zinc-500 text-center text-[0.85rem] mb-16">Two tiers. No bloat. Full power.</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[860px] mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-[860px] mx-auto">
                     {/* PRO Monthly */}
                     <div className="reveal border border-white/10 p-10 rounded-sm flex flex-col bg-zinc-950/50">
                         <span className="text-[0.6rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">Monthly</span>
