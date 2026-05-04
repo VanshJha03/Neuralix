@@ -12,7 +12,7 @@ import {
     dbFetchMemories, dbSaveMemory,
     dbFetchArchive, dbSaveArchive,
 } from '../lib/supabase';
-import type { TaskMode, Interest, NicheContent, ViralPrediction, CreatorAnalysis, GapAnalysis, UserSettings, Message, Idea } from '../types';
+import type { TaskMode, Interest, NicheContent, ViralPrediction, CreatorAnalysis, GapAnalysis, UserSettings, Message, Idea, NicheAnalyticsData } from '../types';
 
 const BACKEND_URL = ''; // Next.js: API routes are same-origin
 
