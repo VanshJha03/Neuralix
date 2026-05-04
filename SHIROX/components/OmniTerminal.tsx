@@ -118,7 +118,7 @@ const OmniTerminal: React.FC<OmniTerminalProps> = ({ onCommand, isOpen, setIsOpe
               <span>Navigate</span>
             </div>
           </div>
-          <p className="text-[9px] font-normal text-zinc-800 uppercase tracking-widest font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatio Neural Interface v5.0</p>
+          <p className="text-[9px] font-normal text-zinc-800 uppercase tracking-widest font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>ArsCreatioX Neural Interface v5.0</p>
         </div>
       </div>
     </div>

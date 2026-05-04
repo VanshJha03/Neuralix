@@ -6,7 +6,7 @@ import {
   BookmarkPlus, Eye, Edit3, Image as ImageIcon, ImageOff, Share2, X as CloseIcon, Lock, Crown
 } from 'lucide-react';
 import { Interest, ViralPrediction, CreatorAnalysis, GapAnalysis, Idea } from '../types';
-import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketingContent, generateNeuralImage, runNicheDiscovery, runNicheDetails } from '../services/apiService';
+import { runViralPrediction, runCreatorAnalysis, runGapAnalysis, generateMarketingContent, generateNeuralImage, runNicheDiscovery, runNicheDetails, runParallelResearch } from '../services/apiService';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { NicheAnalyticsData } from '../types';
@@ -71,24 +71,9 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
     onUpdateData({ predictions: [], creators: [], gaps: [] });
 
     try {
-      // 🟢 STAGE 1: Discovery (Topics + Creators)
-      const discovery = await runNicheDiscovery(interests);
-      
-      // Update creators immediately
-      onUpdateData({ ...data, creators: discovery.creators });
-      setLoading(false); // Switch from full screen loader to card skeletons
-
-      // 🟡 STAGE 2: Parallel Deep Analysis
-      const [details, gapResults] = await Promise.all([
-        runNicheDetails(discovery.topics),
-        runGapAnalysis(interests, discovery.topics)
-      ]);
-      
-      onUpdateData({ 
-        predictions: details, 
-        creators: discovery.creators, 
-        gaps: gapResults 
-      });
+      // 🚀 Optimized: Single Parallel Call
+      const results = await runParallelResearch(interests);
+      onUpdateData(results);
     } catch (e: any) {
       const msg = e?.message || '';
       if (msg.includes('LIMIT') || msg.includes('429')) onLimitReached(msg);

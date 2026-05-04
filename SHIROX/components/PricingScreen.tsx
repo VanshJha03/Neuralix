@@ -65,7 +65,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                         Activate Professional Plan
                     </h2>
                     <p className="text-zinc-600 text-[11px] uppercase tracking-[0.4em] font-normal mt-3">
-                        {isSecretRevealed ? 'Secret Tiers Unlocked' : 'A subscription is required to access Creatio'}
+                        {isSecretRevealed ? 'Secret Tiers Unlocked' : 'A subscription is required to access CreatioX'}
                     </p>
                 </div>
 
@@ -85,7 +85,7 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                                     placeholder="HAVE A COUPON CODE?"
                                     className="w-full bg-transparent border-none py-3 pl-4 pr-32 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
                                 />
-                                <button 
+                                <button
                                     onClick={() => handleCouponCheck(coupon)}
                                     className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-white text-black text-[9px] uppercase tracking-widest font-normal rounded-xl hover:bg-zinc-200 transition-all active:scale-95"
                                 >

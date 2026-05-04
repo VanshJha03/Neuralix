@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const { currentContent, refinement, format, systemInstruction } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it',
+      model: 'gemma-4-31b-it',
       contents: `Current content:\n"${currentContent}"\n\nRefinement:\n"${refinement}"\n\nFormat: ${format}\n\nRefine while keeping the same voice.`,
       config: { systemInstruction, temperature: 0.7 },
     });

@@ -31,7 +31,8 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
 
     return (
         <div ref={containerRef} className="bg-black text-white leading-relaxed antialiased overflow-x-hidden">
-            <style dangerouslySetInnerHTML={{ __html: `
+            <style dangerouslySetInnerHTML={{
+                __html: `
                 .reveal {
                     opacity: 0;
                     transform: translateY(28px);
@@ -46,7 +47,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                 <div className="max-w-[1240px] mx-auto w-full px-6 md:px-10 flex justify-between items-center">
                     <a href="#" className="text-[1.3rem] tracking-tight text-white flex items-center gap-3">
                         <div className="w-5 h-5 border border-white rounded-full" />
-                        Creatio
+                        CreatioX
                     </a>
                     <div className="hidden md:flex gap-9 text-[0.82rem] tracking-wider text-zinc-400">
                         <a href="#analysis" className="hover:text-white transition-colors">Analysis</a>
@@ -81,14 +82,14 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                         <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
                         <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
                         <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
-                        <span className="ml-3 text-[0.6rem] text-zinc-600 tracking-[0.3em] uppercase">Creatio — Neural Workspace</span>
+                        <span className="ml-3 text-[0.6rem] text-zinc-600 tracking-[0.3em] uppercase">CreatioX — Neural Workspace</span>
                     </div>
                     <div className="flex" style={{ height: 'calc(520px - 41px)' }}>
                         {/* Sidebar */}
                         <div className="w-[200px] border-r border-white/5 bg-black/30 flex flex-col py-4 px-3 gap-1 flex-shrink-0">
                             <div className="flex items-center gap-2 px-3 py-2 mb-3">
                                 <div className="w-3 h-3 rounded-full border border-white/40" />
-                                <span className="text-[0.65rem] text-white tracking-tight">Creatio</span>
+                                <span className="text-[0.65rem] text-white tracking-tight">CreatioX</span>
                             </div>
                             {['Chat', 'Search', 'Ideas', 'Marketing', 'Analytics', 'Settings'].map((item, i) => (
                                 <div key={item} className={`flex items-center gap-2.5 px-3 py-2 rounded text-[0.65rem] tracking-wide ${i === 0 ? 'bg-white/10 text-white' : 'text-zinc-600'}`}>
@@ -141,13 +142,13 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                             {/* Input bar */}
                             <div className="px-5 pb-4">
                                 <div className="flex items-center gap-3 bg-zinc-900/60 border border-white/5 rounded-lg px-4 py-3">
-                                    <span className="text-[0.65rem] text-zinc-600 flex-1">Ask Creatio anything...</span>
+                                    <span className="text-[0.65rem] text-zinc-600 flex-1">Ask CreatioX anything...</span>
                                     <div className="flex gap-2">
                                         <span className="text-[0.55rem] text-zinc-700 px-2 py-1 border border-zinc-800 rounded">Fast</span>
                                         <span className="text-[0.55rem] text-zinc-700 px-2 py-1 border border-zinc-800 rounded">Research</span>
                                     </div>
                                     <div className="w-6 h-6 rounded bg-white/10 flex items-center justify-center">
-                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +159,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                 <div className="w-full bg-zinc-950 border border-white/5 rounded-lg mt-10 overflow-hidden sm:hidden">
                     <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-black/40">
                         <div className="w-2 h-2 rounded-full bg-zinc-700" /><div className="w-2 h-2 rounded-full bg-zinc-700" /><div className="w-2 h-2 rounded-full bg-zinc-700" />
-                        <span className="ml-2 text-[0.55rem] text-zinc-600 tracking-widest uppercase">Creatio</span>
+                        <span className="ml-2 text-[0.55rem] text-zinc-600 tracking-widest uppercase">CreatioX</span>
                     </div>
                     <div className="p-4 space-y-3">
                         <div className="flex justify-end">
@@ -174,9 +175,9 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                             </div>
                         </div>
                         <div className="flex items-center gap-2 bg-zinc-900/60 border border-white/5 rounded-lg px-3 py-2.5 mt-2">
-                            <span className="text-[0.6rem] text-zinc-600 flex-1">Ask Creatio anything...</span>
+                            <span className="text-[0.6rem] text-zinc-600 flex-1">Ask CreatioX anything...</span>
                             <div className="w-5 h-5 rounded bg-white/10 flex items-center justify-center flex-shrink-0">
-                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
                             </div>
                         </div>
                     </div>
@@ -343,7 +344,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                 {/* Toggle Switch */}
                 <div className="reveal flex justify-center items-center gap-4 mb-16">
                     <span className={`text-[0.7rem] tracking-widest uppercase transition-colors ${!isLifetime ? 'text-white' : 'text-zinc-600'}`}>Monthly</span>
-                    <button 
+                    <button
                         onClick={() => setIsLifetime(!isLifetime)}
                         className="w-14 h-7 bg-zinc-900 border border-white/10 rounded-full relative p-1 transition-all hover:border-white/20"
                     >
@@ -362,7 +363,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                                 <span className="text-[0.55rem] bg-black text-white px-2 py-1 tracking-[0.2em] uppercase">Limited Offer</span>
                             </div>
                         )}
-                        
+
                         <div className="flex justify-between items-start mb-8">
                             <div>
                                 <span className={`text-[0.6rem] tracking-[0.3em] uppercase mb-2 block ${isLifetime ? 'text-zinc-500' : 'text-zinc-500'}`}>
@@ -403,17 +404,16 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                             ))}
                         </ul>
 
-                        <button 
-                            onClick={() => onGetStarted(isLifetime ? 'LTD' : 'PRO')} 
-                            className={`w-full py-5 text-[0.75rem] tracking-[0.2em] uppercase transition-all duration-300 ${
-                                isLifetime 
-                                ? 'bg-black text-white hover:opacity-80' 
-                                : 'border border-white/10 text-white hover:bg-white hover:text-black'
-                            }`}
+                        <button
+                            onClick={() => onGetStarted(isLifetime ? 'LTD' : 'PRO')}
+                            className={`w-full py-5 text-[0.75rem] tracking-[0.2em] uppercase transition-all duration-300 ${isLifetime
+                                    ? 'bg-black text-white hover:opacity-80'
+                                    : 'border border-white/10 text-white hover:bg-white hover:text-black'
+                                }`}
                         >
                             {isLifetime ? 'Get Lifetime Access' : 'Get Started Now'}
                         </button>
-                        
+
                         <p className={`text-center text-[0.65rem] mt-6 ${isLifetime ? 'text-zinc-400' : 'text-zinc-600'}`}>
                             {isLifetime ? 'Secure one-time payment. No hidden fees.' : 'Cancel anytime. No long-term commitment.'}
                         </p>
@@ -427,7 +427,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                     <div className="flex flex-col gap-3">
                         <a href="#" className="lp-heading text-[1.3rem] tracking-tight text-white flex items-center gap-3">
                             <div className="w-5 h-5 border border-white rounded-full" />
-                            Creatio
+                            CreatioX
                         </a>
                         <p className="text-[0.7rem] text-zinc-600 max-w-[200px] leading-relaxed">
                             An AI content intelligence platform by <span className="text-zinc-400">VYNDRIQ</span>.
@@ -460,7 +460,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                                     className="hover:text-white transition-colors flex items-center gap-2"
                                 >
                                     Twitter / X
-                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></svg>
                                 </a>
                                 <span className="flex items-center gap-2 cursor-default select-none">
                                     Discord
@@ -472,7 +472,7 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                 </div>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-[0.7rem] text-zinc-700">
                     <p>© 2026 <span className="text-zinc-600">VYNDRIQ</span>. All rights reserved.</p>
-                    <p>Creatio is a product of VYNDRIQ — built for the creators of tomorrow.</p>
+                    <p>CreatioX is a product of VYNDRIQ — built for the creators of tomorrow.</p>
                 </div>
             </footer>
         </div>

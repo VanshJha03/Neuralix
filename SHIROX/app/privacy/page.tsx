@@ -15,7 +15,7 @@ export default function PrivacyPolicy() {
         <div className="max-w-[900px] mx-auto w-full px-6 md:px-10 flex justify-between items-center">
           <Link href="/" className="text-[1.1rem] tracking-tight text-white flex items-center gap-3 hover:opacity-70 transition-opacity">
             <div className="w-4 h-4 border border-white rounded-full" />
-            Creatio
+            CreatioX
           </Link>
           <span className="text-[0.6rem] text-zinc-600 tracking-[0.3em] uppercase">Privacy Policy</span>
         </div>
@@ -33,8 +33,8 @@ export default function PrivacyPolicy() {
           </p>
           <p className="text-zinc-400 text-[0.9rem] mt-6 leading-relaxed max-w-[640px]">
             This Privacy Policy describes how <strong className="text-white font-normal">VYNDRIQ</strong> ("we", "us", "our") collects, uses, and
-            protects your information when you use <strong className="text-white font-normal">Creatio</strong> — an AI-powered content intelligence
-            platform operated by VYNDRIQ. Your agreement is with VYNDRIQ, not with the Creatio product name.
+            protects your information when you use <strong className="text-white font-normal">CreatioX</strong> — an AI-powered content intelligence
+            platform operated by VYNDRIQ. Your agreement is with VYNDRIQ, not with the CreatioX product name.
           </p>
         </div>
 
@@ -54,7 +54,7 @@ export default function PrivacyPolicy() {
 
           <Section number="02" title="How We Use Your Information">
             <ul className="space-y-3">
-              <Li>To provide, maintain, and improve the Creatio platform.</Li>
+              <Li>To provide, maintain, and improve the CreatioX platform.</Li>
               <Li>To authenticate your identity and manage your subscription tier (Free, PRO, or LTD).</Li>
               <Li>To enforce usage limits and prevent abuse of the platform.</Li>
               <Li>To send transactional emails (e.g. payment confirmations, account alerts). We do not send marketing emails without explicit consent.</Li>
@@ -80,7 +80,7 @@ export default function PrivacyPolicy() {
           </Section>
 
           <Section number="05" title="Cookies & Tracking">
-            <p>Creatio uses essential cookies only — specifically, Supabase session tokens stored in <code className="text-zinc-300 bg-zinc-900 px-1.5 py-0.5 rounded text-[0.8rem]">localStorage</code> and secure HTTP cookies to maintain your authenticated session. We do not use third-party advertising cookies or cross-site tracking.</p>
+            <p>CreatioX uses essential cookies only — specifically, Supabase session tokens stored in <code className="text-zinc-300 bg-zinc-900 px-1.5 py-0.5 rounded text-[0.8rem]">localStorage</code> and secure HTTP cookies to maintain your authenticated session. We do not use third-party advertising cookies or cross-site tracking.</p>
           </Section>
 
           <Section number="06" title="Data Retention">
@@ -101,11 +101,11 @@ export default function PrivacyPolicy() {
           </Section>
 
           <Section number="08" title="Children's Privacy">
-            <p>Creatio is not directed at children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us immediately and we will delete it.</p>
+            <p>CreatioX is not directed at children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us immediately and we will delete it.</p>
           </Section>
 
           <Section number="09" title="Changes to This Policy">
-            <p>VYNDRIQ reserves the right to update this Privacy Policy at any time. Material changes will be communicated via the platform or email. Continued use of Creatio after the effective date constitutes acceptance of the updated policy.</p>
+            <p>VYNDRIQ reserves the right to update this Privacy Policy at any time. Material changes will be communicated via the platform or email. Continued use of CreatioX after the effective date constitutes acceptance of the updated policy.</p>
           </Section>
 
           <Section number="10" title="Contact">
@@ -122,7 +122,7 @@ export default function PrivacyPolicy() {
           <p>© 2026 VYNDRIQ. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/terms" className="hover:text-zinc-400 transition-colors">Terms of Service</Link>
-            <Link href="/" className="hover:text-zinc-400 transition-colors">← Back to Creatio</Link>
+            <Link href="/" className="hover:text-zinc-400 transition-colors">← Back to CreatioX</Link>
           </div>
         </div>
       </main>

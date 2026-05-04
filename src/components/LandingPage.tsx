@@ -36,7 +36,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                 <div className="max-w-[1240px] mx-auto w-full px-10 flex justify-between items-center">
                     <a href="#" className="font-outfit text-[1.3rem] tracking-tight text-white flex items-center gap-3">
                         <div className="w-5 h-5 border border-white rounded-full"></div>
-                        Creatio
+                        CreatioX
                     </a>
                     <div className="hidden md:flex gap-9 text-[0.82rem] tracking-wider text-zinc-400">
                         <a href="#analysis" className="hover:text-white transition-colors">Analysis</a>
@@ -98,7 +98,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                         <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">02. Automated Production</span>
                         <h2 className="font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Content Without Compromise.</h2>
                         <p className="text-zinc-400 text-[1.05rem] leading-relaxed mb-10">Leverage our generative matrix to produce high-fidelity text and visuals that reflect your unique brand identity.</p>
-                        
+
                         <div className="space-y-6">
                             {[
                                 { tag: 'A', title: 'Social Media Content Gen', desc: 'Automated drafting of threads, articles, and long-form scripts tailored to your cognitive style.' },
@@ -129,7 +129,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                         <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">03. Distribution</span>
                         <h2 className="font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Direct Neural Distribution.</h2>
                         <p className="text-zinc-400 text-[1.05rem] leading-relaxed mb-10">Remove the friction between ideation and publication. Our direct sync technology allows for instant deployment across your primary channels.</p>
-                        
+
                         <div className="space-y-6">
                             {[
                                 { tag: '+', title: 'Direct Sync with X', desc: 'Schedule and post threads directly to your profile without leaving the workspace. Full media support included.' },
@@ -169,7 +169,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
             <section id="pricing" className="py-40 px-10 max-w-[1240px] mx-auto">
                 <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block text-center">Investment</span>
                 <h2 className="reveal font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-20 text-center">Scale Your Intelligence.</h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="reveal border border-white/5 p-14 rounded-sm flex flex-col">
                         <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block">Standard</span>
@@ -203,7 +203,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                 <div className="flex flex-col md:flex-row justify-between items-start gap-20 mb-24">
                     <a href="#" className="font-outfit text-[1.3rem] tracking-tight text-white flex items-center gap-3">
                         <div className="w-5 h-5 border border-white rounded-full"></div>
-                        Creatio
+                        CreatioX
                     </a>
                     <div className="flex gap-20 flex-wrap">
                         <div className="min-w-[100px]">
@@ -231,7 +231,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                     </div>
                 </div>
                 <div className="flex justify-between items-center text-[0.7rem] text-zinc-700">
-                    <p>© 2026 Creatio Intelligence Labs. All rights reserved.</p>
+                    <p>© 2026 CreatioX Intelligence Labs. All rights reserved.</p>
                     <p>Built for the creators of tomorrow.</p>
                 </div>
             </footer>

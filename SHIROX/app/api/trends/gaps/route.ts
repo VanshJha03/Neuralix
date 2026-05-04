@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const topicContext = topics ? `Focus on these specific viral topics: ${topics.join(', ')}.` : `Research niches: ${activeLabels}.`;
     
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it',
+      model: 'gemma-4-31b-it',
       contents: `Perform high-speed grounding search for market gaps. ${topicContext}
       Find 3-4 trends. For each, identify the common narrative vs the missing perspective.
       Return ONLY a JSON array. Skip intro and reasoning.`,

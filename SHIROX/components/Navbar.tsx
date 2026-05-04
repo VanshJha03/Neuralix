@@ -40,7 +40,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <nav className="hidden lg:flex items-center justify-between px-10 h-[90px] bg-black border-b border-white/5 z-[60] flex-shrink-0 shadow-[0_10px_50px_rgba(0,0,0,0.9)]">
-      
+
       {/* ── Left: Brand ── */}
       <div
         className="flex items-center gap-4 cursor-pointer group w-[280px]"
@@ -51,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = ({
           <NeuralLogo size={36} />
         </div>
         <div>
-          <h1 className="text-xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+          <h1 className="text-xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</h1>
           <div className="flex items-center gap-2 mt-0.5">
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
             <span className="text-[7px] font-normal uppercase tracking-[0.4em] text-zinc-500">v5.1 System Active</span>
@@ -69,11 +69,10 @@ const Navbar: React.FC<NavbarProps> = ({
               <button
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
-                className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-[10px] font-normal uppercase tracking-[0.15em] transition-all duration-300 ${
-                  isActive
+                className={`relative flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-[10px] font-normal uppercase tracking-[0.15em] transition-all duration-300 ${isActive
                     ? 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.1)]'
                     : 'text-zinc-500 hover:text-white hover:bg-white/5'
-                }`}
+                  }`}
               >
                 <item.icon size={14} strokeWidth={isActive ? 2.5 : 1.8} />
                 <span className="hidden xl:inline">{item.label}</span>
@@ -98,11 +97,10 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-4">
           <button
             onClick={() => setActiveView('search')}
-            className={`p-2 rounded-lg transition-all duration-200 ${
-              activeView === 'search'
+            className={`p-2 rounded-lg transition-all duration-200 ${activeView === 'search'
                 ? 'text-white bg-white/10'
                 : 'text-zinc-500 hover:text-white hover:bg-white/5'
-            }`}
+              }`}
           >
             <Search size={16} />
           </button>

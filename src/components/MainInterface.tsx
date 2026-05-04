@@ -39,7 +39,7 @@ export default function MainInterface({
     const [activeView, setActiveView] = useState<ViewType>('chat');
     const [isTerminalOpen, setIsTerminalOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    
+
     const [userSettings, setUserSettings] = useState<UserSettings>(initialSettings);
     const [interests, setInterests] = useState<Interest[]>(initialInterests);
     const [ideas, setIdeas] = useState<Idea[]>(initialIdeas);
@@ -57,7 +57,7 @@ export default function MainInterface({
 
     // ── Sync pricing visibility ──────────────────────────────────────────────
     useEffect(() => {
-        const hasSeenPricing = localStorage.getItem('Creatiox_pricing_shown');
+        const hasSeenPricing = localStorage.getItem('CreatioXx_pricing_shown');
         if (userSettings.tier === 'Free' && !hasSeenPricing) {
             setShowPricingOnce(true);
         }
@@ -73,7 +73,7 @@ export default function MainInterface({
                     name: user.displayName || user.email?.split('@')[0] || userSettings.name
                 };
                 setUserSettings(updatedSettings);
-                actions.saveUserSettings(updatedSettings).catch(() => {});
+                actions.saveUserSettings(updatedSettings).catch(() => { });
             }
         });
         return unsubscribe;
@@ -82,7 +82,7 @@ export default function MainInterface({
     const handleSignOut = async () => {
         await signOut(auth);
         await fetch('/api/auth/session', { method: 'DELETE' });
-        localStorage.removeItem('Creatiox_pricing_shown');
+        localStorage.removeItem('CreatioXx_pricing_shown');
         window.location.reload();
     };
 
@@ -134,7 +134,7 @@ ${neuralMemories.length > 0 ? neuralMemories.map((m, i) => `${i + 1}. ${m}`).joi
                 <PricingScreen
                     onSelectTier={async (tier) => {
                         await actions.saveUserSettings({ tier: tier as any });
-                        localStorage.setItem('Creatiox_pricing_shown', 'true');
+                        localStorage.setItem('CreatioXx_pricing_shown', 'true');
                         setShowPricingOnce(false);
                     }}
                 />

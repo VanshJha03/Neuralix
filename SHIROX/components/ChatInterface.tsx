@@ -321,7 +321,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         <div className="flex-1 flex flex-col items-center pt-[12vh] p-6 lg:p-12 max-w-2xl mx-auto w-full z-10">
           <div className="relative mb-8 flex flex-col items-center text-center">
             <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
-            <h1 className="text-4xl lg:text-5xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+            <h1 className="text-4xl lg:text-5xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</h1>
             <p className="text-zinc-800 font-normal mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Advanced Intelligence Network v5.0</p>
           </div>
 
@@ -336,8 +336,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 disabled={isLocked}
                 className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-normal tracking-tight disabled:cursor-not-allowed"
               />
-              <button 
-                onClick={handleSend} 
+              <button
+                onClick={handleSend}
                 disabled={isLocked}
                 className={`p-2 ml-4 rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] ${isLoading ? 'bg-zinc-800 text-white scale-110' : 'bg-white text-black hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed'}`}
               >
@@ -346,10 +346,10 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
             </div>
             <div className="mt-8 flex flex-wrap justify-center gap-2 lg:gap-4">
               {['Deep Research', 'Fast', 'Imagine'].map((m) => (
-                <button 
-                  key={m} 
+                <button
+                  key={m}
                   disabled={isLocked}
-                  onClick={() => setMode(m as TaskMode)} 
+                  onClick={() => setMode(m as TaskMode)}
                   className={`px-4 lg:px-6 py-2 rounded-full text-[7px] lg:text-[8px] font-normal uppercase tracking-[0.3em] border transition-all ${mode === m ? 'bg-white text-black border-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'text-zinc-900 border-zinc-900 hover:text-zinc-500'} disabled:opacity-20`}
                 >
                   {m}

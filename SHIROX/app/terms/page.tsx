@@ -15,7 +15,7 @@ export default function TermsOfService() {
         <div className="max-w-[900px] mx-auto w-full px-6 md:px-10 flex justify-between items-center">
           <Link href="/" className="text-[1.1rem] tracking-tight text-white flex items-center gap-3 hover:opacity-70 transition-opacity">
             <div className="w-4 h-4 border border-white rounded-full" />
-            Creatio
+            CreatioX
           </Link>
           <span className="text-[0.6rem] text-zinc-600 tracking-[0.3em] uppercase">Terms of Service</span>
         </div>
@@ -34,8 +34,8 @@ export default function TermsOfService() {
           <p className="text-zinc-400 text-[0.9rem] mt-6 leading-relaxed max-w-[640px]">
             These Terms of Service ("Terms") constitute a legally binding agreement between you ("User", "you") and
             <strong className="text-white font-normal"> VYNDRIQ</strong> ("we", "us", "our"), the company that owns and operates
-            <strong className="text-white font-normal"> Creatio</strong>. By accessing or using Creatio, you agree to be bound by these Terms.
-            Your agreement is with <strong className="text-white font-normal">VYNDRIQ</strong>, not with the Creatio product name.
+            <strong className="text-white font-normal"> CreatioX</strong>. By accessing or using CreatioX, you agree to be bound by these Terms.
+            Your agreement is with <strong className="text-white font-normal">VYNDRIQ</strong>, not with the CreatioX product name.
           </p>
         </div>
 
@@ -43,11 +43,11 @@ export default function TermsOfService() {
         <div className="space-y-16 text-[0.88rem] leading-relaxed text-zinc-400">
 
           <Section number="01" title="Acceptance of Terms">
-            <p>By creating an account, subscribing to a paid plan, or otherwise using Creatio, you confirm that you are at least 13 years of age (or the age of digital consent in your jurisdiction), that you have the authority to enter into this agreement, and that you accept these Terms in full. If you do not agree, you must not use Creatio.</p>
+            <p>By creating an account, subscribing to a paid plan, or otherwise using CreatioX, you confirm that you are at least 13 years of age (or the age of digital consent in your jurisdiction), that you have the authority to enter into this agreement, and that you accept these Terms in full. If you do not agree, you must not use CreatioX.</p>
           </Section>
 
           <Section number="02" title="Description of Service">
-            <p>Creatio is an AI-powered content intelligence platform operated by VYNDRIQ that provides the following core capabilities:</p>
+            <p>CreatioX is an AI-powered content intelligence platform operated by VYNDRIQ that provides the following core capabilities:</p>
             <ul className="mt-4 space-y-3">
               <Li>AI-assisted niche analysis, gap analysis, and trend monitoring.</Li>
               <Li>Automated content generation for social media (threads, posts, scripts).</Li>
@@ -70,13 +70,13 @@ export default function TermsOfService() {
           </Section>
 
           <Section number="04" title="Subscription Plans & Payments">
-            <p>Creatio offers the following subscription tiers, all processed securely via <strong className="text-zinc-300 font-normal">Dodo Payments</strong>:</p>
+            <p>CreatioX offers the following subscription tiers, all processed securely via <strong className="text-zinc-300 font-normal">Dodo Payments</strong>:</p>
             <ul className="mt-4 space-y-4">
               <Li>
                 <strong className="text-zinc-300 font-normal">PRO — $49/month:</strong> Monthly recurring subscription granting access to all PRO-tier features within the stated monthly usage limits. You may cancel at any time; access continues until the end of the current billing period. No refunds are issued for partial months.
               </Li>
               <Li>
-                <strong className="text-zinc-300 font-normal">LTD (Lifetime) — $129 one-time:</strong> A single, non-recurring payment granting permanent access to Creatio at the current feature set and usage limits. This payment is final and <strong className="text-zinc-300 font-normal">non-refundable</strong> except where required by applicable law. VYNDRIQ will maintain LTD access for a minimum of 3 years from the date of purchase.
+                <strong className="text-zinc-300 font-normal">LTD (Lifetime) — $129 one-time:</strong> A single, non-recurring payment granting permanent access to CreatioX at the current feature set and usage limits. This payment is final and <strong className="text-zinc-300 font-normal">non-refundable</strong> except where required by applicable law. VYNDRIQ will maintain LTD access for a minimum of 3 years from the date of purchase.
               </Li>
             </ul>
             <p className="mt-4">VYNDRIQ reserves the right to adjust pricing for new subscribers at any time. Existing subscribers will not have their rates changed mid-billing-period without at least 30 days' notice.</p>
@@ -88,20 +88,20 @@ export default function TermsOfService() {
           </Section>
 
           <Section number="06" title="Acceptable Use">
-            <p>You agree not to use Creatio to:</p>
+            <p>You agree not to use CreatioX to:</p>
             <ul className="mt-4 space-y-3">
               <Li>Generate, distribute, or promote content that is illegal, defamatory, harassing, hateful, or violates third-party intellectual property rights.</Li>
               <Li>Produce spam, coordinated inauthentic behavior, or content designed to manipulate elections or public opinion through deceptive means.</Li>
               <Li>Reverse-engineer, decompile, or attempt to extract source code from the platform.</Li>
               <Li>Circumvent, disable, or interfere with any security or authentication features.</Li>
-              <Li>Resell or sublicense access to Creatio to third parties without written authorization from VYNDRIQ.</Li>
+              <Li>Resell or sublicense access to CreatioX to third parties without written authorization from VYNDRIQ.</Li>
               <Li>Conduct automated scraping or excessive API calls beyond normal usage patterns.</Li>
             </ul>
             <p className="mt-4">VYNDRIQ reserves the right to determine what constitutes a violation of this section in its sole discretion, and may suspend or terminate access immediately without notice for violations.</p>
           </Section>
 
           <Section number="07" title="AI-Generated Content">
-            <p>Content generated by Creatio's AI systems is provided for informational and creative assistance purposes only. VYNDRIQ makes no representations about the accuracy, completeness, or fitness of AI-generated content for any particular purpose.</p>
+            <p>Content generated by CreatioX's AI systems is provided for informational and creative assistance purposes only. VYNDRIQ makes no representations about the accuracy, completeness, or fitness of AI-generated content for any particular purpose.</p>
             <ul className="mt-4 space-y-3">
               <Li>You are solely responsible for reviewing and validating any AI-generated content before publishing or acting on it.</Li>
               <Li>You own the content you create using the platform, subject to the underlying model providers' usage policies (Google Gemini API).</Li>
@@ -114,28 +114,28 @@ export default function TermsOfService() {
           </Section>
 
           <Section number="09" title="Intellectual Property">
-            <p>The Creatio platform, including its design, interface, code, trademarks, and brand identity, is the exclusive property of <strong className="text-zinc-300 font-normal">VYNDRIQ</strong>. Nothing in these Terms grants you any right, title, or interest in VYNDRIQ's intellectual property. The "Creatio" name and all associated marks are owned by VYNDRIQ.</p>
+            <p>The CreatioX platform, including its design, interface, code, trademarks, and brand identity, is the exclusive property of <strong className="text-zinc-300 font-normal">VYNDRIQ</strong>. Nothing in these Terms grants you any right, title, or interest in VYNDRIQ's intellectual property. The "CreatioX" name and all associated marks are owned by VYNDRIQ.</p>
           </Section>
 
           <Section number="10" title="Disclaimer of Warranties">
-            <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CREATIO IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. VYNDRIQ DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS.</p>
+            <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, CreatioX IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. VYNDRIQ DOES NOT WARRANT THAT THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS.</p>
           </Section>
 
           <Section number="11" title="Limitation of Liability">
-            <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, VYNDRIQ SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES — INCLUDING LOSS OF PROFITS, DATA, BUSINESS, OR GOODWILL — ARISING FROM YOUR USE OF OR INABILITY TO USE CREATIO, EVEN IF VYNDRIQ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+            <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, VYNDRIQ SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES — INCLUDING LOSS OF PROFITS, DATA, BUSINESS, OR GOODWILL — ARISING FROM YOUR USE OF OR INABILITY TO USE CreatioX, EVEN IF VYNDRIQ HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
             <p className="mt-4">IN NO EVENT SHALL VYNDRIQ'S TOTAL LIABILITY TO YOU FOR ALL CLAIMS EXCEED THE GREATER OF (A) THE AMOUNT YOU PAID VYNDRIQ IN THE 12 MONTHS PRIOR TO THE CLAIM OR (B) USD $50.</p>
           </Section>
 
           <Section number="12" title="Governing Law & Disputes">
-            <p>These Terms shall be governed by and construed in accordance with applicable law. Any disputes arising from or relating to these Terms or your use of Creatio shall first be attempted to be resolved informally by contacting VYNDRIQ. If informal resolution fails, disputes shall be subject to binding arbitration on an individual basis. You waive any right to participate in class-action proceedings.</p>
+            <p>These Terms shall be governed by and construed in accordance with applicable law. Any disputes arising from or relating to these Terms or your use of CreatioX shall first be attempted to be resolved informally by contacting VYNDRIQ. If informal resolution fails, disputes shall be subject to binding arbitration on an individual basis. You waive any right to participate in class-action proceedings.</p>
           </Section>
 
           <Section number="13" title="Modifications to Terms">
-            <p>VYNDRIQ reserves the right to modify these Terms at any time. We will provide at least 14 days' notice of material changes via the platform or email. Continued use of Creatio after the effective date of modified Terms constitutes acceptance. If you disagree with updated Terms, your remedy is to discontinue use and cancel your subscription.</p>
+            <p>VYNDRIQ reserves the right to modify these Terms at any time. We will provide at least 14 days' notice of material changes via the platform or email. Continued use of CreatioX after the effective date of modified Terms constitutes acceptance. If you disagree with updated Terms, your remedy is to discontinue use and cancel your subscription.</p>
           </Section>
 
           <Section number="14" title="Termination">
-            <p>Either party may terminate this agreement at any time. You may cancel your subscription through your account settings. VYNDRIQ may suspend or terminate your access immediately for cause (e.g. violation of Section 06) or with 30 days' notice without cause. Upon termination, your right to use Creatio ceases immediately.</p>
+            <p>Either party may terminate this agreement at any time. You may cancel your subscription through your account settings. VYNDRIQ may suspend or terminate your access immediately for cause (e.g. violation of Section 06) or with 30 days' notice without cause. Upon termination, your right to use CreatioX ceases immediately.</p>
           </Section>
 
           <Section number="15" title="Contact">
@@ -152,7 +152,7 @@ export default function TermsOfService() {
           <p>© 2026 VYNDRIQ. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-zinc-400 transition-colors">Privacy Policy</Link>
-            <Link href="/" className="hover:text-zinc-400 transition-colors">← Back to Creatio</Link>
+            <Link href="/" className="hover:text-zinc-400 transition-colors">← Back to CreatioX</Link>
           </div>
         </div>
       </main>

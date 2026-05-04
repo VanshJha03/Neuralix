@@ -1,6 +1,6 @@
-# 🛸 Creatio — Neural Intelligence Matrix
+# 🛸 CreatioX — Neural Intelligence Matrix
 
-Creatio is a high-performance content intelligence platform designed for deep research, viral trend analysis, and automated content generation. This repository contains the complete stack, from the high-fidelity landing page to the secure, AI-powered backend.
+CreatioX is a high-performance content intelligence platform designed for deep research, viral trend analysis, and automated content generation. This repository contains the complete stack, from the high-fidelity landing page to the secure, AI-powered backend.
 
 ## 🏗️ Architecture Overview
 
@@ -53,7 +53,7 @@ PORT=2005
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 GEMINI_API_KEY=your_gemini_key
-ALLOWED_ORIGIN=http://creatiox.vercel.app
+ALLOWED_ORIGIN=http://CreatioXx.vercel.app
 ```
 
 ### 2. Frontend Configuration
@@ -102,4 +102,4 @@ The system supports 10 distinct persona styles. The user can select up to two, w
 
 ---
 
-**Built by Creatio · Dedicated to the Creators of the Future.**
+**Built by CreatioX · Dedicated to the Creators of the Future.**

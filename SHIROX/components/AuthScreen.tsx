@@ -28,7 +28,7 @@ const AuthScreen: React.FC = () => {
                     options: { data: { full_name: name } },
                 });
                 if (error) throw error;
-                
+
                 // If Supabase "Confirm Email" is OFF, we can sign in immediately
                 if (data.user) {
                     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
@@ -75,7 +75,7 @@ const AuthScreen: React.FC = () => {
                 <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="w-5 h-5 border border-white rounded-full" />
-                        <span className="text-lg font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+                        <span className="text-lg font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</span>
                     </div>
                     <p className="text-zinc-700 text-[10px] uppercase tracking-[0.4em]">Advanced Intelligence Network v5.0</p>
                 </div>
@@ -128,7 +128,7 @@ const AuthScreen: React.FC = () => {
                     </div>
                 </div>
 
-                <p className="relative z-10 text-zinc-800 text-[10px] uppercase tracking-[0.3em]">© 2026 ArsX · Creatio</p>
+                <p className="relative z-10 text-zinc-800 text-[10px] uppercase tracking-[0.3em]">© 2026 ArsX · CreatioX</p>
             </div>
 
             {/* ── Right panel — auth form ── */}
@@ -138,7 +138,7 @@ const AuthScreen: React.FC = () => {
                 {/* Mobile logo */}
                 <div className="lg:hidden flex items-center gap-2 mb-12">
                     <div className="w-4 h-4 border border-white rounded-full" />
-                    <span className="text-base font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+                    <span className="text-base font-normal tracking-tighter" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</span>
                 </div>
 
                 <div className="w-full max-w-sm relative z-10">

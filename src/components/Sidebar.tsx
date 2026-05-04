@@ -80,7 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <NeuralLogo size={42} />
           {!isCollapsed && (
             <div>
-              <h1 className="text-2xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</h1>
+              <h1 className="text-2xl font-normal tracking-tighter text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</h1>
               <p className="text-[7px] font-normal uppercase tracking-[0.5em] text-zinc-500">Neural Intelligence</p>
             </div>
           )}

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { auth } from '../lib/firebase';
-import { 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signInAnonymously, 
-  updateProfile,
-  signInWithPopup,
-  GoogleAuthProvider
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    signInAnonymously,
+    updateProfile,
+    signInWithPopup,
+    GoogleAuthProvider
 } from 'firebase/auth';
 import { Check, Star, Rocket, ShieldCheck, Crown, Zap } from 'lucide-react';
 import NeuralLogo from './NeuralLogo';
@@ -57,7 +57,7 @@ const AuthScreen: React.FC = () => {
             } else {
                 userCredential = await signInWithEmailAndPassword(auth, email, password);
             }
-            
+
             const idToken = await userCredential.user.getIdToken();
             await fetch('/api/auth/session', {
                 method: 'POST',
@@ -95,7 +95,7 @@ const AuthScreen: React.FC = () => {
             <div className="fixed inset-0 pointer-events-none">
                 <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-white/5 rounded-full blur-[120px] animate-pulse" />
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-white/5 rounded-full blur-[100px]" />
-                <div 
+                <div
                     className="absolute inset-0 opacity-[0.03]"
                     style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)', backgroundSize: '60px 60px' }}
                 />
@@ -105,18 +105,18 @@ const AuthScreen: React.FC = () => {
             <header className="relative z-10 pt-20 pb-12 lg:pt-32 lg:pb-24 px-6 text-center">
                 <NeuralLogo size={80} />
                 <h1 className="text-6xl lg:text-8xl font-normal tracking-tighter mt-12 mb-6 leading-[0.9]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                    CREATIOX
+                    CreatioXX
                 </h1>
                 <p className="text-zinc-600 uppercase tracking-[0.8em] text-[10px] lg:text-[12px] font-normal mb-12">
                     Neural Intelligence Matrix v5.0
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                   <button onClick={() => document.getElementById('auth')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-white text-black font-normal uppercase tracking-widest text-[10px] rounded-2xl hover:bg-zinc-200 transition-all active:scale-95 shadow-[0_0_50px_rgba(255,255,255,0.1)] font-orbitron">
-                      Connect Neural Link
-                   </button>
-                   <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-zinc-950 border border-zinc-900 text-zinc-500 font-normal uppercase tracking-widest text-[10px] rounded-2xl hover:border-zinc-700 hover:text-white transition-all active:scale-95 font-orbitron">
-                      View Trajectories
-                   </button>
+                    <button onClick={() => document.getElementById('auth')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-white text-black font-normal uppercase tracking-widest text-[10px] rounded-2xl hover:bg-zinc-200 transition-all active:scale-95 shadow-[0_0_50px_rgba(255,255,255,0.1)] font-orbitron">
+                        Connect Neural Link
+                    </button>
+                    <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-zinc-950 border border-zinc-900 text-zinc-500 font-normal uppercase tracking-widest text-[10px] rounded-2xl hover:border-zinc-700 hover:text-white transition-all active:scale-95 font-orbitron">
+                        View Trajectories
+                    </button>
                 </div>
             </header>
 
@@ -153,79 +153,79 @@ const AuthScreen: React.FC = () => {
                             </div>
 
                             <form onSubmit={handleEmailAuth} className="space-y-4">
-                            {mode === 'signup' && (
+                                {mode === 'signup' && (
+                                    <input
+                                        type="text"
+                                        placeholder="Neural Alias"
+                                        value={name}
+                                        onChange={e => setName(e.target.value)}
+                                        required
+                                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
+                                    />
+                                )}
                                 <input
-                                    type="text"
-                                    placeholder="Neural Alias"
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
+                                    type="email"
+                                    placeholder="Synaptic Email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
                                     required
                                     className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
                                 />
-                            )}
-                            <input
-                                type="email"
-                                placeholder="Synaptic Email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                required
-                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
-                            />
-                            <input
-                                type="password"
-                                placeholder="Encrypted Key"
-                                value={password}
-                                onChange={e => setPassword(e.target.value)}
-                                required
-                                minLength={6}
-                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
-                            />
+                                <input
+                                    type="password"
+                                    placeholder="Encrypted Key"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    required
+                                    minLength={6}
+                                    className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-white text-sm placeholder:text-zinc-700 focus:outline-none focus:border-white/20 transition-all font-normal"
+                                />
 
-                            {error && (
-                                <div className="p-4 bg-red-950/20 border border-red-900/30 rounded-2xl text-red-500 text-[10px] font-normal uppercase tracking-widest leading-loose">
-                                    {error}
-                                </div>
-                            )}
-                            {successMsg && (
-                                <div className="p-4 bg-green-950/20 border border-green-900/30 rounded-2xl text-green-400 text-[10px] font-normal uppercase tracking-widest leading-loose">
-                                    {successMsg}
-                                </div>
-                            )}
+                                {error && (
+                                    <div className="p-4 bg-red-950/20 border border-red-900/30 rounded-2xl text-red-500 text-[10px] font-normal uppercase tracking-widest leading-loose">
+                                        {error}
+                                    </div>
+                                )}
+                                {successMsg && (
+                                    <div className="p-4 bg-green-950/20 border border-green-900/30 rounded-2xl text-green-400 text-[10px] font-normal uppercase tracking-widest leading-loose">
+                                        {successMsg}
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full py-5 bg-white text-black font-normal uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:bg-zinc-200 transition-all active:scale-[0.98] disabled:opacity-50 mt-4 shadow-xl"
+                                >
+                                    {loading ? 'SYNCHRONIZING...' : mode === 'login' ? 'IDENTIFY INTERFACE' : 'CREATE NEURAL NODE'}
+                                </button>
+                            </form>
+
+                            <div className="mt-8 flex items-center gap-4">
+                                <div className="flex-1 h-px bg-zinc-900" />
+                                <span className="text-[9px] font-normal uppercase text-zinc-800">or</span>
+                                <div className="flex-1 h-px bg-zinc-900" />
+                            </div>
 
                             <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full py-5 bg-white text-black font-normal uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:bg-zinc-200 transition-all active:scale-[0.98] disabled:opacity-50 mt-4 shadow-xl"
+                                onClick={handleGuestLogin}
+                                className="w-full py-4 mt-6 bg-zinc-950 border border-zinc-900 text-zinc-500 font-normal text-[10px] uppercase tracking-widest rounded-2xl hover:text-white transition-all"
                             >
-                                {loading ? 'SYNCHRONIZING...' : mode === 'login' ? 'IDENTIFY INTERFACE' : 'CREATE NEURAL NODE'}
+                                Guest Mode (Tier: Free)
                             </button>
-                        </form>
 
-                        <div className="mt-8 flex items-center gap-4">
-                            <div className="flex-1 h-px bg-zinc-900" />
-                            <span className="text-[9px] font-normal uppercase text-zinc-800">or</span>
-                            <div className="flex-1 h-px bg-zinc-900" />
+                            <p className="text-center text-zinc-700 text-[10px] font-normal uppercase tracking-widest mt-8">
+                                {mode === 'login' ? "New Operator? " : 'Known identity? '}
+                                <button
+                                    onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); clearState(); }}
+                                    className="text-white hover:underline ml-1"
+                                >
+                                    {mode === 'login' ? 'Join Evolution' : 'Access Link'}
+                                </button>
+                            </p>
                         </div>
-
-                        <button
-                            onClick={handleGuestLogin}
-                            className="w-full py-4 mt-6 bg-zinc-950 border border-zinc-900 text-zinc-500 font-normal text-[10px] uppercase tracking-widest rounded-2xl hover:text-white transition-all"
-                        >
-                            Guest Mode (Tier: Free)
-                        </button>
-
-                        <p className="text-center text-zinc-700 text-[10px] font-normal uppercase tracking-widest mt-8">
-                            {mode === 'login' ? "New Operator? " : 'Known identity? '}
-                            <button
-                                onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); clearState(); }}
-                                className="text-white hover:underline ml-1"
-                            >
-                                {mode === 'login' ? 'Join Evolution' : 'Access Link'}
-                            </button>
-                        </p>
                     </div>
                 </div>
-            </div>
             </section>
 
             {/* Pricing Section */}
@@ -254,7 +254,7 @@ const AuthScreen: React.FC = () => {
                                 <ul className="space-y-4 mb-10">
                                     {t.features.map(f => (
                                         <li key={f} className="flex gap-3 items-start text-[11px] text-zinc-500 font-normal uppercase tracking-tight">
-                                           <Check size={14} className="mt-1 flex-shrink-0" /> {f}
+                                            <Check size={14} className="mt-1 flex-shrink-0" /> {f}
                                         </li>
                                     ))}
                                 </ul>
@@ -266,7 +266,7 @@ const AuthScreen: React.FC = () => {
             </section>
 
             <footer className="relative z-10 py-12 text-center border-t border-zinc-900 mt-20">
-                <p className="text-zinc-800 text-[10px] font-normal uppercase tracking-[0.5em]">© 2026 ArsX · Creatiox · All synaptic rights reserved.</p>
+                <p className="text-zinc-800 text-[10px] font-normal uppercase tracking-[0.5em]">© 2026 ArsX · CreatioXx · All synaptic rights reserved.</p>
             </footer>
         </div>
     );

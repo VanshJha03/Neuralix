@@ -99,6 +99,11 @@ export const runGapAnalysis = async (interests: Interest[], topics?: string[]): 
     return apiFetch('/api/trends/gaps', { method: 'POST', body: JSON.stringify({ activeLabels, topics }) });
 };
 
+export const runParallelResearch = async (interests: Interest[]): Promise<NicheAnalyticsData> => {
+    const activeLabels = interests.filter(i => i.active).map(i => i.label).join(', ');
+    return apiFetch('/api/trends/research', { method: 'POST', body: JSON.stringify({ activeLabels }) });
+};
+
 export const fetchLatestTrends = async (interests: Interest[]) => {
     const activeLabels = interests.filter(i => i.active).map(i => i.label).join(', ');
     if (!activeLabels) return { text: '', sources: [] };

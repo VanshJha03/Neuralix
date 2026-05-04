@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     const styles: string[] = userSettings?.styles || [];
     const finalSI = styles.length > 0 ? `${systemInstruction}\n\nSTYLE: ${styles.join(' and ')}` : systemInstruction;
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it', contents: prompt,
+      model: 'gemma-4-31b-it', contents: prompt,
       config: { systemInstruction: finalSI, temperature: 0.8, tools: [{ googleSearch: {} }] },
     });
     await incrementUsage(auth.sb, auth.userId, 'content_count');

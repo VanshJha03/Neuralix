@@ -283,14 +283,14 @@ const InterestsManager: React.FC<InterestsManagerProps> = ({ interests, setInter
             <Search size={28} />
           </div>
           <h3 className="text-zinc-200 font-normal mb-4 uppercase text-[11px] lg:text-[12px] tracking-[0.2em]">Contextual Grounding</h3>
-          <p className="leading-relaxed text-zinc-500 text-sm lg:text-base">Markers guide ArsCreatio's deep-web crawlers. When active, research queries prioritize current market gaps and high-fidelity technical breakthroughs specifically in your interest clusters.</p>
+          <p className="leading-relaxed text-zinc-500 text-sm lg:text-base">Markers guide ArsCreatioX's deep-web crawlers. When active, research queries prioritize current market gaps and high-fidelity technical breakthroughs specifically in your interest clusters.</p>
         </div>
         <div className="p-8 lg:p-10 bg-zinc-950/50 border border-zinc-900 rounded-[2rem] lg:rounded-[3rem] hover:border-white/20 transition-all group">
           <div className="w-14 lg:w-16 h-14 lg:h-16 bg-white/5 rounded-[1.2rem] lg:rounded-[1.5rem] flex items-center justify-center text-white mb-6 lg:mb-8 group-hover:-rotate-12 transition-transform">
             <Zap size={28} />
           </div>
           <h3 className="text-zinc-200 font-normal mb-4 uppercase text-[11px] lg:text-[12px] tracking-[0.2em]">Competitive Edge</h3>
-          <p className="leading-relaxed text-zinc-500 text-sm lg:text-base">The Niche Radar identifies "Viral Hooks" from top competitors. ArsCreatio synthesizes these into your Marketing Studio, allowing you to adapt successful formats to your unique CognoV perspective.</p>
+          <p className="leading-relaxed text-zinc-500 text-sm lg:text-base">The Niche Radar identifies "Viral Hooks" from top competitors. ArsCreatioX synthesizes these into your Marketing Studio, allowing you to adapt successful formats to your unique CognoV perspective.</p>
         </div>
       </div>
     </div>

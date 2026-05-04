@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import '../index.css';
 
 export const metadata: Metadata = {
-  title: 'Creatio — Neural Workspace',
+  title: 'CreatioX — Neural Workspace',
   description: 'AI-powered content intelligence matrix',
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>",

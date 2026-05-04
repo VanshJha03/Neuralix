@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   const { topics } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it',
+      model: 'gemma-4-31b-it',
       contents: `Provide deep market intelligence for these specific viral topics: ${topics.join(', ')}. 
       Assess their velocity and why they are trending.
       Return ONLY a JSON array. Skip intro and reasoning.`,

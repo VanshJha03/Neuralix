@@ -55,7 +55,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </div>
         <div>
           <h1 className="text-4xl font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Config</h1>
-          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.4em]">Calibrate ArsCreatio Consciousness</p>
+          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.4em]">Calibrate ArsCreatioX Consciousness</p>
 
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-lg">
             <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-white animate-pulse' : 'bg-zinc-700'}`} />
@@ -119,12 +119,12 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
                 <div>
                   <h4 className="text-[10px] font-normal text-white uppercase tracking-widest mb-2 font-normal">Trajectory Support</h4>
                   <p className="text-zinc-500 text-[10px] font-normal leading-relaxed">
-                    Access to premium trajectories sustains the neural matrix development. 
+                    Access to premium trajectories sustains the neural matrix development.
                   </p>
                 </div>
                 <div className="h-px bg-zinc-900 w-full" />
                 <div>
-                  <h4 className="text-[10px] font-normal text-white uppercase tracking-widest mb-2 font-normal">Creatio Protocol</h4>
+                  <h4 className="text-[10px] font-normal text-white uppercase tracking-widest mb-2 font-normal">CreatioX Protocol</h4>
                   <p className="text-zinc-500 text-[10px] font-normal leading-relaxed">
                     Empowering creators with decentralized intelligence. Report issues to the matrix core for optimization.
                   </p>
@@ -328,7 +328,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
             <Shield size={18} className="text-zinc-600" />
             <h2 className="text-[10px] font-normal uppercase tracking-[0.3em] text-zinc-600">Neural Data Integrity</h2>
           </div>
-          <p className="text-xs text-zinc-600 mb-6 font-normal">Your data is stored in the local ArsCreatio SQLite database. Resetting will wipe all persistent memory and identity.</p>
+          <p className="text-xs text-zinc-600 mb-6 font-normal">Your data is stored in the local ArsCreatioX SQLite database. Resetting will wipe all persistent memory and identity.</p>
           <button
             onClick={() => {
               if (confirm("Factory reset all neural data? This cannot be undone.")) {

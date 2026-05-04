@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   const { activeLabels } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it',
+      model: 'gemma-4-31b-it',
       contents: `Perform high-speed grounding search for niches: ${activeLabels}. 
       1. Find 4 hottest viral topics/themes from the last 7 days.
       2. Find top 4 creators currently dominating these niches on YT, X, or IG.

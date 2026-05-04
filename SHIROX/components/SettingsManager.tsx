@@ -55,7 +55,7 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
         </div>
         <div>
           <h1 className="text-4xl font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Neural Config</h1>
-          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.4em]">Calibrate ArsCreatio Consciousness</p>
+          <p className="text-zinc-600 text-[10px] font-normal uppercase tracking-[0.4em]">Calibrate ArsCreatioX Consciousness</p>
 
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-zinc-900 border border-zinc-800 rounded-lg">
             <div className={`w-1.5 h-1.5 rounded-full ${userSettings.email ? 'bg-white animate-pulse' : 'bg-zinc-700'}`} />

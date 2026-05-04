@@ -12,19 +12,19 @@ body {
 
 /* Next.js 15 App Router renders children directly inside body — no wrapper div */
 
-/* ArsCreatio Design System */
+/* ArsCreatioX Design System */
 
 :root {
-    --ArsCreatio-bg: #000000;
-    --ArsCreatio-text: #ffffff;
-    --ArsCreatio-border: rgba(255, 255, 255, 0.08);
-    --ArsCreatio-glass: rgba(255, 255, 255, 0.03);
-    --ArsCreatio-accent: #a855f7;
+    --ArsCreatioX-bg: #000000;
+    --ArsCreatioX-text: #ffffff;
+    --ArsCreatioX-border: rgba(255, 255, 255, 0.08);
+    --ArsCreatioX-glass: rgba(255, 255, 255, 0.03);
+    --ArsCreatioX-accent: #a855f7;
 }
 
 body {
-    background-color: var(--ArsCreatio-bg);
-    color: var(--ArsCreatio-text);
+    background-color: var(--ArsCreatioX-bg);
+    color: var(--ArsCreatioX-text);
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -37,17 +37,17 @@ body {
 
 /* Premium Glassmorphism Utilities */
 .glass-effect {
-    background: var(--ArsCreatio-glass);
+    background: var(--ArsCreatioX-glass);
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
-    border: 1px solid var(--ArsCreatio-border);
+    border: 1px solid var(--ArsCreatioX-border);
 }
 
 .glass-heavy {
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(60px);
     -webkit-backdrop-filter: blur(60px);
-    border: 1px solid var(--ArsCreatio-border);
+    border: 1px solid var(--ArsCreatioX-border);
 }
 
 .neural-glow {
@@ -55,7 +55,7 @@ body {
 }
 
 .synaptic-border {
-    border: 1px solid var(--ArsCreatio-border);
+    border: 1px solid var(--ArsCreatioX-border);
 }
 
 /* Scroll Reveal Classes */

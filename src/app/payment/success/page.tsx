@@ -56,7 +56,7 @@ export default function PaymentSuccessPage() {
                 className="text-3xl font-normal tracking-tighter text-white font-normal"
                 style={{ fontFamily: "'Orbitron', sans-serif" }}
             >
-                Creatio
+                CreatioX
             </div>
 
             {status === 'checking' && (

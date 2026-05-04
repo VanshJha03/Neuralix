@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   if (isImageRequest || mode === 'Imagine') {
     try {
       const imgRes = await ai.models.generateContent({
-        model: 'gemma-4-26b-a4b-it',
+        model: 'gemma-4-31b-it',
         contents: { parts: [{ text: `Generate a high-quality futuristic marketing visual for: ${prompt}. Dark tech aesthetic, glowing red accents. No text in image.` }] },
         config: { responseModalities: ['IMAGE', 'TEXT'] },
       });
@@ -41,8 +41,9 @@ export async function POST(req: NextRequest) {
   const fullSystemContext = `${userSettings?.customSystemPrompt || origSI}${styleOverride}`;
 
   // Default: gemma-3-1b-it for chat (fast, conversational)
-  // Deep Research: gemma-4-26b-a4b-it with Google Search (powerful, grounded)
-  let modelName = 'gemma-3-1b-it';
+  // Default: gemma-4-31b-it for chat (fast, conversational)
+  // Deep Research: gemma-4-31b-it with Google Search (powerful, grounded)
+  let modelName = 'gemma-4-31b-it';
   const config: Record<string, unknown> = {
     temperature: 0.8,
     tools: [{ functionDeclarations: [
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
     ]}],
   };
   if (mode === 'Deep Research') {
-    modelName = 'gemma-4-26b-a4b-it';
+    modelName = 'gemma-4-31b-it';
     config.tools = [{ googleSearch: {} }];
   }
 

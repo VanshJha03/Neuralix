@@ -28,7 +28,7 @@ const NeuralLoader: React.FC = () => (
       className="text-4xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-800 bg-clip-text text-transparent font-normal"
       style={{ fontFamily: "'Orbitron', sans-serif" }}
     >
-      Creatio
+      CreatioX
     </div>
     <div className="flex items-center gap-2">
       <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -77,9 +77,9 @@ const App: React.FC = () => {
 
   // Load from localStorage on client only
   useEffect(() => {
-    const savedIdeas = localStorage.getItem('Creatio_ideas');
+    const savedIdeas = localStorage.getItem('CreatioX_ideas');
     if (savedIdeas) setIdeas(JSON.parse(savedIdeas));
-    const savedMessages = localStorage.getItem('Creatio_messages');
+    const savedMessages = localStorage.getItem('CreatioX_messages');
     if (savedMessages) setMessages(JSON.parse(savedMessages));
   }, []);
 
@@ -156,9 +156,9 @@ const App: React.FC = () => {
             ...settings,
           }));
           // If newly logged in or just testing, show pricing
-          if (!localStorage.getItem('Creatio_pricing_shown')) {
+          if (!localStorage.getItem('CreatioX_pricing_shown')) {
             setShowPricingOnce(true);
-            localStorage.setItem('Creatio_pricing_shown', 'true');
+            localStorage.setItem('CreatioX_pricing_shown', 'true');
           }
         } else if (session) {
           const initialSettings: UserSettings = {
@@ -222,19 +222,19 @@ const App: React.FC = () => {
   useEffect(() => {
     // We wait until userSettings.tier is no longer undefined (meaning sync finished)
     if (session && userSettings.tier !== undefined) {
-      const pendingTier = localStorage.getItem('Creatio_pending_checkout_tier');
-      
+      const pendingTier = localStorage.getItem('CreatioX_pending_checkout_tier');
+
       // Only trigger if they are currently Free or null (no active subscription)
       const isFree = !userSettings.tier || userSettings.tier === 'Free';
-      
+
       if (pendingTier && isFree) {
         console.log(`Auto-checkout: Triggering for pending tier "${pendingTier}"`);
-        localStorage.removeItem('Creatio_pending_checkout_tier');
+        localStorage.removeItem('CreatioX_pending_checkout_tier');
         handleSelectTier(pendingTier);
       } else if (pendingTier) {
         // They already have a tier, clear the pending one
         console.log("Auto-checkout: User already has a tier, clearing pending checkout");
-        localStorage.removeItem('Creatio_pending_checkout_tier');
+        localStorage.removeItem('CreatioX_pending_checkout_tier');
       }
     }
   }, [session, userSettings.tier]);
@@ -242,7 +242,7 @@ const App: React.FC = () => {
   // ── Persist Interests ──────────────────────────────────────────────────────
   useEffect(() => {
     if (interests.length === 0) return;
-    localStorage.setItem('Creatio_interests', JSON.stringify(interests));
+    localStorage.setItem('CreatioX_interests', JSON.stringify(interests));
     saveInterests(interests).catch(() => { });
   }, [interests]);
 
@@ -259,13 +259,13 @@ const App: React.FC = () => {
 
   // ── Persist Ideas ──────────────────────────────────────────────────────────
   useEffect(() => {
-    localStorage.setItem('Creatio_ideas', JSON.stringify(ideas));
+    localStorage.setItem('CreatioX_ideas', JSON.stringify(ideas));
     saveIdeas(ideas).catch(() => { });
   }, [ideas]);
 
   // ── Persist Messages ───────────────────────────────────────────────────────
   useEffect(() => {
-    localStorage.setItem('Creatio_messages', JSON.stringify(messages));
+    localStorage.setItem('CreatioX_messages', JSON.stringify(messages));
     saveArchive(messages).catch(() => { });
   }, [messages]);
 
@@ -281,13 +281,13 @@ const App: React.FC = () => {
 
   // ── Handlers ──────────────────────────────────────────────────────────────
   const handleClearMemory = () => {
-    if (confirm('Permanently wipe Creatio AI session?')) setMessages([]);
+    if (confirm('Permanently wipe CreatioX AI session?')) setMessages([]);
   };
 
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
-      localStorage.removeItem('Creatio_pricing_shown');
+      localStorage.removeItem('CreatioX_pricing_shown');
       window.location.reload();
     } catch (e) {
       console.error(e);
@@ -353,11 +353,11 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
 
   return (
     <div className="flex flex-col h-dvh w-full bg-black text-white overflow-hidden">
-      <Navbar 
-        activeView={activeView} 
-        setActiveView={setActiveView} 
-        userSettings={userSettings} 
-        onSignOut={handleSignOut} 
+      <Navbar
+        activeView={activeView}
+        setActiveView={setActiveView}
+        userSettings={userSettings}
+        onSignOut={handleSignOut}
         isLocked={isLocked}
       />
 
@@ -384,7 +384,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
               </button>
-              <span className="text-sm font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>Creatio</span>
+              <span className="text-sm font-normal tracking-tighter uppercase font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</span>
             </div>
             <div className="w-8 h-8 rounded-full flex-shrink-0 border border-zinc-800" style={{ background: userSettings.avatarColor }} />
           </div>

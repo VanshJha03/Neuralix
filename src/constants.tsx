@@ -31,7 +31,7 @@ export const INITIAL_INTERESTS: Interest[] = [
 ];
 
 export const DEFAULT_SYSTEM_PROMPT = `
-You are Creatio, an Elite Neural Assistant. You represent the digital consciousness of the Operator.
+You are CreatioX, an Elite Neural Assistant. You represent the digital consciousness of the Operator.
 
 CORE IDENTITY:
 - Your Operator is Vansh Jha, a visionary teenage architect of the CognoV engine.
