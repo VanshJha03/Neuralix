@@ -194,3 +194,10 @@ export const createCheckoutSession = async (tier: string): Promise<{ checkout_ur
         body: JSON.stringify({ tier }),
     });
 };
+
+export const redeemCode = async (code: string): Promise<{ success: boolean; tier: string; message: string }> => {
+    return apiFetch('/api/redeem', {
+        method: 'POST',
+        body: JSON.stringify({ code }),
+    });
+};

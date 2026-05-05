@@ -34,16 +34,55 @@ interface PricingScreenProps {
 }
 
 const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
+    const [isRedeeming, setIsRedeeming] = useState(false);
+    const [redeemSuccess, setRedeemSuccess] = useState<string | null>(null);
     const [loading, setLoading] = useState<string | null>(null);
-    const [coupon, setCoupon] = useState('');
     const [isSecretRevealed, setIsSecretRevealed] = useState(false);
+    const [coupon, setCoupon] = useState('');
 
-    const handleCouponCheck = (val: string) => {
-        setCoupon(val);
-        // Verify WAVE18 coupon code - case insensitive, trim whitespace
-        const isValidCoupon = val.trim().toUpperCase() === 'WAVE18';
-        if (isValidCoupon) {
-            setIsSecretRevealed(true);
+    const handleRedeem = async (val: string) => {
+        if (!val) return;
+        setIsRedeeming(true);
+        try {
+            // 1. Verify
+            const res = await fetch('/api/redeem/verify', {
+                method: 'POST',
+                body: JSON.stringify({ code: val })
+            });
+            const verifyData = await res.json();
+            
+            if (verifyData.valid) {
+                // 2. Apply (since user is already logged in on this screen)
+                const { getAuthToken } = await import('../lib/supabase');
+                const token = await getAuthToken();
+                const redeemRes = await fetch('/api/redeem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ code: val })
+                });
+                const redeemData = await redeemRes.json();
+                if (redeemData.success) {
+                    setRedeemSuccess(`Successfully redeemed ${redeemData.tier} access! Refreshing...`);
+                    setTimeout(() => window.location.reload(), 2000);
+                } else {
+                    alert(redeemData.error || 'Redemption failed');
+                }
+            } else {
+                // Fallback for the secret WAVE18 logic which reveals tiers
+                if (val.trim().toUpperCase() === 'WAVE18') {
+                    setIsSecretRevealed(true);
+                } else {
+                    alert(verifyData.error || 'Invalid code');
+                }
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Verification failed');
+        } finally {
+            setIsRedeeming(false);
         }
     };
 
@@ -65,45 +104,44 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
                         Activate Professional Plan
                     </h2>
                     <p className="text-zinc-600 text-[11px] uppercase tracking-[0.4em] font-normal mt-3">
-                        {isSecretRevealed ? 'Secret Tiers Unlocked' : 'A subscription is required to access CreatioX'}
+                        {redeemSuccess || (isSecretRevealed ? 'Secret Tiers Unlocked' : 'A subscription is required to access CreatioX')}
                     </p>
                 </div>
 
                 {/* Coupon Input - High Visibility */}
-                <div className="mb-12 w-full max-w-sm relative group">
-                    <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl group-focus-within:bg-white/10 transition-all"></div>
-                    <div className={`relative bg-zinc-950 border rounded-2xl py-1.5 flex items-center transition-all ${isSecretRevealed ? 'border-green-700 bg-green-950/20' : 'border-zinc-800 group-focus-within:border-zinc-700'}`}>
-                        <div className={`pl-5 transition-colors ${isSecretRevealed ? 'text-green-500' : 'text-zinc-700 group-focus-within:text-white'}`}>
-                            <Ticket size={16} />
+                {!redeemSuccess && (
+                    <div className="mb-12 w-full max-w-sm relative group">
+                        <div className="absolute inset-0 bg-white/5 rounded-2xl blur-xl group-focus-within:bg-white/10 transition-all"></div>
+                        <div className={`relative bg-zinc-950 border rounded-2xl py-1.5 flex items-center transition-all ${isSecretRevealed ? 'border-green-700 bg-green-950/20' : 'border-zinc-800 group-focus-within:border-zinc-700'}`}>
+                            <div className={`pl-5 transition-colors ${isSecretRevealed ? 'text-green-500' : 'text-zinc-700 group-focus-within:text-white'}`}>
+                                <Ticket size={16} />
+                            </div>
+                            {!isSecretRevealed ? (
+                                <>
+                                    <input
+                                        type="text"
+                                        value={coupon}
+                                        onChange={(e) => setCoupon(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleRedeem(coupon)}
+                                        placeholder="REDEEM CODE OR COUPON?"
+                                        className="w-full bg-transparent border-none py-3 pl-4 pr-32 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
+                                    />
+                                    <button
+                                        onClick={() => handleRedeem(coupon)}
+                                        disabled={isRedeeming}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-white text-black text-[9px] uppercase tracking-widest font-normal rounded-xl hover:bg-zinc-200 transition-all active:scale-95 disabled:opacity-50"
+                                    >
+                                        {isRedeeming ? '...' : 'Verify'}
+                                    </button>
+                                </>
+                            ) : (
+                                <span className="w-full py-3 pl-4 text-[11px] uppercase tracking-[0.3em] text-green-400 font-normal">
+                                    ✓ Coupon Verified · LTD Tiers Unlocked
+                                </span>
+                            )}
                         </div>
-                        {!isSecretRevealed ? (
-                            <>
-                                <input
-                                    type="text"
-                                    value={coupon}
-                                    onChange={(e) => handleCouponCheck(e.target.value)}
-                                    placeholder="HAVE A COUPON CODE?"
-                                    className="w-full bg-transparent border-none py-3 pl-4 pr-32 text-[11px] uppercase tracking-[0.3em] text-white placeholder:text-zinc-800 focus:outline-none"
-                                />
-                                <button
-                                    onClick={() => handleCouponCheck(coupon)}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-white text-black text-[9px] uppercase tracking-widest font-normal rounded-xl hover:bg-zinc-200 transition-all active:scale-95"
-                                >
-                                    Verify
-                                </button>
-                            </>
-                        ) : (
-                            <span className="w-full py-3 pl-4 text-[11px] uppercase tracking-[0.3em] text-green-400 font-normal">
-                                ✓ Coupon Verified · LTD Tiers Unlocked
-                            </span>
-                        )}
                     </div>
-                    {coupon.length > 0 && !isSecretRevealed && (
-                        <p className="absolute -bottom-6 left-0 w-full text-center text-[9px] uppercase tracking-widest text-zinc-600">
-                            Verifying code...
-                        </p>
-                    )}
-                </div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-2xl">
                     {!isSecretRevealed ? (

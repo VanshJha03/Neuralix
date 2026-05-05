@@ -2,8 +2,7 @@
 'use client';
 
 import React, { useState, useCallback, useEffect } from 'react';
-import { signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { supabase } from '@/lib/supabase';
 import { LogOut } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import ChatInterface from '@/components/ChatInterface';
@@ -65,22 +64,23 @@ export default function MainInterface({
 
     // ── Sync Auth state to user settings ────────────────────────────────────
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChange((user) => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            const user = session?.user;
             if (user && (!userSettings.email || userSettings.name === 'Operator')) {
                 const updatedSettings = {
                     ...userSettings,
                     email: user.email || userSettings.email,
-                    name: user.displayName || user.email?.split('@')[0] || userSettings.name
+                    name: user.user_metadata?.full_name || user.email?.split('@')[0] || userSettings.name
                 };
                 setUserSettings(updatedSettings);
                 actions.saveUserSettings(updatedSettings).catch(() => { });
             }
         });
-        return unsubscribe;
+        return () => subscription.unsubscribe();
     }, [userSettings]);
 
     const handleSignOut = async () => {
-        await signOut(auth);
+        await supabase.auth.signOut();
         await fetch('/api/auth/session', { method: 'DELETE' });
         localStorage.removeItem('CreatioXx_pricing_shown');
         window.location.reload();

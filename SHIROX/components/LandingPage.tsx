@@ -421,6 +421,57 @@ const LandingPage: React.FC<{ onGetStarted: (tier?: string) => void }> = ({ onGe
                 </div>
             </section>
 
+            {/* ── Redemption ── */}
+            <section id="redeem" className="py-20 px-6 md:px-10 max-w-[1240px] mx-auto border-t border-white/5">
+                <div className="max-w-[500px] mx-auto text-center">
+                    <span className="text-[0.6rem] text-zinc-600 tracking-[0.3em] uppercase mb-6 block text-center">Voucher Portal</span>
+                    <h2 className="lp-heading text-3xl tracking-tight mb-8">Redeem Access.</h2>
+                    <div className="bg-zinc-900/40 border border-white/5 p-8 rounded-sm">
+                        <p className="text-[0.75rem] text-zinc-500 mb-6">Enter your exclusive redemption code to activate your license.</p>
+                        <form onSubmit={async (e) => {
+                            e.preventDefault();
+                            const code = (e.currentTarget.elements.namedItem('code') as HTMLInputElement).value;
+                            if (!code) return;
+                            
+                            const btn = e.currentTarget.querySelector('button');
+                            if (btn) { btn.disabled = true; btn.innerText = 'Verifying...'; }
+                            
+                            try {
+                                const res = await fetch('/api/redeem/verify', {
+                                    method: 'POST',
+                                    body: JSON.stringify({ code })
+                                });
+                                const data = await res.json();
+                                if (data.valid) {
+                                    localStorage.setItem('CreatioX_redeem_code', code);
+                                    localStorage.setItem('CreatioX_redeem_tier', data.tier);
+                                    onGetStarted(); // Redirect to auth
+                                } else {
+                                    alert(data.error || 'Invalid code');
+                                }
+                            } catch (err) {
+                                alert('Network error. Try again.');
+                            } finally {
+                                if (btn) { btn.disabled = false; btn.innerText = 'Redeem License'; }
+                            }
+                        }}>
+                            <input 
+                                name="code"
+                                type="text" 
+                                placeholder="XXXX-XXXX-XXXX" 
+                                className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-[0.8rem] text-white focus:outline-none focus:border-white/30 transition-all mb-4 text-center tracking-[0.2em]"
+                            />
+                            <button 
+                                type="submit"
+                                className="w-full py-4 bg-white text-black text-[0.7rem] tracking-[0.2em] uppercase hover:opacity-90 transition-all"
+                            >
+                                Redeem License
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
             {/* ── Footer ── */}
             <footer className="py-16 px-6 md:px-10 max-w-[1240px] mx-auto border-t border-white/5">
                 <div className="flex flex-col md:flex-row justify-between items-start gap-16 mb-20">

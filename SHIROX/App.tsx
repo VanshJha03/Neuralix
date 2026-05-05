@@ -60,6 +60,7 @@ const App: React.FC = () => {
     xPostImages: true,
     xThreadImages: true,
     tier: undefined,
+    freeAnalysisUsed: false,
     usage: {
       analytics: 0,
       totalAnalytics: 0,
@@ -257,6 +258,13 @@ const App: React.FC = () => {
     }
   };
 
+  const handleUseFreeAnalysis = () => {
+    setUserSettings(prev => ({
+      ...prev,
+      freeAnalysisUsed: true
+    }));
+  };
+
   // ── Persist Ideas ──────────────────────────────────────────────────────────
   useEffect(() => {
     localStorage.setItem('CreatioX_ideas', JSON.stringify(ideas));
@@ -348,8 +356,12 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
   if (authLoading) return <NeuralLoader />;
   if (!session) return <PublicHome />;
 
-  // User is locked if on Free tier
-  const isLocked = !userSettings.tier || userSettings.tier === 'Free';
+  // User is locked if on Free tier AND has used free analysis
+  const isLocked = (!userSettings.tier || userSettings.tier === 'Free') && userSettings.freeAnalysisUsed;
+  // Analytics specifically can be used once for free
+  const analyticsLocked = isLocked || (userSettings.freeAnalysisUsed && (!userSettings.tier || userSettings.tier === 'Free'));
+  // Interests should always be editable
+  const interestsLocked = false;
 
   return (
     <div className="flex flex-col h-dvh w-full bg-black text-white overflow-hidden">
@@ -408,7 +420,7 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
               <IdeasManager ideas={ideas} setIdeas={setIdeas} isLocked={isLocked} />
             )}
             {activeView === 'interests' && (
-              <InterestsManager interests={interests} setInterests={setInterests} isLocked={isLocked} />
+              <InterestsManager interests={interests} setInterests={setInterests} isLocked={interestsLocked} />
             )}
             {activeView === 'marketing' && (
               <MarketingStudio ideas={ideas} interests={interests} userSettings={userSettings} systemInstruction={enhancedSystemPrompt} onDeleteIdea={onDeleteIdea} isLocked={isLocked} onShowPricing={() => setShowPricingOnce(true)} onSelectTier={handleSelectTier} />
@@ -422,9 +434,11 @@ CRITICAL: Do not repeat these memories verbatim. Use them to understand user goa
                 data={nicheAnalyticsData}
                 onUpdateData={setNicheAnalyticsData}
                 onLimitReached={onLimitReached}
-                isLocked={isLocked}
+                isLocked={analyticsLocked}
                 onShowPricing={() => setShowPricingOnce(true)}
                 onSelectTier={handleSelectTier}
+                onUseFreeAnalysis={handleUseFreeAnalysis}
+                freeAnalysisUsed={userSettings.freeAnalysisUsed || false}
               />
             )}
             {activeView === 'settings' && (

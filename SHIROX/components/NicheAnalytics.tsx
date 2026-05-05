@@ -23,10 +23,12 @@ interface NicheAnalyticsProps {
   isLocked?: boolean;
   onSelectTier?: (tier: string) => void;
   onShowPricing?: () => void;
+  onUseFreeAnalysis?: () => void;
+  freeAnalysisUsed?: boolean;
 }
 
 const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
-  interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false, onSelectTier, onShowPricing
+  interests, onSaveIdea, systemInstruction = '', data, onUpdateData, userSettings, onLimitReached, isLocked = false, onSelectTier, onShowPricing, onUseFreeAnalysis, freeAnalysisUsed = false
 }) => {
   const [loading, setLoading] = useState(false);
   const [loadingDeep, setLoadingDeep] = useState(false);
@@ -74,6 +76,11 @@ const NicheAnalytics: React.FC<NicheAnalyticsProps> = ({
       // 🚀 Optimized: Single Parallel Call
       const results = await runParallelResearch(interests);
       onUpdateData(results);
+      
+      // Mark free analysis as used if user is on Free tier and hasn't used it yet
+      if (!freeAnalysisUsed && (!userSettings.tier || userSettings.tier === 'Free')) {
+        onUseFreeAnalysis?.();
+      }
     } catch (e: any) {
       const msg = e?.message || '';
       if (msg.includes('LIMIT') || msg.includes('429')) onLimitReached(msg);

@@ -137,7 +137,7 @@ const MarketingStudio: React.FC<MarketingStudioProps> = ({ ideas, interests, sys
 
   return (
     <div className="relative h-full overflow-hidden bg-black">
-      <div className={`p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide ${isLocked ? 'blur-md pointer-events-none select-none' : ''}`}>
+      <div className={`p-6 lg:p-12 max-w-6xl mx-auto h-full flex flex-col lg:flex-row gap-8 lg:gap-12 overflow-y-auto lg:overflow-hidden pb-32 lg:pb-0 scrollbar-hide`}>
         <div className="w-full lg:w-1/3 space-y-6 lg:space-y-8 flex flex-col h-auto lg:h-full shrink-0">
           <div className="text-center lg:text-left">
             <h1 className="text-3xl font-normal tracking-tighter mb-1 uppercase font-normal">Content Studio</h1>

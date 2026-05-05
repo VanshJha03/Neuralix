@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     >
       <Icon size={20} className={activeView === id ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'} />
       <span className={`text-[11px] font-normal uppercase tracking-widest truncate ${isCollapsed && 'lg:hidden'}`}>{label}</span>
-      {isLocked && id !== 'chat' && id !== 'settings' && <Lock size={10} className="ml-auto text-zinc-600" />}
+      {isLocked && id !== 'chat' && id !== 'settings' && id !== 'interests' && <Lock size={10} className="ml-auto text-zinc-600" />}
 
       {isCollapsed && (
         <div className="hidden lg:block absolute left-full ml-4 px-3 py-1 bg-zinc-900/90 border border-zinc-800 text-white text-[10px] font-normal uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 z-50 whitespace-nowrap shadow-2xl backdrop-blur-xl">

@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Check, Zap, ShieldCheck, Rocket, Crown, Star, Loader2 } from 'lucide-react';
 import NeuralLogo from './NeuralLogo';
-import { auth } from '@/lib/firebase';
+import { supabase, getAuthToken } from '@/lib/supabase';
 
 interface TierCardProps {
     name: string;
@@ -71,13 +71,13 @@ const PricingScreen: React.FC<PricingScreenProps> = ({ onSelectTier }) => {
 
         setLoadingTier(tierKey);
         try {
-            const user = auth.currentUser;
+            const { data: { user } } = await supabase.auth.getUser();
             if (!user) {
                 alert('Authentication required.');
                 return;
             }
 
-            const token = await user.getIdToken();
+            const token = await getAuthToken();
             const response = await fetch('/api/checkout/create', {
                 method: 'POST',
                 headers: {

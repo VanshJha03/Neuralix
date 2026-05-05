@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import { auth } from '../lib/firebase';
-import {
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    signInAnonymously,
-    updateProfile,
-    signInWithPopup,
-    GoogleAuthProvider
-} from 'firebase/auth';
+import { supabase } from '../lib/supabase';
 import { Check, Star, Rocket, ShieldCheck, Crown, Zap } from 'lucide-react';
 import NeuralLogo from './NeuralLogo';
 
@@ -27,20 +19,17 @@ const AuthScreen: React.FC = () => {
     const handleGoogleLogin = async () => {
         setLoading(true);
         clearState();
-        const provider = new GoogleAuthProvider();
         try {
-            const userCredential = await signInWithPopup(auth, provider);
-            const idToken = await userCredential.user.getIdToken();
-            await fetch('/api/auth/session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idToken }),
+            const { error: oauthError } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin }
             });
-            window.location.reload();
+            if (oauthError) throw oauthError;
+            // OAuth redirect will handle the rest
         } catch (err: any) {
             setError(err.message);
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const handleEmailAuth = async (e: React.FormEvent) => {
@@ -49,21 +38,18 @@ const AuthScreen: React.FC = () => {
         setLoading(true);
 
         try {
-            let userCredential;
             if (mode === 'signup') {
-                userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(userCredential.user, { displayName: name });
+                const { error: signUpError } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: { data: { full_name: name } }
+                });
+                if (signUpError) throw signUpError;
                 setSuccessMsg('Account created! Initializing neural sync...');
             } else {
-                userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+                if (signInError) throw signInError;
             }
-
-            const idToken = await userCredential.user.getIdToken();
-            await fetch('/api/auth/session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idToken }),
-            });
             window.location.reload();
         } catch (err: any) {
             setError(err.message);
@@ -75,13 +61,11 @@ const AuthScreen: React.FC = () => {
         clearState();
         setLoading(true);
         try {
-            const userCredential = await signInAnonymously(auth);
-            const idToken = await userCredential.user.getIdToken();
-            await fetch('/api/auth/session', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ idToken }),
-            });
+            // Guest mode: sign in with a disposable anonymous-style account
+            const guestEmail = `guest_${Date.now()}@creatiox.guest`;
+            const guestPw = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+            const { error: signUpError } = await supabase.auth.signUp({ email: guestEmail, password: guestPw });
+            if (signUpError) throw signUpError;
             window.location.reload();
         } catch (err: any) {
             setError(err.message);

@@ -147,7 +147,7 @@ export async function incrementUsage(type: string, userId: string) {
     if (data) {
         await supabaseAdmin
             .from('influencers')
-            .update({ [dbField]: (data[dbField] || 0) + 1 })
+            .update({ [dbField]: ((data as any)[dbField] || 0) + 1 })
             .eq('user_id', userId);
     }
 }

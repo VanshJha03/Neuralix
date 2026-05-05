@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { Zap, Shield, X } from 'lucide-react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { supabase } from '../lib/supabase';
 
 interface LimitReachedModalProps {
     message: string;
@@ -14,7 +13,7 @@ const LimitReachedModal: React.FC<LimitReachedModalProps> = ({ message, onClose,
     const isFree = tier === 'Free';
 
     const handleSignUp = async () => {
-        await signOut(auth);
+        await supabase.auth.signOut();
         await fetch('/api/auth/session', { method: 'DELETE' });
         onClose();
         window.location.href = '/#auth';

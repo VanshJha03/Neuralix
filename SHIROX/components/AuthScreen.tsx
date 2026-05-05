@@ -14,6 +14,9 @@ const AuthScreen: React.FC = () => {
     const [error, setError] = useState('');
     const [successMsg, setSuccessMsg] = useState('');
 
+    const [redeemCodeStr, setRedeemCodeStr] = useState(localStorage.getItem('CreatioX_redeem_code') || '');
+    const [redeemTier, setRedeemTier] = useState(localStorage.getItem('CreatioX_redeem_tier') || '');
+
     const clearState = () => { setError(''); setSuccessMsg(''); };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +24,7 @@ const AuthScreen: React.FC = () => {
         clearState();
         setLoading(true);
         try {
+            let authData;
             if (mode === 'signup') {
                 const { data, error } = await supabase.auth.signUp({
                     email,
@@ -28,6 +32,7 @@ const AuthScreen: React.FC = () => {
                     options: { data: { full_name: name } },
                 });
                 if (error) throw error;
+                authData = data;
 
                 // If Supabase "Confirm Email" is OFF, we can sign in immediately
                 if (data.user) {
@@ -35,13 +40,41 @@ const AuthScreen: React.FC = () => {
                     if (signInError) {
                         setSuccessMsg('Account created! Please sign in with your credentials.');
                         setMode('login');
+                        setLoading(false);
+                        return;
                     }
                 }
             } else {
-                const { error } = await supabase.auth.signInWithPassword({ email, password });
+                const { data, error } = await supabase.auth.signInWithPassword({ email, password });
                 if (error) throw error;
-                // onAuthStateChange in App.tsx handles the redirect
+                authData = data;
             }
+
+            // REDEMPTION LOGIC
+            if (redeemCodeStr && authData?.session?.access_token) {
+                try {
+                    const res = await fetch('/api/redeem', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authData.session.access_token}`
+                        },
+                        body: JSON.stringify({ code: redeemCodeStr })
+                    });
+                    const redeemResult = await res.json();
+                    if (!redeemResult.success) {
+                        console.error('Redemption failed:', redeemResult.error);
+                        // We don't throw here to not block the login, but user might not get the tier
+                        alert('Auth success, but code redemption failed: ' + (redeemResult.error || 'Invalid code'));
+                    } else {
+                        localStorage.removeItem('CreatioX_redeem_code');
+                        localStorage.removeItem('CreatioX_redeem_tier');
+                    }
+                } catch (redeemErr) {
+                    console.error('Redemption error:', redeemErr);
+                }
+            }
+
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Authentication failed.');
         }
@@ -84,48 +117,65 @@ const AuthScreen: React.FC = () => {
                 <div className="relative z-10 space-y-4">
                     <p className="text-[10px] font-normal uppercase tracking-[0.4em] text-zinc-600 mb-6">Choose your plan after signing up</p>
 
-                    {/* PRO */}
-                    <div className="p-6 bg-zinc-950 border border-zinc-800 rounded-2xl">
-                        <div className="flex items-center justify-between mb-4">
-                            <div>
-                                <p className="text-xs font-normal uppercase tracking-widest text-white">PRO</p>
-                                <p className="text-[10px] text-zinc-600 uppercase">Monthly</p>
+                    {redeemCodeStr ? (
+                         <div className="p-8 bg-white text-black rounded-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4">
+                                <span className="text-[0.55rem] bg-black text-white px-2 py-1 tracking-[0.2em] uppercase">Voucher Active</span>
                             </div>
-                            <div className="text-right">
-                                <span className="text-2xl font-normal text-white">$49</span>
-                                <span className="text-xs text-zinc-600 ml-1">/mo</span>
+                            <p className="text-[10px] font-normal uppercase tracking-widest text-zinc-500 mb-2">Redeeming</p>
+                            <h3 className="text-3xl font-normal tracking-tighter mb-4">{redeemTier} Access</h3>
+                            <div className="flex items-center gap-2 text-[10px] font-mono bg-zinc-100 p-3 rounded-lg border border-zinc-200">
+                                < Zap size={12} fill="black" />
+                                <span>{redeemCodeStr}</span>
                             </div>
-                        </div>
-                        <ul className="space-y-1.5">
-                            {FEATURES.map(f => (
-                                <li key={f} className="flex items-center gap-2 text-[10px] text-zinc-500">
-                                    <Check size={10} className="text-zinc-600 flex-shrink-0" /> {f}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                            <p className="text-[10px] text-zinc-500 mt-4 leading-relaxed italic">The system will activate your {redeemTier} license immediately after authentication.</p>
+                         </div>
+                    ) : (
+                        <>
+                            {/* PRO */}
+                            <div className="p-6 bg-zinc-950 border border-zinc-800 rounded-2xl">
+                                <div className="flex items-center justify-between mb-4">
+                                    <div>
+                                        <p className="text-xs font-normal uppercase tracking-widest text-white">PRO</p>
+                                        <p className="text-[10px] text-zinc-600 uppercase">Monthly</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <span className="text-2xl font-normal text-white">$49</span>
+                                        <span className="text-xs text-zinc-600 ml-1">/mo</span>
+                                    </div>
+                                </div>
+                                <ul className="space-y-1.5">
+                                    {FEATURES.map(f => (
+                                        <li key={f} className="flex items-center gap-2 text-[10px] text-zinc-500">
+                                            <Check size={10} className="text-zinc-600 flex-shrink-0" /> {f}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
 
-                    {/* LTD */}
-                    <div className="p-6 bg-white rounded-2xl relative">
-                        <div className="absolute -top-3 left-4 px-3 py-1 bg-black text-white text-[9px] font-normal uppercase tracking-widest rounded-full">Best Value</div>
-                        <div className="flex items-center justify-between mb-4">
-                            <div>
-                                <p className="text-xs font-normal uppercase tracking-widest text-black">LTD</p>
-                                <p className="text-[10px] text-zinc-500 uppercase">Lifetime</p>
+                            {/* LTD */}
+                            <div className="p-6 bg-white rounded-2xl relative">
+                                <div className="absolute -top-3 left-4 px-3 py-1 bg-black text-white text-[9px] font-normal uppercase tracking-widest rounded-full">Best Value</div>
+                                <div className="flex items-center justify-between mb-4">
+                                    <div>
+                                        <p className="text-xs font-normal uppercase tracking-widest text-black">LTD</p>
+                                        <p className="text-[10px] text-zinc-500 uppercase">Lifetime</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <span className="text-2xl font-normal text-black">$129</span>
+                                        <span className="text-xs text-zinc-500 ml-1">once</span>
+                                    </div>
+                                </div>
+                                <ul className="space-y-1.5">
+                                    {FEATURES.map(f => (
+                                        <li key={f} className="flex items-center gap-2 text-[10px] text-zinc-600">
+                                            <Check size={10} className="text-zinc-500 flex-shrink-0" /> {f}
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
-                            <div className="text-right">
-                                <span className="text-2xl font-normal text-black">$129</span>
-                                <span className="text-xs text-zinc-500 ml-1">once</span>
-                            </div>
-                        </div>
-                        <ul className="space-y-1.5">
-                            {FEATURES.map(f => (
-                                <li key={f} className="flex items-center gap-2 text-[10px] text-zinc-600">
-                                    <Check size={10} className="text-zinc-500 flex-shrink-0" /> {f}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                        </>
+                    )}
                 </div>
 
                 <p className="relative z-10 text-zinc-800 text-[10px] uppercase tracking-[0.3em]">© 2026 ArsX · CreatioX</p>
@@ -146,10 +196,19 @@ const AuthScreen: React.FC = () => {
                         {mode === 'login' ? 'Sign In' : 'Create Account'}
                     </h2>
                     <p className="text-zinc-600 text-[11px] uppercase tracking-widest mb-8">
-                        {mode === 'login' ? 'Enter your credentials to continue' : 'Set up your professional profile'}
+                        {redeemCodeStr ? `Finalizing your ${redeemTier} license redemption` : (mode === 'login' ? 'Enter your credentials to continue' : 'Set up your professional profile')}
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-3">
+                        {redeemCodeStr && (
+                            <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-xl mb-6">
+                                <label className="text-[9px] font-normal uppercase tracking-widest text-zinc-600 block mb-2">Redemption Code</label>
+                                <div className="flex items-center justify-between">
+                                    <span className="text-sm font-mono text-white">{redeemCodeStr}</span>
+                                    <span className="text-[8px] bg-white/10 text-zinc-400 px-2 py-0.5 rounded uppercase tracking-tighter">Locked</span>
+                                </div>
+                            </div>
+                        )}
                         {mode === 'signup' && (
                             <div>
                                 <label className="text-[10px] font-normal uppercase tracking-widest text-zinc-600 block mb-1.5">Name</label>

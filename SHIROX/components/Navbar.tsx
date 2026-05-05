@@ -64,7 +64,7 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center gap-1 bg-zinc-900/40 p-1 rounded-2xl border border-white/5 backdrop-blur-3xl">
           {navItems.map((item) => {
             const isActive = activeView === item.id;
-            const locked = isLocked && item.id !== 'chat' && item.id !== 'settings';
+            const locked = isLocked && item.id !== 'chat' && item.id !== 'settings' && item.id !== 'interests';
             return (
               <button
                 key={item.id}

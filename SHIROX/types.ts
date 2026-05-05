@@ -28,6 +28,7 @@ export interface UserSettings {
     gap: number;
     chat: number;
   };
+  freeAnalysisUsed?: boolean;
 }
 
 export interface SocialAccount {

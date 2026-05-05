@@ -19,13 +19,24 @@ export const TIER_LIMITS: Record<string, Record<string, number>> = {
   // Backward compatibility
   PRO:     { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
   LTD:     { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
+  FREE:    { niche: 5,  gap: 5,  chat: 50,  content: 10,  image: 10,  trend: 10 },
   beta:    { niche: 999, gap: 999, chat: 999, content: 999, image: 999, trend: 999 },
 };
 
 // ─── Row helpers ──────────────────────────────────────────────────────────────
 export async function getRow(supabase: ReturnType<typeof createServerSupabase>, userId: string) {
-  const { data } = await supabase.from('influencers').select('*').eq('user_id', userId).single();
-  return data;
+  try {
+    console.log(`[getRow] Fetching row for userId: ${userId}`);
+    const { data, error } = await supabase.from('influencers').select('*').eq('user_id', userId).single();
+    if (error && error.code !== 'PGRST116') {
+      console.error(`[getRow] Supabase error:`, error);
+      throw error;
+    }
+    return data;
+  } catch (err) {
+    console.error(`[getRow] Exception:`, err);
+    throw err;
+  }
 }
 
 export async function upsertRow(supabase: ReturnType<typeof createServerSupabase>, userId: string, patch: Record<string, unknown>) {
@@ -76,16 +87,21 @@ export async function requireAuth(request: Request) {
     return null;
   }
 
-  let row = await getRow(sb, user.id);
-  if (!row) {
-    // New user — no tier assigned. They must subscribe first.
-    await upsertRow(sb, user.id, { tier: null, last_reset: new Date().toISOString().substring(0, 7) });
-    row = await getRow(sb, user.id);
-  }
-  row = await resetIfNewMonth(sb, user.id, row);
+  try {
+    let row = await getRow(sb, user.id);
+    if (!row) {
+      console.log(`[requireAuth] Creating new row for user: ${user.id}`);
+      await upsertRow(sb, user.id, { tier: null, last_reset: new Date().toISOString().substring(0, 7) });
+      row = await getRow(sb, user.id);
+    }
+    row = await resetIfNewMonth(sb, user.id, row);
 
-  const tier = (row?.tier as string) || null;
-  return { userId: user.id, email: user.email!, tier, row, sb };
+    const tier = (row?.tier as string) || null;
+    return { userId: user.id, email: user.email!, tier, row, sb };
+  } catch (err) {
+    console.error(`[requireAuth] Exception during row fetch/upsert:`, err);
+    throw err;
+  }
 }
 
 // ─── Limit check helper ───────────────────────────────────────────────────────
