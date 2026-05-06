@@ -176,6 +176,8 @@ ${neuralMemories.length > 0 ? neuralMemories.map((m, i) => `${i + 1}. ${m}`).joi
                     {activeView === 'ideas' && (
                         <IdeasManager
                             ideas={ideas}
+                            userSettings={userSettings}
+                            systemInstruction={enhancedSystemPrompt}
                             setIdeas={(update) => {
                                 const nextIdeas = typeof update === 'function' ? update(ideas) : update;
                                 setIdeas(nextIdeas);

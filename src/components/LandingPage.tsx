@@ -45,20 +45,20 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                         <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
                     </div>
                     <button onClick={onGetStarted} className="font-outfit bg-white text-black px-5 py-2 rounded-sm text-[0.8rem] tracking-wider hover:opacity-90 transition-all">
-                        Connect Link
+                        Get Started
                     </button>
                 </div>
             </nav>
 
             <header className="min-h-[95vh] flex flex-col justify-center items-center text-center px-10 pt-[100px]">
-                <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8">Intelligence Matrix v4.2</span>
-                <h1 className="reveal font-outfit text-[clamp(3.5rem,10vw,8rem)] tracking-[-0.05em] leading-[0.9] mb-10">Architecting Viral Influence.</h1>
+                <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8">Creating Unique</span>
+                <h1 className="reveal font-outfit text-[clamp(3.5rem,10vw,8rem)] tracking-[-0.05em] leading-[0.9] mb-10">Architecting Influence.</h1>
                 <p className="reveal text-[1.15rem] text-zinc-400 max-w-[680px] mx-auto leading-relaxed mb-14">
                     A high-fidelity workspace designed for deep content research, niche dominance, and automated social distribution. Engineered for the future of digital sovereignty.
                 </p>
                 <div className="reveal">
                     <button onClick={onGetStarted} className="font-outfit bg-white text-black px-10 py-4 rounded-sm text-[0.8rem] tracking-[0.2em] hover:scale-[0.98] transition-all">
-                        Launch Matrix
+                        Open Workspace
                     </button>
                 </div>
                 <div className="reveal w-full max-w-[1100px] h-[500px] bg-zinc-950 border border-white/5 rounded-lg mt-10 relative flex items-center justify-center overflow-hidden">
@@ -66,7 +66,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                         <div className="absolute top-5 left-5 w-10 h-px bg-white/20"></div>
                         <div className="absolute bottom-5 right-5 w-24 h-px bg-white/20"></div>
                     </div>
-                    <div className="absolute inset-0 flex items-center justify-center text-[0.6rem] tracking-[0.5em] uppercase text-zinc-700">Neural System Active</div>
+                    <div className="absolute inset-0 flex items-center justify-center text-[0.6rem] tracking-[0.5em] uppercase text-zinc-700">System Active</div>
                 </div>
             </header>
 
@@ -74,7 +74,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                 <div className="max-w-[700px] mb-20">
                     <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">01. Research & Discovery</span>
                     <h2 className="reveal font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Mining the Signal from the Noise.</h2>
-                    <p className="reveal text-zinc-400 text-[1.05rem] leading-relaxed">Our neural engines scan the digital landscape to identify untapped opportunities before they become mainstream. Position your brand where the attention is going, not where it has been.</p>
+                    <p className="reveal text-zinc-400 text-[1.05rem] leading-relaxed">Our intelligence engines scan the digital landscape to identify untapped opportunities before they become mainstream. Position your brand where the attention is going, not where it has been.</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 border border-white/10 bg-white/5">
@@ -97,12 +97,12 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                     <div className="reveal">
                         <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">02. Automated Production</span>
                         <h2 className="font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Content Without Compromise.</h2>
-                        <p className="text-zinc-400 text-[1.05rem] leading-relaxed mb-10">Leverage our generative matrix to produce high-fidelity text and visuals that reflect your unique brand identity.</p>
+                        <p className="text-zinc-400 text-[1.05rem] leading-relaxed mb-10">Leverage our generation engine to produce high-fidelity text and visuals that reflect your unique brand identity.</p>
 
                         <div className="space-y-6">
                             {[
                                 { tag: 'A', title: 'Social Media Content Gen', desc: 'Automated drafting of threads, articles, and long-form scripts tailored to your cognitive style.' },
-                                { tag: 'B', title: 'Image Generation Matrix', desc: 'Context-aware visual assets created specifically to complement your narrative architecture.' }
+                                { tag: 'B', title: 'Image Generation', desc: 'Context-aware visual assets created specifically to complement your brand narrative.' }
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-6 py-6 border-t border-white/10">
                                     <span className="text-[0.8rem] text-zinc-600">{item.tag}</span>
@@ -115,7 +115,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                         </div>
                     </div>
                     <div className="reveal aspect-[4/3] bg-zinc-950 border border-white/10 flex items-center justify-center text-[0.6rem] tracking-[0.2em] text-zinc-700 uppercase">
-                        [ Visual Matrix Loading ]
+                        [ Analysis Output ]
                     </div>
                 </div>
             </section>
@@ -127,7 +127,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                     </div>
                     <div className="reveal order-1 lg:order-2">
                         <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-6 block">03. Distribution</span>
-                        <h2 className="font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Direct Neural Distribution.</h2>
+                        <h2 className="font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-7">Direct Distribution.</h2>
                         <p className="text-zinc-400 text-[1.05rem] leading-relaxed mb-10">Remove the friction between ideation and publication. Our direct sync technology allows for instant deployment across your primary channels.</p>
 
                         <div className="space-y-6">
@@ -155,7 +155,7 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                     {[
                         { title: '01. Memory Sync', desc: 'The AI learns your goals and past research to build a persistent knowledge ledger.' },
                         { title: '02. Intelligence Analysis', desc: 'Scan for gaps and trends to ensure your content is positioned for maximum impact.' },
-                        { title: '03. Neural Draft', desc: 'Generate optimized drafts and visual assets using your chosen cognitive style.' },
+                        { title: '03. Content Draft', desc: 'Generate optimized drafts and visual assets using your chosen brand style.' },
                         { title: '04. Final Deployment', desc: 'Review and push your content directly to social platforms with zero friction.' }
                     ].map((step, i) => (
                         <div key={i} className="reveal">
@@ -166,37 +166,43 @@ const LandingPage: React.FC<{ onGetStarted: () => void }> = ({ onGetStarted }) =
                 </div>
             </section>
 
+
             <section id="pricing" className="py-40 px-10 max-w-[1240px] mx-auto">
                 <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block text-center">Investment</span>
                 <h2 className="reveal font-outfit text-[clamp(2.2rem,6vw,3.8rem)] tracking-tight leading-[1.05] mb-20 text-center">Scale Your Intelligence.</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="reveal border border-white/5 p-14 rounded-sm flex flex-col">
-                        <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block">Standard</span>
-                        <h3 className="text-xl mb-2">Operator</h3>
-                        <div className="font-outfit text-4xl my-8">$0<span className="text-sm text-zinc-600 ml-1">/mo</span></div>
-                        <ul className="text-[0.85rem] text-zinc-500 space-y-4 mb-12 flex-1">
-                            <li>— Basic Niche Analysis</li>
-                            <li>— Social Media Drafting</li>
-                            <li>— 3 Neural Memories</li>
-                            <li>— Community Support</li>
-                        </ul>
-                        <button onClick={onGetStarted} className="w-full py-4 border border-white/10 text-white text-[0.8rem] tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all">Initialize Free</button>
-                    </div>
-                    <div className="reveal bg-zinc-950 border border-white/20 p-14 rounded-sm flex flex-col">
-                        <span className="text-[0.65rem] text-white tracking-[0.3em] uppercase mb-8 block">Professional</span>
-                        <h3 className="text-xl mb-2">Architect</h3>
+                    <div className="reveal border border-white/5 p-14 rounded-sm flex flex-col bg-zinc-950/20">
+                        <span className="text-[0.65rem] text-zinc-500 tracking-[0.3em] uppercase mb-8 block">Subscription</span>
+                        <h3 className="text-xl mb-2">Pro Monthly</h3>
                         <div className="font-outfit text-4xl my-8">$49<span className="text-sm text-zinc-600 ml-1">/mo</span></div>
-                        <ul className="text-[0.85rem] text-zinc-400 space-y-4 mb-12 flex-1">
-                            <li>— Advanced Gap & Trend Analysis</li>
-                            <li>— Full X Platform Sync</li>
-                            <li>— Unlimited Neural Memories</li>
-                            <li>— Image Generation Matrix</li>
-                            <li>— Priority Processing</li>
+                        <ul className="text-[0.85rem] text-zinc-500 space-y-4 mb-12 flex-1">
+                            <li>— 50 Niche Analysis / mo</li>
+                            <li>— 50 Research Studio Artifacts</li>
+                            <li>— Unlimited Idea Combining</li>
+                            <li>— 100 Trend Reports / mo</li>
+                            <li>— Full Neural Chat Enabled</li>
                         </ul>
-                        <button onClick={onGetStarted} className="w-full py-4 bg-white text-black text-[0.8rem] tracking-[0.2em] uppercase hover:opacity-90 transition-all">Get Started</button>
+                        <button onClick={onGetStarted} className="w-full py-4 border border-white/10 text-white text-[0.8rem] tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all">Select Monthly</button>
+                    </div>
+                    <div className="reveal bg-zinc-950 border border-white/20 p-14 rounded-sm flex flex-col relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-3 bg-white text-black text-[10px] font-normal uppercase tracking-widest">Recommended</div>
+                        <span className="text-[0.65rem] text-white tracking-[0.3em] uppercase mb-8 block">Subscription</span>
+                        <h3 className="text-xl mb-2">Pro Annual</h3>
+                        <div className="font-outfit text-4xl my-8">$299<span className="text-sm text-zinc-600 ml-1">/yr</span></div>
+                        <ul className="text-[0.85rem] text-zinc-400 space-y-4 mb-12 flex-1">
+                            <li>— 80 Niche Analysis / mo</li>
+                            <li>— 100 Research Studio Artifacts</li>
+                            <li>— Ultimate Idea Combinations</li>
+                            <li>— 200 Trend Reports / mo</li>
+                            <li>— Priority Processing & Chat</li>
+                        </ul>
+                        <button onClick={onGetStarted} className="w-full py-4 bg-white text-black text-[0.8rem] tracking-[0.2em] uppercase hover:opacity-90 transition-all">Select Annual</button>
                     </div>
                 </div>
+                <p className="mt-12 text-center text-[0.6rem] text-zinc-700 uppercase tracking-widest font-normal">
+                    LTD Access available for enterprise partners with clearance code.
+                </p>
             </section>
 
             <footer className="py-24 px-10 max-w-[1240px] mx-auto border-t border-white/5">

@@ -93,12 +93,13 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
                 <h2 className="text-[10px] font-normal uppercase tracking-[0.3em] text-zinc-400">Active Neural Trajectory</h2>
               </div>
 
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
                 {[
-                  { label: 'Neural Scans', count: userSettings.usage?.analytics ?? 0, limit: 5 },
-                  { label: 'Content Gen', count: userSettings.usage?.content ?? 0, limit: 15 },
-                  { label: 'Visual Synthesis', count: userSettings.usage?.image ?? 0, limit: 10 },
-                  { label: 'Gap Analysis', count: userSettings.usage?.gap ?? 0, limit: '∞' }
+                  { label: 'Neural Scans', count: userSettings.usage?.analytics ?? 0, limit: PRICING_CONFIG[userSettings.tier as keyof typeof PRICING_CONFIG]?.limits.niche ?? 5, period: 'mo' },
+                  { label: 'Content Scripts', count: userSettings.usage?.content ?? 0, limit: PRICING_CONFIG[userSettings.tier as keyof typeof PRICING_CONFIG]?.limits.trends ?? 5, period: 'mo' },
+                  { label: 'Visual Synthesis', count: userSettings.usage?.image ?? 0, limit: 10, period: 'day' },
+                  { label: 'Artifacts', count: userSettings.usage?.gap ?? 0, limit: PRICING_CONFIG[userSettings.tier as keyof typeof PRICING_CONFIG]?.limits.studio ?? 0, period: 'mo' }
                 ].map((stat, i) => (
                   <div key={i} className="p-6 bg-black/40 border border-zinc-800/50 rounded-3xl relative overflow-hidden group/card">
                     <div className="absolute top-0 right-0 p-2 opacity-10 group-hover/card:opacity-20 transition-opacity">
@@ -107,9 +108,9 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
                     <p className="text-[8px] font-normal text-zinc-600 uppercase tracking-widest mb-1">{stat.label}</p>
                     <div className="flex items-baseline gap-1">
                       <p className="text-xl font-normal text-white font-normal tracking-tighter">
-                        {stat.limit === '∞' ? 'UNLOCKED' : `${(stat.limit as number) - stat.count}`}
+                        {stat.limit === 0 && userSettings.tier === 'Free' ? 'LOCKED' : (stat.limit as number) - stat.count}
                       </p>
-                      {stat.limit !== '∞' && <p className="text-[8px] font-normal text-zinc-500">remaining</p>}
+                      <p className="text-[8px] font-normal text-zinc-500 lowercase tracking-normal">/{stat.period}</p>
                     </div>
                   </div>
                 ))}
@@ -117,17 +118,18 @@ const SettingsManager: React.FC<SettingsManagerProps> = ({ userSettings, setUser
 
               <div className="p-8 bg-zinc-950/50 border border-zinc-900 rounded-[2rem] space-y-6">
                 <div>
-                  <h4 className="text-[10px] font-normal text-white uppercase tracking-widest mb-2 font-normal">Trajectory Support</h4>
-                  <p className="text-zinc-500 text-[10px] font-normal leading-relaxed">
-                    Access to premium trajectories sustains the neural matrix development.
-                  </p>
-                </div>
-                <div className="h-px bg-zinc-900 w-full" />
-                <div>
-                  <h4 className="text-[10px] font-normal text-white uppercase tracking-widest mb-2 font-normal">CreatioX Protocol</h4>
-                  <p className="text-zinc-500 text-[10px] font-normal leading-relaxed">
-                    Empowering creators with decentralized intelligence. Report issues to the matrix core for optimization.
-                  </p>
+                  <h4 className="text-[10px] font-normal text-white uppercase tracking-widest mb-4 font-normal">Redeem Access Code</h4>
+                  <div className="flex gap-3">
+                    <input 
+                      type="text" 
+                      placeholder="Enter PRO or LTD code..."
+                      className="flex-1 bg-black border border-zinc-800 rounded-xl px-5 py-3 text-xs text-white placeholder:text-zinc-800 focus:border-white/30 outline-none transition-all"
+                    />
+                    <button className="px-6 py-3 bg-white text-black text-[9px] font-normal uppercase tracking-widest rounded-xl hover:bg-zinc-200 transition-all active:scale-95">
+                      Sync Code
+                    </button>
+                  </div>
+                  <p className="text-zinc-600 text-[8px] mt-4 uppercase tracking-tighter">Enter a valid redemption key to upgrade your trajectory instantly.</p>
                 </div>
               </div>
             </div>

@@ -8,11 +8,11 @@ export async function POST(req: Request) {
 
     const { tierKey } = await req.json();
 
+
     const tierToProductMap: Record<string, string | undefined> = {
-        'PRO': process.env.DODO_PRODUCT_PRO,
-        'LTD': process.env.DODO_PRODUCT_LTD,
-        'LTD_49': process.env.DODO_PRODUCT_LTD_49,
-        'LTD_129': process.env.DODO_PRODUCT_LTD_129,
+        'PRO_MONTHLY': process.env.DODO_PRODUCT_PRO_MONTHLY,
+        'PRO_ANNUAL': process.env.DODO_PRODUCT_PRO_ANNUAL,
+        'LTD_BASIC': process.env.DODO_PRODUCT_LTD_BASIC,
         'LTD_PRO': process.env.DODO_PRODUCT_LTD_PRO,
     };
 

@@ -38,12 +38,13 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Missing user_id' }, { status: 400 });
         }
 
+
         // Determine Tier
         let tier = 'Free';
-        if (productId === process.env.DODO_PRODUCT_PRO) tier = 'PRO';
-        if (productId === process.env.DODO_PRODUCT_LTD) tier = 'LTD';
-        if (productId === process.env.DODO_PRODUCT_LTD_49) tier = 'LTD_49';
-        if (productId === process.env.DODO_PRODUCT_LTD_129) tier = 'LTD_129';
+        if (productId === process.env.DODO_PRODUCT_PRO_MONTHLY) tier = 'PRO_MONTHLY';
+        if (productId === process.env.DODO_PRODUCT_PRO_ANNUAL) tier = 'PRO_ANNUAL';
+        if (productId === process.env.DODO_PRODUCT_LTD_BASIC) tier = 'LTD_BASIC';
+        if (productId === process.env.DODO_PRODUCT_LTD_PRO) tier = 'LTD_PRO';
 
         console.log(`🚀 Upgrading User ${userId} to Tier: ${tier}`);
 

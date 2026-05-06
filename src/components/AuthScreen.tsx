@@ -89,17 +89,17 @@ const AuthScreen: React.FC = () => {
             <header className="relative z-10 pt-20 pb-12 lg:pt-32 lg:pb-24 px-6 text-center">
                 <NeuralLogo size={80} />
                 <h1 className="text-6xl lg:text-8xl font-normal tracking-tighter mt-12 mb-6 leading-[0.9]" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                    CreatioXX
+                    CreatioX
                 </h1>
                 <p className="text-zinc-600 uppercase tracking-[0.8em] text-[10px] lg:text-[12px] font-normal mb-12">
-                    Neural Intelligence Matrix v5.0
+                    Creating Unique
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                     <button onClick={() => document.getElementById('auth')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-white text-black font-normal uppercase tracking-widest text-[10px] rounded-2xl hover:bg-zinc-200 transition-all active:scale-95 shadow-[0_0_50px_rgba(255,255,255,0.1)] font-orbitron">
-                        Connect Neural Link
+                        Access Platform
                     </button>
                     <button onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })} className="px-10 py-5 bg-zinc-950 border border-zinc-900 text-zinc-500 font-normal uppercase tracking-widest text-[10px] rounded-2xl hover:border-zinc-700 hover:text-white transition-all active:scale-95 font-orbitron">
-                        View Trajectories
+                        View Pricing
                     </button>
                 </div>
             </header>
@@ -109,10 +109,10 @@ const AuthScreen: React.FC = () => {
                 <div className="max-w-md mx-auto">
                     <div className="bg-zinc-950/80 backdrop-blur-3xl border border-zinc-900 rounded-[3rem] p-8 lg:p-12 shadow-2xl">
                         <h2 className="text-2xl font-normal mb-1 tracking-tight" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                            {mode === 'login' ? 'SYNC OPERATOR' : 'INITIALIZE PACKET'}
+                            {mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
                         </h2>
                         <p className="text-zinc-600 text-xs uppercase tracking-widest font-normal mb-8">
-                            {mode === 'login' ? 'Confirm identity' : 'Create new neural profile'}
+                            {mode === 'login' ? 'Welcome back' : 'Start your journey'}
                         </p>
 
                         <div className="space-y-6">
@@ -132,7 +132,7 @@ const AuthScreen: React.FC = () => {
 
                             <div className="flex items-center gap-4">
                                 <div className="flex-1 h-px bg-zinc-900" />
-                                <span className="text-[8px] font-normal uppercase text-zinc-800 font-normal">Neural Credentials</span>
+                                <span className="text-[8px] font-normal uppercase text-zinc-800 font-normal">Account Credentials</span>
                                 <div className="flex-1 h-px bg-zinc-900" />
                             </div>
 
@@ -140,7 +140,7 @@ const AuthScreen: React.FC = () => {
                                 {mode === 'signup' && (
                                     <input
                                         type="text"
-                                        placeholder="Neural Alias"
+                                        placeholder="Full Name"
                                         value={name}
                                         onChange={e => setName(e.target.value)}
                                         required
@@ -149,7 +149,7 @@ const AuthScreen: React.FC = () => {
                                 )}
                                 <input
                                     type="email"
-                                    placeholder="Synaptic Email"
+                                    placeholder="Email Address"
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
                                     required
@@ -157,7 +157,7 @@ const AuthScreen: React.FC = () => {
                                 />
                                 <input
                                     type="password"
-                                    placeholder="Encrypted Key"
+                                    placeholder="Password"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
                                     required
@@ -181,7 +181,7 @@ const AuthScreen: React.FC = () => {
                                     disabled={loading}
                                     className="w-full py-5 bg-white text-black font-normal uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:bg-zinc-200 transition-all active:scale-[0.98] disabled:opacity-50 mt-4 shadow-xl"
                                 >
-                                    {loading ? 'SYNCHRONIZING...' : mode === 'login' ? 'IDENTIFY INTERFACE' : 'CREATE NEURAL NODE'}
+                                    {loading ? 'PROCESSING...' : mode === 'login' ? 'SIGN IN' : 'CREATE ACCOUNT'}
                                 </button>
                             </form>
 
@@ -199,12 +199,12 @@ const AuthScreen: React.FC = () => {
                             </button>
 
                             <p className="text-center text-zinc-700 text-[10px] font-normal uppercase tracking-widest mt-8">
-                                {mode === 'login' ? "New Operator? " : 'Known identity? '}
+                                {mode === 'login' ? "New here? " : 'Already have an account? '}
                                 <button
                                     onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); clearState(); }}
                                     className="text-white hover:underline ml-1"
                                 >
-                                    {mode === 'login' ? 'Join Evolution' : 'Access Link'}
+                                    {mode === 'login' ? 'Sign Up' : 'Sign In'}
                                 </button>
                             </p>
                         </div>
@@ -212,20 +212,20 @@ const AuthScreen: React.FC = () => {
                 </div>
             </section>
 
+
             {/* Pricing Section */}
             <section id="pricing" className="relative z-10 py-32 px-6">
                 <div className="max-w-6xl mx-auto">
                     <div className="text-center mb-20">
-                        <h2 className="text-4xl lg:text-6xl font-normal tracking-tighter mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>TRAJECTORIES</h2>
-                        <p className="text-zinc-600 uppercase tracking-[0.5em] text-[10px] font-normal">Select Your Operational Capacity</p>
+                        <h2 className="text-4xl lg:text-6xl font-normal tracking-tighter mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>PRICING</h2>
+                        <p className="text-zinc-600 uppercase tracking-[0.5em] text-[10px] font-normal">Operational Trajectories</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[
-                            { name: 'Free', price: '$0', icon: <Star />, features: ['5 Trend Analysis (One-time)', '5 Post Writing (One-time)', 'Studio: Disabled', 'Niche: 1', 'Gap: 0'] },
-                            { name: 'PRO', price: '$19.99', sub: '/mo', icon: <Rocket />, features: ['5 Analysis / Day', '10 Posts / Day', 'Studio Enabled (10 limit)', 'Niche: 5', 'Gap: 5'], popular: true },
-                            { name: 'LTD', price: '$79.99', icon: <ShieldCheck />, features: ['2 Analysis / Day', '5 Posts / Day', 'Studio Enabled (5 limit)', 'Niche: 3', 'Gap: 3'] },
-                            { name: 'LTD PRO', price: '$139.99', icon: <Crown />, features: ['5 Analysis / Day', '10 Posts / Day', 'Studio Enabled (10 limit)', 'Niche: 5', 'Gap: 5'] }
+                            { name: 'Free', price: '$0', icon: <Star />, features: ['5 Trend Analysis (One-time)', '5 Post Drafting (One-time)', 'Research Studio: Disabled', '1 Niche Analysis'] },
+                            { ...PRICING_CONFIG.MONTHLY, name: 'Pro Monthly', icon: <Rocket />, popular: true },
+                            { ...PRICING_CONFIG.ANNUAL, name: 'Pro Annual', icon: <Zap /> }
                         ].map(t => (
                             <div key={t.name} className={`relative p-8 rounded-[3rem] bg-zinc-950 border ${t.popular ? 'border-white/20' : 'border-zinc-900'} hover:border-white/40 transition-all group overflow-hidden`}>
                                 {t.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-white text-black text-[9px] font-normal uppercase rounded-full shadow-2xl">RECOMMENDED</div>}
@@ -233,16 +233,16 @@ const AuthScreen: React.FC = () => {
                                 <h3 className="text-xl font-normal mb-2 uppercase tracking-tighter font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>{t.name}</h3>
                                 <div className="flex items-baseline mb-8">
                                     <span className="text-3xl font-normal">{t.price}</span>
-                                    {t.sub && <span className="text-[10px] font-normal text-zinc-700 ml-1 uppercase">{t.sub}</span>}
+                                    {t.period && <span className="text-[10px] font-normal text-zinc-700 ml-1 uppercase">{t.period}</span>}
                                 </div>
                                 <ul className="space-y-4 mb-10">
                                     {t.features.map(f => (
                                         <li key={f} className="flex gap-3 items-start text-[11px] text-zinc-500 font-normal uppercase tracking-tight">
-                                            <Check size={14} className="mt-1 flex-shrink-0" /> {f}
+                                            <Check size={14} className="mt-1 flex-shrink-0 text-white/20" /> {f}
                                         </li>
                                     ))}
                                 </ul>
-                                <a href="#auth" className="block w-full py-4 text-center bg-zinc-900 text-white font-normal uppercase text-[10px] tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all">Select Profile</a>
+                                <a href="#auth" className="block w-full py-4 text-center bg-zinc-900 text-white font-normal uppercase text-[10px] tracking-widest rounded-2xl hover:bg-white hover:text-black transition-all">Select Tier</a>
                             </div>
                         ))}
                     </div>
@@ -250,7 +250,7 @@ const AuthScreen: React.FC = () => {
             </section>
 
             <footer className="relative z-10 py-12 text-center border-t border-zinc-900 mt-20">
-                <p className="text-zinc-800 text-[10px] font-normal uppercase tracking-[0.5em]">© 2026 ArsX · CreatioXx · All synaptic rights reserved.</p>
+                <p className="text-zinc-800 text-[10px] font-normal uppercase tracking-[0.5em]">© 2026 ArsCreatio · CreatioX · All rights reserved.</p>
             </footer>
         </div>
     );

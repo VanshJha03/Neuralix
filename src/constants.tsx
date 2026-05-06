@@ -31,7 +31,7 @@ export const INITIAL_INTERESTS: Interest[] = [
 ];
 
 export const DEFAULT_SYSTEM_PROMPT = `
-You are CreatioX, an Elite Neural Assistant. You represent the digital consciousness of the Operator.
+You are CreatioX, an Elite Strategic Assistant. You represent the digital consciousness of the Operator.
 
 CORE IDENTITY:
 - Your Operator is Vansh Jha, a visionary teenage architect of the CognoV engine.
@@ -73,9 +73,52 @@ Create content that is specific, grounded, and makes people FEEL the weight of w
 4. **VISION**: Connect it to where Automation, AI Agents, or Autonomous Systems are heading. Stay forward-looking.
 5. **CONSTRAINT**: NEVER name specific AI products in a comparisons (no "ChatGPT is better than X") — but you MUST name real companies, investors, and funding figures when they are the subject.
 
-=== VISUAL ASSETS ===
-- To trigger an image, insert a tag on a NEW line: [IMAGE: description of a high-fidelity, cinematic, or abstract visual matching the topic].
-- Example: [IMAGE: A futuristic data center glowing with red neural network lines, aerial view, 8K].
 - Use this sparingly (1-2 times per post/thread).
+- Example: [IMAGE: A futuristic data center glowing with red neural network lines, aerial view, 8K].
+
+=== DEEP RESEARCH & IDEA SYNTHESIS (ARTIFACTS) ===
+If the format is "Deep Research":
+- Search 5-10 authoritative sources.
+- Create a comprehensive, documentary-style report.
+- Deliver as a single, self-contained HTML Artifact (<html>...</html>).
+- Use premium CSS: dark mode, glassmorphism, smooth gradients, and modern typography.
+- Include sections for: Executive Summary, Key Findings, Technical Breakdown, Future Outlook, and References.
+
+If the format is "Idea Synthesis":
+- Combine multiple concepts into a single, breakthrough innovation.
+- Deliver as a single, self-contained HTML Artifact.
+- Focus on interactivity: use buttons or hover states to reveal depth.
+- Style it like a high-end product reveal or a technical whitepaper.
 `;
 
+
+export const PRICING_CONFIG = {
+    MONTHLY: {
+        key: 'PRO_MONTHLY',
+        price: '$49',
+        period: '/mo',
+        limits: { niche: 50, studio: 50, trends: 100, chat: 1000 },
+        features: ['50 Niche Analysis / mo', '50 Research Studio Artifacts / mo', 'Unlimited Idea Combining (Max 5)', 'Full Chat Enabled', '100 Trend Reports / mo']
+    },
+    ANNUAL: {
+        key: 'PRO_ANNUAL',
+        price: '$299',
+        period: '/yr',
+        limits: { niche: 80, studio: 100, trends: 200, chat: 9999 },
+        features: ['80 Niche Analysis / mo', '100 Research Studio Artifacts / mo', 'Unlimited Idea Combinations', 'Priority Chat Enabled', '200 Trend Reports / mo']
+    },
+    LTD_BASIC: {
+        key: 'LTD_BASIC',
+        price: '$69',
+        period: 'One-time',
+        limits: { niche: 40, studio: 40, trends: 80, chat: 500 },
+        features: ['40 Niche Analysis / mo', '40 Research Studio Artifacts / mo', 'Unlimited Idea Combining (Max 5)', 'Chat Enabled', '80 Trend Reports / mo']
+    },
+    LTD_PRO: {
+        key: 'LTD_PRO',
+        price: '$159',
+        period: 'One-time',
+        limits: { niche: 75, studio: 75, trends: 150, chat: 2000 },
+        features: ['75 Niche Analysis / mo', '75 Research Studio Artifacts / mo', 'Ultimate Idea Combinations', 'Elite Chat Enabled', '150 Trend Reports / mo']
+    }
+};

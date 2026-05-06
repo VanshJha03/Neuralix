@@ -168,16 +168,16 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       setIsLoading(false);
-      setStatus('Neural Link Interrupted.');
+      setStatus('Process Interrupted.');
       setTimeout(() => setStatus(''), 2000);
     }
   };
 
   const processResponse = async (userPrompt: string, history: Message[]) => {
     setIsLoading(true);
-    const statusSequence = mode === 'Deep Research' ? ['Scanning Pillars...', 'Synthesizing Neural Nodes...', 'Finalizing Packets...']
-      : mode === 'Imagine' ? ['Visualizing Dreams...', 'Rendering Reality...', 'Finalizing Visuals...']
-        : ['Optimizing Sync...'];
+    const statusSequence = mode === 'Deep Research' ? ['Scanning Sources...', 'Synthesizing Insights...', 'Finalizing Results...']
+      : mode === 'Imagine' ? ['Visualizing Concepts...', 'Rendering Imagery...', 'Finalizing Outputs...']
+        : ['Optimizing Process...'];
 
     let statusIdx = 0;
     setStatus(statusSequence[0]);
@@ -213,7 +213,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         aiMessage = {
           id: Date.now().toString(),
           role: 'assistant',
-          content: (response as any).content || "Neural link silent.",
+          content: (response as any).content || "System response error.",
           mode,
           sources: (response as any).sources
         };
@@ -225,7 +225,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
       // --- NEURAL MEMORY EXTRACTION ---
       // Distill key packets every 5 messages to ensure long-term recall
       if (updatedHistory.length % 5 === 0) {
-        setStatus("Distilling Neural Packets...");
+        setStatus("Processing Memories...");
         const memories = await extractNeuralMemory(updatedHistory.slice(-5));
         for (const m of memories) {
           await saveMemory(m.packet, m.category).catch(() => { });
@@ -239,8 +239,8 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           id: 'err-' + Date.now(),
           role: 'assistant',
           content: isQuota
-            ? "### ⚠️ Synaptic Overload\nGemini API Quota Exceeded. Please pause and try again in 60 seconds."
-            : `Neural feedback loop error: ${e.message}`,
+            ? "### ⚠️ Request Overload\nGemini API Quota Exceeded. Please pause and try again in 60 seconds."
+            : `System error: ${e.message}`,
           mode
         };
         setMessages([...history, errorMsg]);
@@ -271,7 +271,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
   };
 
   const handleClear = () => {
-    if (confirm("Wipe neural conversation history?")) {
+    if (confirm("Clear conversation history?")) {
       setMessages([]);
     }
   };
@@ -322,7 +322,6 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <div className="relative mb-8 flex flex-col items-center text-center">
             <div className="absolute inset-0 bg-white/5 blur-[80px] rounded-full animate-pulse pointer-events-none"></div>
             <h1 className="text-4xl lg:text-5xl font-normal tracking-tighter bg-gradient-to-b from-white via-white to-zinc-700 bg-clip-text text-transparent font-normal" style={{ fontFamily: "'Orbitron', sans-serif" }}>CreatioX</h1>
-            <p className="text-zinc-800 font-normal mt-2 uppercase tracking-[0.6em] text-[7px] lg:text-[8px]">Neural Intelligence Matrix v5.0</p>
           </div>
 
           <div className="w-full relative group">
@@ -331,7 +330,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 value={input}
                 onChange={handleInputChange}
                 onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                placeholder={`Initiate synaptic link...`}
+                placeholder={`Type your message...`}
                 rows={1}
                 className="w-full bg-transparent border-none focus:ring-0 text-white placeholder:text-zinc-800 resize-none py-1 text-base outline-none font-normal tracking-tight"
               />
@@ -387,7 +386,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                               />
                               {msg.sources && msg.sources.length > 0 && (
                                 <div className="mt-6 pt-6 border-t border-zinc-900/50">
-                                  <p className="text-[9px] lg:text-[10px] font-normal uppercase tracking-[0.3em] text-zinc-700 mb-4">Neural Data Nodes:</p>
+                                  <p className="text-[9px] lg:text-[10px] font-normal uppercase tracking-[0.3em] text-zinc-700 mb-4">Research Sources:</p>
                                   <div className="flex flex-wrap gap-2 lg:gap-3">
                                     {msg.sources.map((source, sIdx) => (
                                       source.web && (
@@ -413,7 +412,7 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
               {isLoading && (
                 <div className="flex items-center gap-4 py-8">
                   <div className="w-1.5 lg:w-2 h-1.5 lg:h-2 rounded-full bg-white animate-ping"></div>
-                  <span className="text-[8px] lg:text-[10px] font-normal tracking-[0.5em] uppercase text-zinc-700">{status || 'Synaptic Transmission...'}</span>
+                  <span className="text-[8px] lg:text-[10px] font-normal tracking-[0.5em] uppercase text-zinc-700">{status || 'Thinking...'}</span>
                 </div>
               )}
               <div ref={messagesEndRef} />
@@ -430,14 +429,14 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                 ))}
               </div>
               <div className="relative flex items-center bg-zinc-950/80 backdrop-blur-3xl border border-zinc-900 rounded-xl p-1.5 lg:p-2 shadow-2xl transition-all focus-within:border-white/20">
-                <button onClick={handleClear} className="p-2 lg:p-3 text-zinc-700 hover:text-white transition-colors" title="Wipe History">
+                <button onClick={handleClear} className="p-2 lg:p-3 text-zinc-700 hover:text-white transition-colors" title="Clear History">
                   <Trash2 size={18} />
                 </button>
                 <textarea
                   value={input}
                   onChange={handleInputChange}
                   onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                  placeholder={isLoading ? "AI responding..." : "Evolving context..."}
+                  placeholder={isLoading ? "AI responding..." : "Type your request..."}
                   rows={1}
                   className="flex-1 bg-transparent border-none focus:ring-0 py-1 lg:py-2 px-2 lg:px-3 text-sm text-white placeholder:text-zinc-800 resize-none outline-none font-normal"
                 />
