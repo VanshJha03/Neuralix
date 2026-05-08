@@ -20,6 +20,7 @@ export const TIER_LIMITS: Record<string, Record<string, number>> = {
   PRO:     { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
   LTD:     { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
   FREE:    { niche: 5,  gap: 5,  chat: 50,  content: 10,  image: 10,  trend: 10 },
+  Free:    { niche: 5,  gap: 5,  chat: 50,  content: 10,  image: 10,  trend: 10 },  // DB schema default
   beta:    { niche: 999, gap: 999, chat: 999, content: 999, image: 999, trend: 999 },
 };
 
@@ -91,7 +92,7 @@ export async function requireAuth(request: Request) {
     let row = await getRow(sb, user.id);
     if (!row) {
       console.log(`[requireAuth] Creating new row for user: ${user.id}`);
-      await upsertRow(sb, user.id, { tier: null, last_reset: new Date().toISOString().substring(0, 7) });
+      await upsertRow(sb, user.id, { last_reset: new Date().toISOString().substring(0, 7) });
       row = await getRow(sb, user.id);
     }
     row = await resetIfNewMonth(sb, user.id, row);
