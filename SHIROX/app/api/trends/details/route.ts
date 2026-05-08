@@ -23,21 +23,7 @@ export async function POST(req: NextRequest) {
       Assess their velocity and why they are trending.
       Return ONLY a JSON array. Skip intro and reasoning.`,
       config: { 
-        tools: [{ googleSearch: {} }],
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              topic: { type: Type.STRING },
-              velocity: { type: Type.STRING, enum: ['Early', 'Rising', 'Peak', 'Saturation'] },
-              score: { type: Type.NUMBER },
-              why: { type: Type.STRING },
-            },
-            required: ['topic', 'velocity', 'score', 'why'],
-          },
-        },
+        tools: [{ googleSearch: {} }]
       },
     });
 

@@ -17,26 +17,12 @@ export async function POST(req: NextRequest) {
   const { activeLabels } = await req.json();
   try {
     const response = await ai.models.generateContent({
-      model: 'gemma-4-26b-a4b-it',
+      model: 'gemma-4-31b-it',
       contents: `Perform high-speed grounding search for viral trends (last 7 days) in these niches: ${activeLabels}. 
       Find 4 topics. Return ONLY a JSON array. 
       CRITICAL: Skip introductory text and reasoning.`,
       config: { 
-        tools: [{ googleSearch: {} }],
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              topic: { type: Type.STRING },
-              velocity: { type: Type.STRING, enum: ['Early', 'Rising', 'Peak', 'Saturation'] },
-              score: { type: Type.NUMBER },
-              why: { type: Type.STRING },
-            },
-            required: ['topic', 'velocity', 'score', 'why'],
-          },
-        },
+        tools: [{ googleSearch: {} }]
       },
     });
     await incrementUsage(auth.sb, auth.userId, 'trend_count');

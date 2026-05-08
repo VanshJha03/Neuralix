@@ -29,28 +29,7 @@ export async function POST(req: NextRequest) {
       
       Skip intro and reasoning.`,
       config: { 
-        tools: [{ googleSearch: {} }],
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            topics: { type: Type.ARRAY, items: { type: Type.STRING } },
-            creators: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  name: { type: Type.STRING },
-                  platform: { type: Type.STRING, enum: ['YT', 'X', 'IG'] },
-                  style: { type: Type.STRING },
-                  successfulHooks: { type: Type.ARRAY, items: { type: Type.STRING } },
-                },
-                required: ['name', 'platform', 'style', 'successfulHooks'],
-              }
-            }
-          },
-          required: ['topics', 'creators'],
-        },
+        tools: [{ googleSearch: {} }]
       },
     });
 

@@ -30,53 +30,7 @@ export async function POST(req: NextRequest) {
       Return ONLY a JSON object with 'predictions', 'creators', and 'gaps'.
       Skip all intro and reasoning. Use Google Search for real-time grounding.`,
       config: { 
-        tools: [{ googleSearch: {} }],
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            predictions: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  topic: { type: Type.STRING },
-                  velocity: { type: Type.STRING, enum: ['Early', 'Rising', 'Peak', 'Saturation'] },
-                  score: { type: Type.NUMBER },
-                  why: { type: Type.STRING },
-                },
-                required: ['topic', 'velocity', 'score', 'why'],
-              }
-            },
-            creators: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  name: { type: Type.STRING },
-                  platform: { type: Type.STRING, enum: ['YT', 'X', 'IG'] },
-                  style: { type: Type.STRING },
-                  successfulHooks: { type: Type.ARRAY, items: { type: Type.STRING } },
-                },
-                required: ['name', 'platform', 'style', 'successfulHooks'],
-              }
-            },
-            gaps: {
-              type: Type.ARRAY,
-              items: {
-                type: Type.OBJECT,
-                properties: {
-                  trend: { type: Type.STRING },
-                  crowdIsSaying: { type: Type.STRING },
-                  missingPiece: { type: Type.STRING },
-                  hookUSP: { type: Type.STRING },
-                },
-                required: ['trend', 'crowdIsSaying', 'missingPiece', 'hookUSP'],
-              }
-            }
-          },
-          required: ['predictions', 'creators', 'gaps'],
-        },
+        tools: [{ googleSearch: {} }]
       },
     });
 

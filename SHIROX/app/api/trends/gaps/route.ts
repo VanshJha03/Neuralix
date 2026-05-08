@@ -25,21 +25,7 @@ export async function POST(req: NextRequest) {
       Find 3-4 trends. For each, identify the common narrative vs the missing perspective.
       Return ONLY a JSON array. Skip intro and reasoning.`,
       config: { 
-        tools: [{ googleSearch: {} }],
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.ARRAY,
-          items: {
-            type: Type.OBJECT,
-            properties: {
-              trend: { type: Type.STRING },
-              crowdIsSaying: { type: Type.STRING },
-              missingPiece: { type: Type.STRING },
-              hookUSP: { type: Type.STRING },
-            },
-            required: ['trend', 'crowdIsSaying', 'missingPiece', 'hookUSP'],
-          },
-        },
+        tools: [{ googleSearch: {} }]
       },
     });
 
