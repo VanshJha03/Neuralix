@@ -12,16 +12,16 @@ export function createServerSupabase() {
 
 // ─── Tier limits ──────────────────────────────────────────────────────────────
 export const TIER_LIMITS: Record<string, Record<string, number>> = {
-  MONTHLY: { niche: 30, gap: 30, chat: 500,  content: 100, image: 100, trend: 60 },
-  YEARLY:  { niche: 30, gap: 30, chat: 500,  content: 100, image: 100, trend: 60 },
+  MONTHLY: { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
+  YEARLY: { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
   LTD_129: { niche: 60, gap: 60, chat: 1000, content: 200, image: 200, trend: 120 },
-  LTD_49:  { niche: 15, gap: 15, chat: 250,  content: 50,  image: 50,  trend: 30 },
+  LTD_49: { niche: 15, gap: 15, chat: 250, content: 50, image: 50, trend: 30 },
   // Backward compatibility
-  PRO:     { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
-  LTD:     { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
-  FREE:    { niche: 5,  gap: 5,  chat: 50,  content: 10,  image: 10,  trend: 10 },
-  Free:    { niche: 5,  gap: 5,  chat: 50,  content: 10,  image: 10,  trend: 10 },  // DB schema default
-  beta:    { niche: 999, gap: 999, chat: 999, content: 999, image: 999, trend: 999 },
+  PRO: { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
+  LTD: { niche: 30, gap: 30, chat: 500, content: 100, image: 100, trend: 60 },
+  FREE: { niche: 5, gap: 5, chat: 50, content: 10, image: 10, trend: 10 },
+  Free: { niche: 5, gap: 5, chat: 50, content: 10, image: 10, trend: 10 },  // DB schema default
+  beta: { niche: 999, gap: 999, chat: 999, content: 999, image: 999, trend: 999 },
 };
 
 // ─── Row helpers ──────────────────────────────────────────────────────────────
